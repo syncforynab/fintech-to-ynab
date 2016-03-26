@@ -1,10 +1,13 @@
 # Mondo to YNAB
 
-Automatically push Mondo transactions to YNAB
+Automatically push Mondo transactions to YNAB using https://github.com/rienafairefr/nYNABapi
+
+A huge thanks to @rienafairefr for the nYNAB library
 
 ## Notes
- - Category will be blank
-  - This is partially because we cannot be sure what categories you have in YNAB and also because totally automating this will reduce your visibility of your money
+ - I don't know much python, so excuse the horrible code
+ - Because there is no official API for YNAB, this could break at any point (submit an issue)
+ - Category will be blank in YNAB
 
 ## Deployment notes
  - Personally using Dokku to host this. Heroku should be easy too
