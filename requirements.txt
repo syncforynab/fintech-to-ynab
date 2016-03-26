@@ -21,7 +21,6 @@ pynab==0.6.8
 python-dateutil==2.5.0
 pytz==2015.7
 PyYAML==3.11
-redis==2.10.3
 regex==2016.3.2
 requests==2.9.0
 rfc3987==1.3.5
@@ -30,6 +29,4 @@ six==1.10.0
 toolz==0.7.4
 umalqurra==0.2
 unicodecsv==0.14.1
-vboxapi==1.0
-virtualenv==14.0.6
 Werkzeug==0.11.5
