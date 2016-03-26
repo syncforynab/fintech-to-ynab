@@ -65,7 +65,7 @@ def route_webhook():
             entities_payee_id=entities_payee_id,
             imported_date=datetime.now().date(),
             imported_payee=data['data']['merchant']['name'],
-            memo=data['data']['description'],
+            memo="%s %s" % (data['data']['merchant']['emoji'], data['data']['merchant']['metadata']['suggested_tags']),
             source="Imported"
         )
 
