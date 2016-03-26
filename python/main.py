@@ -4,6 +4,7 @@ import logging
 from flask import Flask, render_template, request, jsonify
 from datetime import datetime
 from dateutil.parser import parse
+from decimal import Decimal
 
 import settings
 
@@ -59,7 +60,7 @@ def route_webhook():
         transactions = []
         transaction = Transaction(
             entities_account_id=entities_account_id,
-            amount=data['data']['amount'] / 100,
+            amount=Decimal(data['data']['amount']) / 100,
             date=parse(data['data']['created']),
             entities_payee_id=entities_payee_id,
             imported_date=datetime.now().date(),
