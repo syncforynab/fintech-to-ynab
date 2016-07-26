@@ -17,7 +17,7 @@ jsontableschema==0.5.1
 MarkupSafe==0.23
 ofxtools==0.3.8
 pynab==0.6.8
--e git+https://github.com/scottrobertson/nYNABapi.git@0359cee612c907f8ba78cc9d2fa2c8c7bc74bdbb#egg=pynYNAB
+-e git+https://github.com/scottrobertson/nYNABapi.git@3ac1cedd9c8879754e20e6a0c585c12e383036b4#egg=pynYNAB
 python-dateutil==2.5.0
 pytz==2015.7
 PyYAML==3.11
