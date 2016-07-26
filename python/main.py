@@ -66,7 +66,7 @@ def route_webhook():
             imported_date=datetime.now().date(),
             imported_payee=data['data']['merchant']['name'],
             memo="%s %s" % (data['data']['merchant']['emoji'], data['data']['merchant']['metadata']['suggested_tags']),
-            source="Imported"
+            source="Mondo"
         )
 
         if not ynab_client.budget.be_transactions.containsduplicate(transaction):
