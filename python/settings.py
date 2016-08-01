@@ -21,3 +21,5 @@ ynab_account = env.get('YNAB_ACCOUNT')
 ynab_budget = env.get('YNAB_BUDGET')
 ynab_username = env.get('YNAB_USERNAME')
 ynab_password = env.get('YNAB_PASSWORD')
+
+sentry_dsn = env.get('SENTRY_DSN')

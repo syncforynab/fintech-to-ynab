@@ -17,6 +17,10 @@ app.config['DEBUG'] = settings.flask_debug
 
 log = logging.getLogger(__name__)
 
+if settings.sentry_dsn:
+    from raven.contrib.flask import Sentry
+    sentry = Sentry(app)
+
 @app.route('/')
 def route_index():
     return 'hello world'
