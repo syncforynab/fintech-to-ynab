@@ -61,6 +61,18 @@ def route_webhook():
         entities_account_id = getaccount('Mondo').id
         entities_payee_id = getpayee(data['data']['merchant']['name']).id
 
+        # Try and get the suggested tags
+        try:
+            suggested_tags = data['data']['merchant']['metadata']['suggested_tags']
+        except KeyError:
+            suggested_tags = ''
+
+        # Try and get the emoji
+        try:
+            emoji = data['data']['merchant']['emoji']
+        except KeyError:
+            emoji = ''
+
         transactions = []
         transaction = Transaction(
             entities_account_id=entities_account_id,
@@ -69,7 +81,7 @@ def route_webhook():
             entities_payee_id=entities_payee_id,
             imported_date=datetime.now().date(),
             imported_payee=data['data']['merchant']['name'],
-            memo="%s %s" % (data['data']['merchant']['emoji'], data['data']['merchant']['metadata']['suggested_tags']),
+            memo="%s %s" % (emoji, suggested_tags),
             source="Imported"
         )
 
