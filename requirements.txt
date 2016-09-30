@@ -30,7 +30,7 @@ pyasn1==0.1.9
 pycparser==2.14
 pycrypto==2.6.1
 pynab==0.6.8
--e git+https://github.com/scottrobertson/nYNABapi.git@6a73d5e5aac9f842299328bab08f8be4c118cd63#egg=pynYNAB
+-e git+https://github.com/scottrobertson/nYNABapi.git@b48ee767ecf07946f3d5500b7a2ecb64a8051dd1#egg=pynYNAB
 pyOpenSSL==16.0.0
 python-dateutil==2.5.0
 python-dotenv==0.5.1
