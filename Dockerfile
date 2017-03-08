@@ -4,9 +4,7 @@ MAINTAINER Ross Dargan
 
 COPY requirements.txt /usr/src/requirements.txt
 
-COPY python/main.py /usr/src/main.py
-
-COPY python/settings.py /usr/src/settings.py
+COPY python/. /usr/src/
 
 EXPOSE 5000
 
@@ -14,5 +12,7 @@ WORKDIR /usr/src
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "/usr/src/main.py", "-p 80"]
+ENTRYPOINT ["python"]
+
+CMD ["/usr/src/main.py"]
 
