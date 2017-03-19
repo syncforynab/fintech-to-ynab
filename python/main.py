@@ -19,9 +19,6 @@ app = Flask(__name__, template_folder='../html', static_folder='../static')
 app.config['DEBUG'] = settings.flask_debug
 
 log = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
-
-
 
 if settings.sentry_dsn:
     from raven.contrib.flask import Sentry
@@ -96,13 +93,7 @@ def route_webhook():
             source="Imported"
         )
 
-#        log.debug(ynab_client.catalog.get_changed_apidict())
-#        log.debug(ynab_client.budget.get_changed_apidict())
-
-#        ynab_client.add_transaction(transaction)
         ynab_client.budget.be_transactions.append(transaction)
-        log.debug('HERE!')
-        log.debug(expectedDelta)
         ynab_client.push(expectedDelta)
 
         return jsonify(data)
