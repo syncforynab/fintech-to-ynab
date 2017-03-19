@@ -8,14 +8,20 @@ from decimal import Decimal
 
 import settings
 
-from pynYNAB.Client import nYnabConnection, nYnabClient, BudgetNotFound
-from pynYNAB.budget import Payee, Transaction
-from pynYNAB.config import get_logger, test_common_args
+
+from pynYNAB.Client import nYnabClient, nYnabConnection
+from pynYNAB.schema.Entity import Entity, ComplexEncoder, Base, AccountTypes
+from pynYNAB.schema.budget import Account, Transaction, Payee
+from pynYNAB.schema.roots import Budget
+from pynYNAB.schema.types import AmountType
 
 app = Flask(__name__, template_folder='../html', static_folder='../static')
 app.config['DEBUG'] = settings.flask_debug
 
 log = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
+
+
 
 if settings.sentry_dsn:
     from raven.contrib.flask import Sentry
@@ -27,12 +33,16 @@ def route_index():
 
 @app.route('/webhook', methods=['POST'])
 def route_webhook():
+    global expectedDelta
     data = json.loads(request.data.decode('utf8'))
+
+    expectedDelta = 1
 
     if data['type'] == 'transaction.created':
         ynab_connection = nYnabConnection(settings.ynab_username, settings.ynab_password)
         try:
-            ynab_client = nYnabClient(ynab_connection, budget_name=settings.ynab_budget)
+            ynab_client = nYnabClient(nynabconnection=ynab_connection, budgetname=settings.ynab_budget, logger=log)
+            ynab_client.sync()
         except BudgetNotFound:
             print('No budget by this name found in nYNAB')
             exit(-1)
@@ -53,12 +63,14 @@ def route_webhook():
                 log.debug('searching for payee %s' % payeename)
                 return payees[payeename]
             except KeyError:
+                global expectedDelta
                 log.debug('Couldn''t find this payee: %s' % payeename)
                 payee=Payee(name=payeename)
                 ynab_client.budget.be_payees.append(payee)
+                expectedDelta=2
                 return payee
 
-        entities_account_id = getaccount('Mondo').id
+        entities_account_id = getaccount(settings.ynab_account).id
         entities_payee_id = getpayee(data['data']['merchant']['name']).id
 
         # Try and get the suggested tags
@@ -73,7 +85,6 @@ def route_webhook():
         except KeyError:
             emoji = ''
 
-        transactions = []
         transaction = Transaction(
             entities_account_id=entities_account_id,
             amount=Decimal(data['data']['amount']) / 100,
@@ -85,13 +96,14 @@ def route_webhook():
             source="Imported"
         )
 
-        if not ynab_client.budget.be_transactions.containsduplicate(transaction):
-            log.debug('Appending transaction %s '%transaction.getdict())
-            transactions.append(transaction)
-        else:
-            log.debug('Duplicate transaction found %s '%transaction.getdict())
+#        log.debug(ynab_client.catalog.get_changed_apidict())
+#        log.debug(ynab_client.budget.get_changed_apidict())
 
-        ynab_client.add_transactions(transactions)
+#        ynab_client.add_transaction(transaction)
+        ynab_client.budget.be_transactions.append(transaction)
+        log.debug('HERE!')
+        log.debug(expectedDelta)
+        ynab_client.push(expectedDelta)
 
         return jsonify(data)
     else:
