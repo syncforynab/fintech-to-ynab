@@ -16,3 +16,4 @@ ENTRYPOINT ["python"]
 
 CMD ["/usr/src/main.py"]
 
+HEALTHCHECK CMD curl --fail http://localhost:5000/ || exit 1
