@@ -1,22 +1,17 @@
 # Mondo to YNAB
 
-Automatically push Mondo transactions to YNAB using https://github.com/rienafairefr/nYNABapi
+Automatically push Monzo transactions into YNAB.
 
-A huge thanks to @rienafairefr for the nYNAB library
+A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for the YNAB library.
 
 ## Notes
- - I don't know much python, so excuse the horrible code
- - Because there is no official API for YNAB, this could break at any point (submit an issue)
+ - Because there is no official API for YNAB, this could break at any point
  - Category will be blank in YNAB
 
 ## Deployment notes
- - Personally using Dokku to host this. Heroku should be easy too
- - Set Environment Variables (See below)
- - Remember to register your webhook URL. You can do it here: https://developers.getmondo.co.uk/
+ - Setup the environment variables
+ - Register your webhook URL. You can do it here: https://developers.monzo.com/
 
 ## Environment Variables
- - LOG_LEVEL=debug
- - YNAB_ACCOUNT=Mondo
- - YNAB_BUDGET=Testing Mondo
- - YNAB_USERNAME=
- - YNAB_PASSWORD=
+
+Either set the environment variables from `.env.example` or copy that file to `.env`
