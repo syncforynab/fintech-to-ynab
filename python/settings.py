@@ -5,7 +5,8 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 
 dotenv_path = join(dirname(dirname(__file__)), '.env')
-load_dotenv(dotenv_path)
+if os.path.isfile(dotenv_path):
+    load_dotenv(dotenv_path)
 
 log_level = os.environ.get('LOG_LEVEL').upper()
 logging.basicConfig(level=getattr(logging, log_level))
