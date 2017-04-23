@@ -67,6 +67,19 @@ def route_webhook():
                 expectedDelta=2
                 return payee
 
+
+        def hashTransaction(transaction):
+             tup = (transaction.date, transaction.entities_payee_id, transaction.amount)
+             return hash(tup)
+
+        def containsDuplicate(transaction, transactions):
+            itemHash = hashTransaction(transaction)
+            for item in transactions:
+                if (hashTransaction(item)==itemHash):
+                    return True
+            return False
+
+
         entities_account_id = getaccount(settings.ynab_account).id
         payee_name = ''
         if((data['data']['merchant'] is None) and (data['data']['counterparty'] is not None) and (data['data']['counterparty']['number'] is not None)):
@@ -99,8 +112,12 @@ def route_webhook():
             source="Imported"
         )
 
-        ynab_client.budget.be_transactions.append(transaction)
-        ynab_client.push(expectedDelta)
+        if not containsDuplicate(transaction,ynab_client.budget.be_transactions):
+            log.debug('Appending transaction')
+            ynab_client.budget.be_transactions.append(transaction)
+            ynab_client.push(expectedDelta)
+        else:
+            log.debug('Duplicate transaction found')
 
         return jsonify(data)
     else:
