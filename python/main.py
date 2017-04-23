@@ -37,12 +37,8 @@ def route_webhook():
 
     if data['type'] == 'transaction.created':
         ynab_connection = nYnabConnection(settings.ynab_username, settings.ynab_password)
-        try:
-            ynab_client = nYnabClient(nynabconnection=ynab_connection, budgetname=settings.ynab_budget, logger=log)
-            ynab_client.sync()
-        except BudgetNotFound:
-            print('No budget by this name found in nYNAB')
-            exit(-1)
+        ynab_client = nYnabClient(nynabconnection=ynab_connection, budgetname=settings.ynab_budget, logger=log)
+        ynab_client.sync()
 
         accounts = {x.account_name: x for x in ynab_client.budget.be_accounts}
         payees = {p.name: p for p in ynab_client.budget.be_payees}
