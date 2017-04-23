@@ -69,7 +69,7 @@ def route_webhook():
 
 
         def hashTransaction(transaction):
-             tup = (transaction.date, transaction.entities_payee_id, transaction.amount)
+             tup = (transaction.date, transaction.source, transaction.imported_payee)
              return hash(tup)
 
         def containsDuplicate(transaction, transactions):
