@@ -68,18 +68,24 @@ def route_webhook():
                 return payee
 
         entities_account_id = getaccount(settings.ynab_account).id
-        entities_payee_id = getpayee(data['data']['merchant']['name']).id
+        payee_name = ''
+        if((data['data']['merchant'] is None) and (data['data']['counterparty'] is not None) and (data['data']['counterparty']['number'] is not None)):
+            payee_name = data['data']['counterparty']['number']
+        else:
+            payee_name = data['data']['merchant']['name']
+
+        entities_payee_id = getpayee(payee_name).id
 
         # Try and get the suggested tags
         try:
             suggested_tags = data['data']['merchant']['metadata']['suggested_tags']
-        except KeyError:
+        except (KeyError, TypeError):
             suggested_tags = ''
 
         # Try and get the emoji
         try:
             emoji = data['data']['merchant']['emoji']
-        except KeyError:
+        except (KeyError, TypeError):
             emoji = ''
 
         transaction = Transaction(
@@ -88,7 +94,7 @@ def route_webhook():
             date=parse(data['data']['created']),
             entities_payee_id=entities_payee_id,
             imported_date=datetime.now().date(),
-            imported_payee=data['data']['merchant']['name'],
+            imported_payee=payee_name,
             memo="%s %s" % (emoji, suggested_tags),
             source="Imported"
         )
