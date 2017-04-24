@@ -34,6 +34,13 @@ def route_webhook():
         else:
             payee_name = data['data']['merchant']['name']
 
+
+        # If we are creating the payee, then we need to increase the delta
+        if ynab_client.payeeexists(payee_name):
+            expected_delta = 1
+        else:
+            expected_delta = 2
+
         entities_payee_id = ynab_client.getpayee(payee_name).id
 
         # Try and get the suggested tags
@@ -60,7 +67,7 @@ def route_webhook():
         )
 
         ynab_client.client.budget.be_transactions.append(transaction)
-        ynab_client.client.push(ynab_client.expectedDelta)
+        ynab_client.client.push(expected_delta)
 
         return jsonify(data)
     else:
