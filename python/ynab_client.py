@@ -13,6 +13,8 @@ client.sync()
 accounts = {x.account_name: x for x in client.budget.be_accounts}
 payees = {p.name: p for p in client.budget.be_payees}
 
+expectedDelta = 1
+
 def getaccount(accountname):
     try:
         settings.log.debug('searching for account %s' % accountname)
@@ -26,9 +28,8 @@ def getpayee(payeename):
         settings.log.debug('searching for payee %s' % payeename)
         return payees[payeename]
     except KeyError:
-        global expectedDelta
         settings.log.debug('Couldn''t find this payee: %s' % payeename)
         payee=Payee(name=payeename)
         client.budget.be_payees.append(payee)
-        expectedDelta=2
+        expectedDelta = 2
         return payee

@@ -24,10 +24,7 @@ def route_index():
 
 @app.route('/webhook', methods=['POST'])
 def route_webhook():
-    global expectedDelta
     data = json.loads(request.data.decode('utf8'))
-
-    expectedDelta = 1
 
     if data['type'] == 'transaction.created':
         entities_account_id = ynab_client.getaccount(settings.ynab_account).id
@@ -63,7 +60,7 @@ def route_webhook():
         )
 
         ynab_client.client.budget.be_transactions.append(transaction)
-        ynab_client.client.push(expectedDelta)
+        ynab_client.client.push(ynab_client.expectedDelta)
 
         return jsonify(data)
     else:
