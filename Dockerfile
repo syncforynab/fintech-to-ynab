@@ -1,6 +1,9 @@
-FROM python:2.7.13
+FROM python:2.7.13-alpine
 
 MAINTAINER Ross Dargan
+
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh gcc g++ python python-dev py-pip libxml2-dev libffi-dev libxslt-dev openssl-dev
 
 COPY requirements.txt /usr/src/requirements.txt
 
