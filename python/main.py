@@ -70,6 +70,7 @@ def route_webhook():
                 expectedDelta=2
                 return payee
 
+<<<<<<< HEAD
     def containsDuplicate(transaction, session):
     return session.query(exists()\
  #Due to a bug with pynynab we need to cast the amount to an int for this comparison. This should be removed when bug #38 is fixed https://github.com/rienafairefr/pynYNAB/issues/38
@@ -79,6 +80,17 @@ def route_webhook():
         .where(Transaction.imported_payee==transaction.imported_payee)\
         .where(Transaction.source==transaction.source)\
         ).scalar()
+=======
+    	def containsDuplicate(transaction, session):
+    		return session.query(exists()\
+ 		#Due to a bug with pynynab we need to cast the amount to an int for this comparison. This should be removed when bug #38 is fixed https://github.com/rienafairefr/pynYNAB/issues/38
+      		#  .where(Transaction.amount==transaction.amount)\
+        	.where(Transaction.entities_account_id==transaction.entities_account_id)\
+      		.where(Transaction.date==transaction.date.date())\
+        	.where(Transaction.imported_payee==transaction.imported_payee)\
+        	.where(Transaction.source==transaction.source)\
+        	).scalar()
+>>>>>>> c747d826a0817b5af85eef5e9ef78c756ab104c4
 
         entities_account_id = getaccount(settings.ynab_account).id
         payee_name = ''
