@@ -6,22 +6,13 @@ from datetime import datetime
 from dateutil.parser import parse
 from decimal import Decimal
 
-import settings
-
-
-from pynYNAB.Client import nYnabClient, nYnabConnection
-from pynYNAB.schema.Entity import Entity, ComplexEncoder, Base, AccountTypes
 from pynYNAB.schema.budget import Account, Transaction, Payee
-from pynYNAB.schema.roots import Budget
-from pynYNAB.schema.types import AmountType
 
-from sqlalchemy.sql.expression import select, exists, func
-
+import settings
+import ynab_client
 
 app = Flask(__name__, template_folder='../html', static_folder='../static')
 app.config['DEBUG'] = settings.flask_debug
-
-log = logging.getLogger(__name__)
 
 if settings.sentry_dsn:
     from raven.contrib.flask import Sentry
@@ -33,73 +24,24 @@ def route_index():
 
 @app.route('/webhook', methods=['POST'])
 def route_webhook():
-    global expectedDelta
     data = json.loads(request.data.decode('utf8'))
 
-    expectedDelta = 1
-
     if data['type'] == 'transaction.created':
-        ynab_connection = nYnabConnection(settings.ynab_username, settings.ynab_password)
-        try:
-            ynab_client = nYnabClient(nynabconnection=ynab_connection, budgetname=settings.ynab_budget, logger=log)
-            ynab_client.sync()
-        except BudgetNotFound:
-            print('No budget by this name found in nYNAB')
-            exit(-1)
-
-        accounts = {x.account_name: x for x in ynab_client.budget.be_accounts}
-        payees = {p.name: p for p in ynab_client.budget.be_payees}
-
-        def getaccount(accountname):
-            try:
-                log.debug('searching for account %s' % accountname)
-                return accounts[accountname]
-            except KeyError:
-                log.error('Couldn''t find this account: %s' % accountname)
-                exit(-1)
-
-        def getpayee(payeename):
-            try:
-                log.debug('searching for payee %s' % payeename)
-                return payees[payeename]
-            except KeyError:
-                global expectedDelta
-                log.debug('Couldn''t find this payee: %s' % payeename)
-                payee=Payee(name=payeename)
-                ynab_client.budget.be_payees.append(payee)
-                expectedDelta=2
-                return payee
-
-<<<<<<< HEAD
-    def containsDuplicate(transaction, session):
-    return session.query(exists()\
- #Due to a bug with pynynab we need to cast the amount to an int for this comparison. This should be removed when bug #38 is fixed https://github.com/rienafairefr/pynYNAB/issues/38
-      #  .where(Transaction.amount==transaction.amount)\
-        .where(Transaction.entities_account_id==transaction.entities_account_id)\
-      .where(Transaction.date==transaction.date.date())\
-        .where(Transaction.imported_payee==transaction.imported_payee)\
-        .where(Transaction.source==transaction.source)\
-        ).scalar()
-=======
-    	def containsDuplicate(transaction, session):
-    		return session.query(exists()\
- 		#Due to a bug with pynynab we need to cast the amount to an int for this comparison. This should be removed when bug #38 is fixed https://github.com/rienafairefr/pynYNAB/issues/38
-      		#  .where(Transaction.amount==transaction.amount)\
-        	.where(Transaction.entities_account_id==transaction.entities_account_id)\
-      		.where(Transaction.date==transaction.date.date())\
-        	.where(Transaction.imported_payee==transaction.imported_payee)\
-        	.where(Transaction.source==transaction.source)\
-        	).scalar()
->>>>>>> c747d826a0817b5af85eef5e9ef78c756ab104c4
-
-        entities_account_id = getaccount(settings.ynab_account).id
+        entities_account_id = ynab_client.getaccount(settings.ynab_account).id
         payee_name = ''
         if((data['data']['merchant'] is None) and (data['data']['counterparty'] is not None) and (data['data']['counterparty']['number'] is not None)):
             payee_name = data['data']['counterparty']['number']
         else:
             payee_name = data['data']['merchant']['name']
 
-        entities_payee_id = getpayee(payee_name).id
+
+        # If we are creating the payee, then we need to increase the delta
+        if ynab_client.payeeexists(payee_name):
+            expected_delta = 1
+        else:
+            expected_delta = 2
+
+        entities_payee_id = ynab_client.getpayee(payee_name).id
 
         # Try and get the suggested tags
         try:
@@ -124,16 +66,12 @@ def route_webhook():
             source="Imported"
         )
 
-        if containsDuplicate(transaction, ynab_client.session):
-            log.debug('Duplicate transaction found')
-        else:
-            log.debug('Appending transaction')
-            ynab_client.budget.be_transactions.append(transaction)
-            ynab_client.push(expectedDelta)
+        ynab_client.client.budget.be_transactions.append(transaction)
+        ynab_client.client.push(expected_delta)
 
         return jsonify(data)
     else:
-        log.warning('Unsupported webhook type: %s' % data['type'])
+        settings.log.warning('Unsupported webhook type: %s' % data['type'])
 
     return ''
 
