@@ -38,34 +38,40 @@ def route_webhook():
         if account == False:
             return jsonify({'error': 'Account not found'} )
 
-        payee_name = ''
-        if((data['data']['merchant'] is None) and (data['data']['counterparty'] is not None) and (data['data']['counterparty']['number'] is not None)):
-            payee_name = data['data']['counterparty']['number']
-        else:
+        # Work out the Payee Name
+        if data['data'].get('merchant'):
             payee_name = data['data']['merchant']['name']
+        else:
+            # This is a p2p transaction
+            if data['data'].get('counterparty'):
+                if data['data']['counterparty'].has_key('name'):
+                    payee_name = data['data']['counterparty']['name']
+                else:
+                    payee_name = data['data']['counterparty']['number']
+            elif data['data'].get('metadata', {}).get('is_topup') == 'true':
+                payee_name = 'Topup'
+            else:
+                payee_name = 'Unknown Payee'
 
         # If we are creating the payee, then we need to increase the delta
-        if ynab_client.payeeexists(payee_name):
-            settings.log.debug('payee exists %s' % payee_name)
-        else:
-            settings.log.debug('payee does not exist %s' % payee_name)
+        if not ynab_client.payeeexists(payee_name):
+            settings.log.debug('payee does not exist, will create %s' % payee_name)
             expected_delta += 1
+
+        # Suggested Tags
+        suggested_tags = ''
+        if data['data']['merchant'] and data['data']['merchant'].get('metadata', {}).get('suggested_tags'):
+            suggested_tags = data['data']['merchant']['metadata']['suggested_tags']
+
+        # Emoji!
+        emoji = ''
+        if data['data']['merchant'] and data['data']['merchant'].get('emoji'):
+            emoji = data['data']['merchant']['emoji']
 
         # Either create or get the payee
         entities_payee_id = ynab_client.getpayee(payee_name).id
 
-        try:
-            # Try and get the suggested tags
-            suggested_tags = data['data']['merchant']['metadata']['suggested_tags']
-        except (KeyError, TypeError):
-            suggested_tags = ''
-
-        try:
-            # Try and get the emoji
-            emoji = data['data']['merchant']['emoji']
-        except (KeyError, TypeError):
-            emoji = ''
-
+        # Create the Transaction
         expected_delta += 1
         settings.log.debug('Creating transaction object')
         transaction = Transaction(
