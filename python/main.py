@@ -68,6 +68,11 @@ def route_webhook():
         if data['data']['merchant'] and data['data']['merchant'].get('emoji'):
             emoji = data['data']['merchant']['emoji']
 
+        # Show the local currency in the notes if this is not in the accounts currency
+        local_currency = ''
+        if data['data']['local_currency'] != data['data']['currency']:
+            local_currency = '(%s %s)' % (data['data']['local_currency'], (abs(data['data']['local_amount']) / 100))
+
         # Either create or get the payee
         entities_payee_id = ynab_client.getpayee(payee_name).id
 
@@ -81,7 +86,7 @@ def route_webhook():
             entities_payee_id=entities_payee_id,
             imported_date=datetime.now().date(),
             imported_payee=payee_name,
-            memo="%s %s" % (emoji, suggested_tags),
+            memo="%s %s %s" % (emoji, suggested_tags, local_currency),
             source="Imported"
         )
 
