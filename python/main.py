@@ -66,6 +66,9 @@ def route_webhook():
             source="Imported"
         )
 
+	if settings.clear_on_import:
+ 	    transaction.cleared='Cleared'
+
 	if ynab_client.containsDuplicate(transaction):
             print 'Duplicate transaction detected'
         else:
