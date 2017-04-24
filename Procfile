@@ -1,1 +1,1 @@
-web: gunicorn --reload --timeout=240 --pythonpath python main:app
+web: gunicorn --pythonpath python main:app --timeout=120 --preload
