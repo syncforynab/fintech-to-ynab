@@ -6,19 +6,13 @@ from datetime import datetime
 from dateutil.parser import parse
 from decimal import Decimal
 
-import settings
-
-
-from pynYNAB.Client import nYnabClient, nYnabConnection
-from pynYNAB.schema.Entity import Entity, ComplexEncoder, Base, AccountTypes
 from pynYNAB.schema.budget import Account, Transaction, Payee
-from pynYNAB.schema.roots import Budget
-from pynYNAB.schema.types import AmountType
+
+import settings
+import ynab_client
 
 app = Flask(__name__, template_folder='../html', static_folder='../static')
 app.config['DEBUG'] = settings.flask_debug
-
-log = logging.getLogger(__name__)
 
 if settings.sentry_dsn:
     from raven.contrib.flask import Sentry
@@ -36,30 +30,26 @@ def route_webhook():
     expectedDelta = 1
 
     if data['type'] == 'transaction.created':
-        ynab_connection = nYnabConnection(settings.ynab_username, settings.ynab_password)
-        ynab_client = nYnabClient(nynabconnection=ynab_connection, budgetname=settings.ynab_budget, logger=log)
-        ynab_client.sync()
-
-        accounts = {x.account_name: x for x in ynab_client.budget.be_accounts}
-        payees = {p.name: p for p in ynab_client.budget.be_payees}
+        accounts = {x.account_name: x for x in ynab_client.client.budget.be_accounts}
+        payees = {p.name: p for p in ynab_client.client.budget.be_payees}
 
         def getaccount(accountname):
             try:
-                log.debug('searching for account %s' % accountname)
+                settings.log.debug('searching for account %s' % accountname)
                 return accounts[accountname]
             except KeyError:
-                log.error('Couldn''t find this account: %s' % accountname)
+                settings.log.error('Couldn''t find this account: %s' % accountname)
                 exit(-1)
 
         def getpayee(payeename):
             try:
-                log.debug('searching for payee %s' % payeename)
+                settings.log.debug('searching for payee %s' % payeename)
                 return payees[payeename]
             except KeyError:
                 global expectedDelta
-                log.debug('Couldn''t find this payee: %s' % payeename)
+                settings.log.debug('Couldn''t find this payee: %s' % payeename)
                 payee=Payee(name=payeename)
-                ynab_client.budget.be_payees.append(payee)
+                ynab_client.client.budget.be_payees.append(payee)
                 expectedDelta=2
                 return payee
 
@@ -95,12 +85,12 @@ def route_webhook():
             source="Imported"
         )
 
-        ynab_client.budget.be_transactions.append(transaction)
-        ynab_client.push(expectedDelta)
+        ynab_client.client.budget.be_transactions.append(transaction)
+        ynab_client.client.push(expectedDelta)
 
         return jsonify(data)
     else:
-        log.warning('Unsupported webhook type: %s' % data['type'])
+        settings.log.warning('Unsupported webhook type: %s' % data['type'])
 
     return ''
 
