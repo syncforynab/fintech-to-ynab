@@ -6,6 +6,8 @@ from pynYNAB.schema.budget import Account, Transaction, Payee
 from pynYNAB.schema.roots import Budget
 from pynYNAB.schema.types import AmountType
 
+from sqlalchemy.sql.expression import select, exists, func
+
 connection = nYnabConnection(settings.ynab_username, settings.ynab_password)
 client = nYnabClient(nynabconnection=connection, budgetname=settings.ynab_budget, logger=settings.log)
 client.sync()
@@ -36,3 +38,12 @@ def getpayee(payeename):
         payee=Payee(name=payeename)
         client.budget.be_payees.append(payee)
         return payee
+
+def containsDuplicate(transaction):
+    return client.session.query(exists()\
+   	.where(Transaction.amount==transaction.amount)\
+      	.where(Transaction.entities_account_id==transaction.entities_account_id)\
+      	.where(Transaction.date==transaction.date.date())\
+        .where(Transaction.imported_payee==transaction.imported_payee)\
+        .where(Transaction.source==transaction.source)\
+        ).scalar()

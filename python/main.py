@@ -66,8 +66,14 @@ def route_webhook():
             source="Imported"
         )
 
-        ynab_client.client.budget.be_transactions.append(transaction)
-        ynab_client.client.push(expected_delta)
+	if settings.clear_on_import:
+ 	    transaction.cleared='Cleared'
+
+	if ynab_client.containsDuplicate(transaction):
+            print 'Duplicate transaction detected'
+        else:
+	    ynab_client.client.budget.be_transactions.append(transaction)
+            ynab_client.client.push(expected_delta)
 
         return jsonify(data)
     else:

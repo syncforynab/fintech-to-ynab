@@ -5,7 +5,8 @@ Automatically push Monzo transactions into YNAB.
 A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for the YNAB library.
 
 ## Notes
- - Because there is no official API for YNAB, this could break at any point
+ - I don't know much python, so excuse the horrible code
+ - Because there is no official API for YNAB, this could break at any point (submit an issue)
  - Category will be blank in YNAB
 
 ## Deployment notes

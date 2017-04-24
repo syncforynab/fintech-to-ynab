@@ -49,4 +49,4 @@ sqlalchemy
 lxml
 -e git://github.com/csingley/ofxtools.git@4a3e496d7d2a3babdeabd4e114d98fc5f2862667#egg=ofxtools
 pynab
--e git://github.com/rossdargan/pynYNAB.git@a07fb0ec38337b335680fb8f9901b956a76a0597#egg=pynYNAB
+-e git://github.com/rienafairefr/pynYNAB.git@7af5f1d7392480c98e87e014036fa5a2ce122658#egg=pynYNAB
