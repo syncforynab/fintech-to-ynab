@@ -71,15 +71,16 @@ def route_webhook():
      	    transaction.cleared='Cleared'
 
     	if ynab_client.containsDuplicate(transaction):
-            settings.log.debug('webhook type received %s' % data['type'])
+            settings.log.debug('skipping due to duplicate transaction')
+            return jsonify({'error': 'Skipping due to duplicate transaction'} )
         else:
-            settings.log.debug('webhook type received %s' % data['type'])
+            settings.log.debug('appending and pushing transaction to YNAB')
             ynab_client.client.budget.be_transactions.append(transaction)
             ynab_client.client.push(expected_delta)
             return jsonify(data)
     else:
         settings.log.warning('Unsupported webhook type: %s' % data['type'])
-
+        return jsonify({'error': 'Unsupported webhook type'} )
     return ''
 
 if __name__ == "__main__":
