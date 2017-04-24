@@ -30,37 +30,14 @@ def route_webhook():
     expectedDelta = 1
 
     if data['type'] == 'transaction.created':
-        accounts = {x.account_name: x for x in ynab_client.client.budget.be_accounts}
-        payees = {p.name: p for p in ynab_client.client.budget.be_payees}
-
-        def getaccount(accountname):
-            try:
-                settings.log.debug('searching for account %s' % accountname)
-                return accounts[accountname]
-            except KeyError:
-                settings.log.error('Couldn''t find this account: %s' % accountname)
-                exit(-1)
-
-        def getpayee(payeename):
-            try:
-                settings.log.debug('searching for payee %s' % payeename)
-                return payees[payeename]
-            except KeyError:
-                global expectedDelta
-                settings.log.debug('Couldn''t find this payee: %s' % payeename)
-                payee=Payee(name=payeename)
-                ynab_client.client.budget.be_payees.append(payee)
-                expectedDelta=2
-                return payee
-
-        entities_account_id = getaccount(settings.ynab_account).id
+        entities_account_id = ynab_client.getaccount(settings.ynab_account).id
         payee_name = ''
         if((data['data']['merchant'] is None) and (data['data']['counterparty'] is not None) and (data['data']['counterparty']['number'] is not None)):
             payee_name = data['data']['counterparty']['number']
         else:
             payee_name = data['data']['merchant']['name']
 
-        entities_payee_id = getpayee(payee_name).id
+        entities_payee_id = ynab_client.getpayee(payee_name).id
 
         # Try and get the suggested tags
         try:
