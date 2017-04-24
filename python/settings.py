@@ -18,3 +18,5 @@ ynab_username = os.environ.get('YNAB_USERNAME')
 ynab_password = os.environ.get('YNAB_PASSWORD')
 
 sentry_dsn = os.environ.get('SENTRY_DSN')
+
+log = logging.getLogger(__name__)
