@@ -80,6 +80,7 @@ def route_webhook():
         expected_delta += 1
         settings.log.debug('Creating transaction object')
         transaction = Transaction(
+            check_number=data['data']['id'],
             entities_account_id=account.id,
             amount=Decimal(data['data']['amount']) / 100,
             date=parse(data['data']['created']),
