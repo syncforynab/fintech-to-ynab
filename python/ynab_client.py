@@ -23,9 +23,9 @@ def getaccount(accountname):
 
 def payeeexists(payeename):
     try:
-        return true
+        return True
     except KeyError:
-        return false
+        return False
 
 def getpayee(payeename):
     try:
