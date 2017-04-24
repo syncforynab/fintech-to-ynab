@@ -33,6 +33,9 @@ def route_webhook():
         # Sync the account so we get the latest payees
         ynab_client.sync()
 
+        if data['data']['amount'] == 0:
+            return jsonify({'error': 'Amount is 0'} )
+
         # Does this account exist?
         account = ynab_client.getaccount(settings.ynab_account)
         if account == False:
