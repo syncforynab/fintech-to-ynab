@@ -10,8 +10,8 @@ connection = nYnabConnection(settings.ynab_username, settings.ynab_password)
 client = nYnabClient(nynabconnection=connection, budgetname=settings.ynab_budget, logger=settings.log)
 client.sync()
 
-accounts = {x.account_name: x for x in ynab_client.client.budget.be_accounts}
-payees = {p.name: p for p in ynab_client.client.budget.be_payees}
+accounts = {x.account_name: x for x in client.budget.be_accounts}
+payees = {p.name: p for p in client.budget.be_payees}
 
 def getaccount(accountname):
     try:
