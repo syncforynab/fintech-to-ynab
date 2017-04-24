@@ -29,7 +29,15 @@ def route_webhook():
     settings.log.debug('webhook type received %s' % data['type'])
 
     if data['type'] == 'transaction.created':
-        entities_account_id = ynab_client.getaccount(settings.ynab_account).id
+
+        # Sync the account so we get the latest payees
+        ynab_client.sync()
+
+        # Does this account exist?
+        account = ynab_client.getaccount(settings.ynab_account)
+        if account == False:
+            return jsonify({'error': 'Account not found'} )
+
         payee_name = ''
         if((data['data']['merchant'] is None) and (data['data']['counterparty'] is not None) and (data['data']['counterparty']['number'] is not None)):
             payee_name = data['data']['counterparty']['number']
@@ -61,7 +69,7 @@ def route_webhook():
         expected_delta += 1
         settings.log.debug('Creating transaction object')
         transaction = Transaction(
-            entities_account_id=entities_account_id,
+            entities_account_id=account.id,
             amount=Decimal(data['data']['amount']) / 100,
             date=parse(data['data']['created']),
             entities_payee_id=entities_payee_id,
