@@ -26,6 +26,8 @@ def route_index():
 def route_webhook():
     data = json.loads(request.data.decode('utf8'))
 
+    settings.log.debug('webhook type received %s' % data['type'])
+
     if data['type'] == 'transaction.created':
         entities_account_id = ynab_client.getaccount(settings.ynab_account).id
         payee_name = ''
@@ -33,7 +35,6 @@ def route_webhook():
             payee_name = data['data']['counterparty']['number']
         else:
             payee_name = data['data']['merchant']['name']
-
 
         # If we are creating the payee, then we need to increase the delta
         if ynab_client.payeeexists(payee_name):
@@ -66,16 +67,16 @@ def route_webhook():
             source="Imported"
         )
 
-	if settings.clear_on_import:
- 	    transaction.cleared='Cleared'
+    	if settings.clear_on_import:
+     	    transaction.cleared='Cleared'
 
-	if ynab_client.containsDuplicate(transaction):
-            print 'Duplicate transaction detected'
+    	if ynab_client.containsDuplicate(transaction):
+            settings.log.debug('webhook type received %s' % data['type'])
         else:
-	    ynab_client.client.budget.be_transactions.append(transaction)
+            settings.log.debug('webhook type received %s' % data['type'])
+            ynab_client.client.budget.be_transactions.append(transaction)
             ynab_client.client.push(expected_delta)
-
-        return jsonify(data)
+            return jsonify(data)
     else:
         settings.log.warning('Unsupported webhook type: %s' % data['type'])
 
