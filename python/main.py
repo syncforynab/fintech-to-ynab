@@ -24,8 +24,8 @@ def route_index():
 
 @app.route('/webhook', methods=['POST'])
 def route_webhook():
+    expected_delta = 0
     data = json.loads(request.data.decode('utf8'))
-
     settings.log.debug('webhook type received %s' % data['type'])
 
     if data['type'] == 'transaction.created':
@@ -38,24 +38,28 @@ def route_webhook():
 
         # If we are creating the payee, then we need to increase the delta
         if ynab_client.payeeexists(payee_name):
-            expected_delta = 1
+            settings.log.debug('payee exists %s' % payee_name)
         else:
-            expected_delta = 2
+            settings.log.debug('payee does not exist %s' % payee_name)
+            expected_delta += 1
 
+        # Either create or get the payee
         entities_payee_id = ynab_client.getpayee(payee_name).id
 
-        # Try and get the suggested tags
         try:
+            # Try and get the suggested tags
             suggested_tags = data['data']['merchant']['metadata']['suggested_tags']
         except (KeyError, TypeError):
             suggested_tags = ''
 
-        # Try and get the emoji
         try:
+            # Try and get the emoji
             emoji = data['data']['merchant']['emoji']
         except (KeyError, TypeError):
             emoji = ''
 
+        expected_delta += 1
+        settings.log.debug('Creating transaction object')
         transaction = Transaction(
             entities_account_id=entities_account_id,
             amount=Decimal(data['data']['amount']) / 100,
@@ -68,13 +72,15 @@ def route_webhook():
         )
 
     	if settings.clear_on_import:
+            settings.log.debug('Setting transaction as cleared')
      	    transaction.cleared='Cleared'
 
+        settings.log.debug('Duplicate detection')
     	if ynab_client.containsDuplicate(transaction):
             settings.log.debug('skipping due to duplicate transaction')
             return jsonify({'error': 'Skipping due to duplicate transaction'} )
         else:
-            settings.log.debug('appending and pushing transaction to YNAB')
+            settings.log.debug('appending and pushing transaction to YNAB. Delta: %s' % expected_delta)
             ynab_client.client.budget.be_transactions.append(transaction)
             ynab_client.client.push(expected_delta)
             return jsonify(data)

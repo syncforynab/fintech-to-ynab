@@ -25,6 +25,7 @@ def getaccount(accountname):
 
 def payeeexists(payeename):
     try:
+        return payees[payeename]
         return True
     except KeyError:
         return False
