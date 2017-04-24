@@ -15,6 +15,9 @@ from pynYNAB.schema.budget import Account, Transaction, Payee
 from pynYNAB.schema.roots import Budget
 from pynYNAB.schema.types import AmountType
 
+from sqlalchemy.sql.expression import select, exists, func
+
+
 app = Flask(__name__, template_folder='../html', static_folder='../static')
 app.config['DEBUG'] = settings.flask_debug
 
@@ -63,6 +66,16 @@ def route_webhook():
                 expectedDelta=2
                 return payee
 
+    	def containsDuplicate(transaction, session):
+    		return session.query(exists()\
+ 		#Due to a bug with pynynab we need to cast the amount to an int for this comparison. This should be removed when bug #38 is fixed https://github.com/rienafairefr/pynYNAB/issues/38
+      		#  .where(Transaction.amount==transaction.amount)\
+        	.where(Transaction.entities_account_id==transaction.entities_account_id)\
+      		.where(Transaction.date==transaction.date.date())\
+        	.where(Transaction.imported_payee==transaction.imported_payee)\
+        	.where(Transaction.source==transaction.source)\
+        	).scalar()
+
         entities_account_id = getaccount(settings.ynab_account).id
         payee_name = ''
         if((data['data']['merchant'] is None) and (data['data']['counterparty'] is not None) and (data['data']['counterparty']['number'] is not None)):
@@ -95,8 +108,12 @@ def route_webhook():
             source="Imported"
         )
 
-        ynab_client.budget.be_transactions.append(transaction)
-        ynab_client.push(expectedDelta)
+        if containsDuplicate(transaction, ynab_client.session):
+            log.debug('Duplicate transaction found')
+        else:
+            log.debug('Appending transaction')
+            ynab_client.budget.be_transactions.append(transaction)
+            ynab_client.push(expectedDelta)
 
         return jsonify(data)
     else:
