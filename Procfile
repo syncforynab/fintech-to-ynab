@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath python main:app --preload
+web: python python/main.py

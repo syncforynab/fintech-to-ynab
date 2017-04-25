@@ -10,7 +10,6 @@ ezodf==0.3.2
 Flask==0.10.1
 functools32==3.2.3.post2
 future==0.16.0
-gunicorn==19.3.0
 ijson==2.3
 isodate==0.5.4
 itsdangerous==0.24
