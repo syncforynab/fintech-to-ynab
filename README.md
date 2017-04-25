@@ -3,7 +3,7 @@
 [![Docker Build Statu](https://img.shields.io/docker/build/scottrobertson/monzo-to-ynab.svg)](https://hub.docker.com/r/scottrobertson/monzo-to-ynab/)
 
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/scottrobertson/monzo-to-ynab)
 
 Automatically push Monzo transactions into YNAB.
 
