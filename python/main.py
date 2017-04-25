@@ -94,7 +94,9 @@ def route_webhook():
             source="Imported"
         )
 
-    	if settings.clear_on_import:
+        # If this transaction is in our local currency, then just automatically mark it as cleared.
+        # Otherwise, we want to leave it as uncleared as the value may change once it settles
+    	if data['data']['local_currency'] == data['data']['currency']:
             settings.log.debug('Setting transaction as cleared')
      	    transaction.cleared='Cleared'
 
