@@ -1,0 +1,24 @@
+{
+  "name": "Monzo to YNAB",
+  "description": "Automatically push Monzo transactions into YNAB",
+  "repository": "https://github.com/scottrobertson/monzo-to-ynab",
+  "keywords": ["monzo", "ynab"],
+  "env": {
+    "LOG_LEVEL": {
+      "description": "How much should we log?",
+      "value": "debug"
+    },
+    "YNAB_ACCOUNT": {
+      "description": "Your YNAB account name"
+    },
+    "YNAB_BUDGET": {
+      "description": "Your YNAB budget name"
+    },
+    "YNAB_USERNAME": {
+      "description": "Your YNAB username (email)"
+    },
+    "YNAB_PASSWORD": {
+      "description": "Your YNAB password"
+    }
+  }
+}
