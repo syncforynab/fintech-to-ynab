@@ -8,6 +8,10 @@
       "description": "How much should we log?",
       "value": "debug"
     },
+    "SKIP_AUTO_CLEAR": {
+      "description": "By default we mark transactions in your accounts currency as cleared, this allows you to skip that",
+      "value": "false"
+    },
     "YNAB_ACCOUNT": {
       "description": "Your YNAB account name"
     },
