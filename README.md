@@ -2,6 +2,9 @@
 
 [![Docker Build Statu](https://img.shields.io/docker/build/scottrobertson/monzo-to-ynab.svg)](https://hub.docker.com/r/scottrobertson/monzo-to-ynab/)
 
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 Automatically push Monzo transactions into YNAB.
 
 A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for the YNAB library.
