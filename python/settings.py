@@ -12,6 +12,8 @@ log_level = os.environ.get('LOG_LEVEL').upper()
 logging.basicConfig(level=getattr(logging, log_level))
 flask_debug = True if log_level == 'debug' else False
 
+port = int(os.environ.get("PORT", 5000))
+
 ynab_account = os.environ.get('YNAB_ACCOUNT')
 ynab_budget = os.environ.get('YNAB_BUDGET')
 ynab_username = os.environ.get('YNAB_USERNAME')
