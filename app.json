@@ -12,6 +12,14 @@
       "description": "By default we mark transactions in your accounts currency as cleared, this allows you to skip that",
       "value": "false"
     },
+    "SKIP_EMOJI": {
+      "description": "By default we include the emoji from Monzo in the YNAB description. This skips that.",
+      "value": "false"
+    },
+    "SKIP_TAGS": {
+      "description": "By default we include the hash tags from Monzo in the YNAB description. This skips that.",
+      "value": "false"
+    },
     "YNAB_ACCOUNT": {
       "description": "Your YNAB account name"
     },

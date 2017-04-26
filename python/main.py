@@ -52,7 +52,7 @@ def route_webhook():
 		settings.log.debug('A previous transaction for the payee %s has been found' % payee_name)
                 entities_payee_id = previous_transaction.entities_payee.id
                 subcategory = previous_transaction.entities_subcategory
-                
+
                 # Include the category used, as long as it's not a split category
                 if not subcategory is None:
                     if not subcategory.name == 'Split (Multiple Categories)...':
@@ -78,12 +78,12 @@ def route_webhook():
 
         # Suggested Tags
         suggested_tags = ''
-        if data['data']['merchant'] and data['data']['merchant'].get('metadata', {}).get('suggested_tags'):
+        if settings.include_tags and data['data']['merchant'] and data['data']['merchant'].get('metadata', {}).get('suggested_tags'):
             suggested_tags = data['data']['merchant']['metadata']['suggested_tags']
 
         # Emoji!
         emoji = ''
-        if data['data']['merchant'] and data['data']['merchant'].get('emoji'):
+        if settings.include_emoji and data['data']['merchant'] and data['data']['merchant'].get('emoji'):
             emoji = data['data']['merchant']['emoji']
 
         # Show the local currency in the notes if this is not in the accounts currency

@@ -16,7 +16,10 @@ ynab_account = os.environ.get('YNAB_ACCOUNT')
 ynab_budget = os.environ.get('YNAB_BUDGET')
 ynab_username = os.environ.get('YNAB_USERNAME')
 ynab_password = os.environ.get('YNAB_PASSWORD')
+
 auto_clear = os.environ.get('SKIP_AUTO_CLEAR') != 'true'
+include_tags = os.environ.get('SKIP_TAGS') != 'true'
+include_emoji = os.environ.get('SKIP_EMOJI') != 'true'
 
 sentry_dsn = os.environ.get('SENTRY_DSN')
 
