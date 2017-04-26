@@ -60,5 +60,11 @@ def containsDuplicate(transaction):
         .where(Transaction.source==transaction.source)\
         ).scalar()
 
+def findPreviousTransaction(payee_name):
+    return client.session.query(Transaction)\
+        .filter(Transaction.imported_payee==payee_name)\
+        .order_by(Transaction.date.desc())\
+        .first()
+
 # Sync with YNAB
 sync()
