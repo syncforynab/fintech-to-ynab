@@ -1,4 +1,4 @@
-# Mondo to YNAB
+# Monzo to YNAB
 
 [![Docker Build Statu](https://img.shields.io/docker/build/scottrobertson/monzo-to-ynab.svg)](https://hub.docker.com/r/scottrobertson/monzo-to-ynab/)
 
