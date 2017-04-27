@@ -16,12 +16,11 @@ A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for t
   - Automatically mark transactions as cleared (except for those in a foreign currency)
 
 ## Deployment notes
- - Setup the environment variables
- - Register your webhook URL. You can do it here: https://developers.monzo.com/
+
+Please see our ![Deployment](https://github.com/scottrobertson/monzo-to-ynab/wiki/Deployment) wiki for instructions on how to deploy this app.
 
 ## Environment Variables
 
 Either set the environment variables from `.env.example` or copy that file to `.env`
-
 
 **Warning**: Because there is no official API for YNAB, this could break at any point
