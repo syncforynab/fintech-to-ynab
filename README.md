@@ -12,7 +12,7 @@ A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for t
 ## Features
   - Push your Monzo transactions into YNAB in realtime
   - Automatically populate the category based on previous transactions
-  - Add emoji and hashtags to your YNAB transactions by default (can be disabled)
+  - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default (can be disabled)
   - Automatically mark transactions as cleared (except for those in a foreign currency)
 
 ## Deployment notes
