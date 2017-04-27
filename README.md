@@ -17,7 +17,7 @@ A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for t
 
 ## Deployment notes
 
-Please see our ![Deployment](https://github.com/scottrobertson/monzo-to-ynab/wiki/Deployment) wiki for instructions on how to deploy this app.
+Please see our [Deployment](https://github.com/scottrobertson/monzo-to-ynab/wiki/Deployment) wiki for instructions on how to deploy this app.
 
 ## Environment Variables
 
