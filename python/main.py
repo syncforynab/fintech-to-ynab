@@ -1,7 +1,7 @@
 import json
 import logging
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 from datetime import datetime
 from dateutil.parser import parse
 from decimal import Decimal
@@ -20,7 +20,7 @@ if settings.sentry_dsn:
 
 @app.route('/')
 def route_index():
-    return 'hello world'
+    return redirect("https://github.com/scottrobertson/monzo-to-ynab", code=302)
 
 @app.route('/webhook', methods=['POST'])
 def route_webhook():
