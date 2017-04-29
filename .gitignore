@@ -87,3 +87,4 @@ ENV/
 src/
 bin/
 include/
+.idea/

@@ -45,7 +45,7 @@ def create_transaction(data, settings, expected_delta):
     # Work out the Payee Name
     if data.get('merchant'):
         payee_name = data['merchant']['name']
-        entity_payee_id, subcategory_id = get_payee_details(payee_name)
+        entities_payee_id, subcategory_id = get_payee_details(payee_name)
     else:
         # This is a p2p transaction
         payee_name = get_p2p_transaction_payee_name(data)
