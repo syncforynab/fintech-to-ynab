@@ -1,12 +1,11 @@
 import json
-import logging
 
 from flask import Flask, render_template, request, jsonify, redirect
 from datetime import datetime
 from dateutil.parser import parse
 from decimal import Decimal
 
-from pynYNAB.schema.budget import Account, Transaction, Payee
+from pynYNAB.schema.budget import Transaction
 
 import settings
 import ynab_client
