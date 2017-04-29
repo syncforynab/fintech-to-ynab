@@ -49,7 +49,7 @@ def route_webhook():
             # Get the defaults for this payee based on previously imported data
             previous_transaction = ynab_client.findPreviousTransaction(payee_name)
             if not previous_transaction is None:
-		settings.log.debug('A previous transaction for the payee %s has been found' % payee_name)
+                settings.log.debug('A previous transaction for the payee %s has been found' % payee_name)
                 entities_payee_id = previous_transaction.entities_payee.id
                 subcategory = previous_transaction.entities_subcategory
 
