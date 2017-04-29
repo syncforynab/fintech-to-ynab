@@ -76,20 +76,16 @@ def route_webhook():
                 settings.log.debug('payee does not exist, will create %s' % payee_name)
                 expected_delta += 1
 
-        # Suggested Tags
-        suggested_tags = ''
-        if settings.include_tags and data['data']['merchant'] and data['data']['merchant'].get('metadata', {}).get('suggested_tags'):
-            suggested_tags = data['data']['merchant']['metadata']['suggested_tags']
-
-        # Emoji!
-        emoji = ''
+        memo = ''
         if settings.include_emoji and data['data']['merchant'] and data['data']['merchant'].get('emoji'):
-            emoji = data['data']['merchant']['emoji']
+            memo += ' %s' % data['data']['merchant']['emoji']
+
+        if settings.include_tags and data['data']['merchant'] and data['data']['merchant'].get('metadata', {}).get('suggested_tags'):
+            memo += ' %s' % data['data']['merchant']['metadata']['suggested_tags']
 
         # Show the local currency in the notes if this is not in the accounts currency
-        local_currency = ''
         if data['data']['local_currency'] != data['data']['currency']:
-            local_currency = '(%s %s)' % (data['data']['local_currency'], (abs(data['data']['local_amount']) / 100))
+            memo += ' (%s %s)' % (data['data']['local_currency'], (abs(data['data']['local_amount']) / 100))
 
         # Either create or get the payee
         if entities_payee_id is None:
@@ -106,7 +102,7 @@ def route_webhook():
             entities_payee_id=entities_payee_id,
             imported_date=datetime.now().date(),
             imported_payee=payee_name,
-            memo="%s %s %s" % (emoji, suggested_tags, local_currency),
+            memo=memo,
             source="Imported"
         )
 
