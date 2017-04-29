@@ -11,7 +11,7 @@ from pynYNAB.schema.budget import Account, Transaction, Payee
 import settings
 import ynab_client
 
-app = Flask(__name__, template_folder='../html', static_folder='../static')
+app = Flask('Monzo to YNAB')
 app.config['DEBUG'] = settings.flask_debug
 
 if settings.sentry_dsn:
