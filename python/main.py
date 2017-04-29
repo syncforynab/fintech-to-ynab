@@ -58,6 +58,13 @@ def route_webhook():
                     if not subcategory.name == 'Split (Multiple Categories)...':
                         settings.log.debug('We have identified the following category %s as a good default for this payee' % subcategory.name)
                         subcategory_id = subcategory.id
+                    else:
+                        settings.log.debug('Split category found, so we will not use that category  for %s' % payee_name)
+                else:
+                    settings.log.debug('A subcategory was not found for the previous transaction for %s' % payee_name)
+            else:
+                settings.log.debug('A previous transaction for the payee %s has not been found' % payee_name)
+
         else:
             # This is a p2p transaction
             if data['data'].get('counterparty'):
