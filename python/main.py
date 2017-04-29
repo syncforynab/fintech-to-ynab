@@ -47,15 +47,15 @@ def route_webhook():
 
             # Get the defaults for this payee based on previously imported data
             previous_transaction = ynab_client.findPreviousTransaction(payee_name)
-            if not previous_transaction is None:
+            if previous_transaction is not None:
                 settings.log.debug('A previous transaction for the payee %s has been found' % payee_name)
                 entities_payee_id = previous_transaction.entities_payee.id
                 subcategory = previous_transaction.entities_subcategory
 
                 # Include the category used, as long as it's not a split category
-                if not subcategory is None:
-                    if not subcategory.name == 'Split (Multiple Categories)...':
-                        settings.log.debug('We have identified the following category %s as a good default for this payee' % subcategory.name)
+                if subcategory is not None:
+                    if subcategory.name != 'Split (Multiple Categories)...':
+                        settings.log.debug('We have identified the "%s" category as a good default for this payee' % subcategory.name)
                         subcategory_id = subcategory.id
                     else:
                         settings.log.debug('Split category found, so we will not use that category  for %s' % payee_name)
@@ -112,7 +112,7 @@ def route_webhook():
             source="Imported"
         )
 
-        if not subcategory_id is None:
+        if subcategory_id is not None:
             transaction.entities_subcategory_id  = subcategory_id
 
         # If this transaction is in our local currency, then just automatically mark it as cleared.
