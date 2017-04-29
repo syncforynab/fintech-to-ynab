@@ -1,12 +1,9 @@
 import settings
 
 from pynYNAB.Client import nYnabClient, nYnabConnection
-from pynYNAB.schema.Entity import Entity, ComplexEncoder, Base, AccountTypes
-from pynYNAB.schema.budget import Account, Transaction, Payee
-from pynYNAB.schema.roots import Budget
-from pynYNAB.schema.types import AmountType
+from pynYNAB.schema.budget import Transaction, Payee
 
-from sqlalchemy.sql.expression import select, exists, func
+from sqlalchemy.sql.expression import exists
 
 connection = nYnabConnection(settings.ynab_username, settings.ynab_password)
 client = nYnabClient(nynabconnection=connection, budgetname=settings.ynab_budget, logger=settings.log)
@@ -37,7 +34,6 @@ def getaccount(accountname):
 def payeeexists(payeename):
     try:
         return payees[payeename]
-        return True
     except KeyError:
         return False
 
