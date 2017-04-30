@@ -40,7 +40,7 @@ def create_transaction(data, settings, expected_delta):
     ynab_client.sync()
 
     if data['amount'] == 0:
-        return {'error': 'Monzo transaction account is 0.'}, 400
+        return {'error': 'Monzo transaction amount is 0.'}, 400
 
     # Does this account exist?
     account = ynab_client.getaccount(settings.ynab_account)
