@@ -26,12 +26,12 @@ def route_index():
 def route_webhook():
     ynab_client.init()
     data = json.loads(request.data.decode('utf8'))
-    settings.log.debug('webhook type received %s' % data['type'])
+    settings.log.debug('webhook type received %s', data['type'])
     if data.get('type') == 'transaction.created':
         return jsonify(create_transaction(data['data'], settings, 0))
     else:
-        settings.log.warning('Unsupported webhook type: %s' % data['type'])
-        return jsonify({'error': 'Unsupported webhook type'} )
+        settings.log.warning('Unsupported webhook type: %s', data['type'])
+        return jsonify({'error': 'Unsupported webhook type'})
 
 
 def create_transaction(data, settings, expected_delta):
@@ -57,7 +57,7 @@ def create_transaction(data, settings, expected_delta):
 
     # If we are creating the payee, then we need to increase the delta
     if not ynab_client.payeeexists(payee_name):
-        settings.log.debug('payee does not exist, will create %s' % payee_name)
+        settings.log.debug('payee does not exist, will create %s', payee_name)
         expected_delta += 1
         entities_payee_id = ynab_client.getpayee(payee_name).id
 
@@ -102,7 +102,7 @@ def create_transaction(data, settings, expected_delta):
         settings.log.debug('skipping due to duplicate transaction')
         return {'error': 'Skipping due to duplicate transaction.'}
     else:
-        settings.log.debug('appending and pushing transaction to YNAB. Delta: %s' % expected_delta)
+        settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
         ynab_client.client.budget.be_transactions.append(transaction)
         ynab_client.client.push(expected_delta)
         return {'message': 'Transaction created in YNAB successfully.'}
@@ -113,33 +113,37 @@ def get_payee_details(payee_name):
     Get payee details for a previous transaction in YNAB.
     If a payee with payee_name has been used in the past, we can get their ID and
     pre-populate category.
-    
+
     :param payee_name: The name of the Payee as coming from Monzo.
     :return: (payee_id, subcategory_id)
     """
     previous_transaction = ynab_client.findPreviousTransaction(payee_name)
     if previous_transaction is not None:
-        settings.log.debug('A previous transaction for the payee %s has been found' % payee_name)
+        settings.log.debug('A previous transaction for the payee %s has been found', payee_name)
         return get_payee_details_for_transaction(previous_transaction, payee_name)
     else:
-        settings.log.debug('A previous transaction for the payee %s has not been found' % payee_name)
+        settings.log.debug('A previous transaction for the payee %s has not been found', payee_name)
     return None, None
 
 
 def get_payee_details_for_transaction(transaction, payee_name):
     """
     Get the defaults for this payee based on YNAB data
-    
+
     :param transaction: The transaction that we want to get payee details from.
     :return: tuple (payee_id, subcategory_id)
     """
-    return transaction.entities_payee.id, get_subcategory_id_for_transaction(transaction, payee_name)
+    return (
+        transaction.entities_payee.id,
+        get_subcategory_id_for_transaction(transaction, payee_name)
+        )
 
 
 def get_subcategory_id_for_transaction(transaction, payee_name):
     """
-    Gets the subcategory ID for a transaction. Filters out transactions that have multiple categories.
-    
+    Gets the subcategory ID for a transaction.
+    Filters out transactions that have multiple categories.
+
     :param transaction: The transaction to get subcategory ID from.
     :return: The subcategory ID, or None if it is a multiple-category transaction.
     """
@@ -148,19 +152,22 @@ def get_subcategory_id_for_transaction(transaction, payee_name):
     if subcategory is not None:
         if subcategory.name != 'Split (Multiple Categories)...':
             settings.log.debug(
-                'We have identified the "%s" category as a good default for this payee' % subcategory.name)
+                'We have identified the "%s" category as a good default for this payee',
+                subcategory.name)
             return subcategory.id
         else:
-            settings.log.debug('Split category found, so we will not use that category for %s' % payee_name)
+            settings.log.debug(
+                'Split category found, so we will not use that category for %s', payee_name)
     else:
-        settings.log.debug('A subcategory was not found for the previous transaction for %s' % payee_name)
+        settings.log.debug(
+            'A subcategory was not found for the previous transaction for %s', payee_name)
 
 
 def get_p2p_transaction_payee_name(data):
     """
     Get the payee name for a p2p transaction, based on webook transaction data.
-    
-    :param data: The 'data' key of the transaction data. 
+
+    :param data: The 'data' key of the transaction data.
     :return: The string name of the payee.
     """
     if data.get('counterparty'):
