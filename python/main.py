@@ -28,8 +28,7 @@ def route_webhook():
     data = json.loads(request.data.decode('utf8'))
     settings.log.debug('webhook type received %s' % data['type'])
     if data.get('type') == 'transaction.created':
-        create_transaction(data['data'], settings, 0)
-        return jsonify({'message': 'Transaction created in YNAB successfully.'})
+        return jsonify(create_transaction(data['data'], settings, 0))
     else:
         settings.log.warning('Unsupported webhook type: %s' % data['type'])
         return jsonify({'error': 'Unsupported webhook type'} )
@@ -101,12 +100,12 @@ def create_transaction(data, settings, expected_delta):
     settings.log.debug('Duplicate detection')
     if ynab_client.containsDuplicate(transaction):
         settings.log.debug('skipping due to duplicate transaction')
-        return jsonify({'error': 'Skipping due to duplicate transaction'})
+        return {'error': 'Skipping due to duplicate transaction.'}
     else:
         settings.log.debug('appending and pushing transaction to YNAB. Delta: %s' % expected_delta)
         ynab_client.client.budget.be_transactions.append(transaction)
         ynab_client.client.push(expected_delta)
-        return data
+        return {'message': 'Transaction created in YNAB successfully.'}
 
 
 def get_payee_details(payee_name):
