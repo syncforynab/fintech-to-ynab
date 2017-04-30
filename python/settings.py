@@ -23,6 +23,4 @@ auto_clear = os.environ.get('SKIP_AUTO_CLEAR') != 'true'
 include_tags = os.environ.get('SKIP_TAGS') != 'true'
 include_emoji = os.environ.get('SKIP_EMOJI') != 'true'
 
-sentry_dsn = os.environ.get('SENTRY_DSN')
-
 log = logging.getLogger(__name__)
