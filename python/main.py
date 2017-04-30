@@ -29,6 +29,7 @@ def route_webhook():
     settings.log.debug('webhook type received %s' % data['type'])
     if data.get('type') == 'transaction.created':
         create_transaction(data['data'], settings, 0)
+        return jsonify({'message': 'Transaction created in YNAB successfully.'})
     else:
         settings.log.warning('Unsupported webhook type: %s' % data['type'])
         return jsonify({'error': 'Unsupported webhook type'} )
@@ -105,7 +106,7 @@ def create_transaction(data, settings, expected_delta):
         settings.log.debug('appending and pushing transaction to YNAB. Delta: %s' % expected_delta)
         ynab_client.client.budget.be_transactions.append(transaction)
         ynab_client.client.push(expected_delta)
-        return jsonify(data)
+        return data
 
 
 def get_payee_details(payee_name):
