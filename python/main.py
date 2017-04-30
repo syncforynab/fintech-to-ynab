@@ -70,8 +70,8 @@ def create_transaction(data, settings, expected_delta):
         memo += ' %s' % data['merchant']['metadata']['suggested_tags']
 
     # Show the local currency in the notes if this is not in the accounts currency
-    if data['data']['local_currency'] != data['data']['currency']:
-        memo += ' (%s %s)' % (data['data']['local_currency'], (abs(data['data']['local_amount']) / 100))
+    if data['local_currency'] != data['currency']:
+        memo += ' (%s %s)' % (data['local_currency'], (abs(data['local_amount']) / 100))
 
     # Create the Transaction
     expected_delta += 1
