@@ -28,10 +28,11 @@ def route_webhook():
     data = json.loads(request.data.decode('utf8'))
     settings.log.debug('webhook type received %s', data['type'])
     if data.get('type') == 'transaction.created':
-        return jsonify(create_transaction(data['data'], settings, 0))
+        body, code = create_transaction(data['data'], settings, 0)
+        return jsonify(body), code
     else:
         settings.log.warning('Unsupported webhook type: %s', data['type'])
-        return jsonify({'error': 'Unsupported webhook type'})
+        return jsonify({'error': 'Unsupported webhook type'}), 400
 
 
 def create_transaction(data, settings, expected_delta):
@@ -39,12 +40,12 @@ def create_transaction(data, settings, expected_delta):
     ynab_client.sync()
 
     if data['amount'] == 0:
-        return jsonify({'error': 'Amount is 0'})
+        return {'error': 'Monzo transaction account is 0.'}, 400
 
     # Does this account exist?
     account = ynab_client.getaccount(settings.ynab_account)
     if not account:
-        return jsonify({'error': 'Account not found'})
+        return {'error': 'Account {} was not found'.format(settings.ynab_account)}, 400
 
     # Work out the Payee Name
     if data.get('merchant'):
@@ -100,12 +101,12 @@ def create_transaction(data, settings, expected_delta):
     settings.log.debug('Duplicate detection')
     if ynab_client.containsDuplicate(transaction):
         settings.log.debug('skipping due to duplicate transaction')
-        return {'error': 'Skipping due to duplicate transaction.'}
+        return {'error': 'Tried to add a duplicate transaction.'}, 400
     else:
         settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
         ynab_client.client.budget.be_transactions.append(transaction)
         ynab_client.client.push(expected_delta)
-        return {'message': 'Transaction created in YNAB successfully.'}
+        return {'message': 'Transaction created in YNAB successfully.'}, 201
 
 
 def get_payee_details(payee_name):
