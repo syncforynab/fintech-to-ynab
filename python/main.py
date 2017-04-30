@@ -21,6 +21,7 @@ def route_index():
 
 @app.route('/webhook', methods=['POST'])
 def route_webhook():
+    ynab_client.init()
     data = json.loads(request.data.decode('utf8'))
     settings.log.debug('webhook type received %s' % data['type'])
     if data.get('type') == 'transaction.created':
@@ -110,26 +111,44 @@ def create_transaction(data, settings, expected_delta):
 
 def get_payee_details(payee_name):
     """
-    Get the defaults for this payee based on previously imported data
+    Get payee details for a previous transaction in YNAB.
+    If a payee with payee_name has been used in the past, we can get their ID and
+    pre-populate category.
     
-    :param payee_name: The string name of the payee (normally merchant)
-    :return: tuple (payee_id, subcategory_id)
+    :param payee_name: The name of the Payee as coming from Monzo.
+    :return: (payee_id, subcategory_id)
     """
     previous_transaction = ynab_client.findPreviousTransaction(payee_name)
-    if previous_transaction:
+    if previous_transaction is not None:
         settings.log.debug('A previous transaction for the payee %s has been found' % payee_name)
-        entities_payee_id = previous_transaction.entities_payee.id
-        subcategory = previous_transaction.entities_subcategory
-
-        # Include the category used, as long as it's not a split category
-        if subcategory:
-            if subcategory.name != 'Split (Multiple Categories)...':
-                settings.log.debug(
-                    'We have identified the following category %s as a good default for this payee' % subcategory.name)
-                subcategory_id = subcategory.id
-                return entities_payee_id, subcategory_id
-        return entities_payee_id, None
+        return get_payee_details_for_transaction(previous_transaction)
     return None, None
+
+
+def get_payee_details_for_transaction(transaction):
+    """
+    Get the defaults for this payee based on YNAB data
+    
+    :param transaction: The transaction that we want to get payee details from.
+    :return: tuple (payee_id, subcategory_id)
+    """
+    return transaction.entities_payee.id, get_subcategory_id_for_transaction(transaction)
+
+
+def get_subcategory_id_for_transaction(transaction):
+    """
+    Gets the subcategory ID for a transaction. Filters out transactions that have multiple categories.
+    
+    :param transaction: The transaction to get subcategory ID from.
+    :return: The subcategory ID, or None if it is a multiple-category transaction.
+    """
+    subcategory = transaction.entities_subcategory
+
+    if subcategory is not None:
+        if subcategory.name != 'Split (Multiple Categories)...':
+            settings.log.debug(
+                'We have identified the following category %s as a good default for this payee' % subcategory.name)
+            return subcategory.id
 
 
 def get_p2p_transaction_payee_name(data):

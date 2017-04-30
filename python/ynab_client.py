@@ -5,8 +5,14 @@ from pynYNAB.schema.budget import Transaction, Payee
 
 from sqlalchemy.sql.expression import exists
 
-connection = nYnabConnection(settings.ynab_username, settings.ynab_password)
-client = nYnabClient(nynabconnection=connection, budgetname=settings.ynab_budget, logger=settings.log)
+client = None
+
+def init():
+    global client
+
+    connection = nYnabConnection(settings.ynab_username, settings.ynab_password)
+    client = nYnabClient(nynabconnection=connection, budgetname=settings.ynab_budget, logger=settings.log)
+
 
 accounts = {}
 payees = {}
@@ -61,6 +67,3 @@ def findPreviousTransaction(payee_name):
         .filter(Transaction.imported_payee==payee_name)\
         .order_by(Transaction.date.desc())\
         .first()
-
-# Sync with YNAB
-sync()

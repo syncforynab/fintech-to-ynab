@@ -8,7 +8,7 @@ dotenv_path = join(dirname(dirname(__file__)), '.env')
 if os.path.isfile(dotenv_path):
     load_dotenv(dotenv_path)
 
-log_level = os.environ.get('LOG_LEVEL').upper()
+log_level = (os.environ.get('LOG_LEVEL') or 'DEBUG').upper()
 logging.basicConfig(level=getattr(logging, log_level))
 flask_debug = True if log_level == 'debug' else False
 
