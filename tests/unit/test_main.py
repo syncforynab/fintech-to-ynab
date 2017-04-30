@@ -20,7 +20,7 @@ class TestMain(TestCase):
         transaction_stub.entities_payee = payee_stub
         transaction_stub.entities_subcategory = subcategory_stub
 
-        self.assertTupleEqual(get_payee_details_for_transaction(transaction_stub),
+        self.assertTupleEqual(get_payee_details_for_transaction(transaction_stub, 'Test Payee Name'),
                               ('123', '234'))
 
     def test_get_subcategory_id_for_transaction(self):
@@ -31,7 +31,7 @@ class TestMain(TestCase):
         subcategory_stub.name = 'Test'
         transaction_stub.entities_subcategory = subcategory_stub
 
-        self.assertEqual(get_subcategory_id_for_transaction(transaction_stub), '234')
+        self.assertEqual(get_subcategory_id_for_transaction(transaction_stub, 'Test Payee Name'), '234')
 
     def test_get_p2p_transaction_payee_name_counterparty_name(self):
         data = {

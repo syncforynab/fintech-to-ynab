@@ -9,8 +9,7 @@ from decimal import Decimal
 
 from pynYNAB.schema.budget import Transaction
 
-
-app = Flask(__name__)
+app = Flask('Monzo to YNAB')
 app.config['DEBUG'] = settings.flask_debug
 
 
@@ -58,21 +57,17 @@ def create_transaction(data, settings, expected_delta):
         expected_delta += 1
         entities_payee_id = ynab_client.getpayee(payee_name).id
 
-    # Suggested Tags
-    suggested_tags = ''
+    memo = ''
+    if settings.include_emoji and data['merchant'] and data['merchant'].get('emoji'):
+        memo += ' %s' % data['merchant']['emoji']
+
     if settings.include_tags and data['merchant'] and data['merchant'].get('metadata', {}).get(
             'suggested_tags'):
-        suggested_tags = data['merchant']['metadata']['suggested_tags']
-
-    # Emoji!
-    emoji = ''
-    if settings.include_emoji and data['merchant'] and data['merchant'].get('emoji'):
-        emoji = data['merchant']['emoji']
+        memo += ' %s' % data['merchant']['metadata']['suggested_tags']
 
     # Show the local currency in the notes if this is not in the accounts currency
-    local_currency = ''
-    if data['local_currency'] != data['currency']:
-        local_currency = '(%s %s)' % (data['local_currency'], (abs(data['local_amount']) / 100))
+    if data['data']['local_currency'] != data['data']['currency']:
+        memo += ' (%s %s)' % (data['data']['local_currency'], (abs(data['data']['local_amount']) / 100))
 
     # Create the Transaction
     expected_delta += 1
@@ -85,7 +80,7 @@ def create_transaction(data, settings, expected_delta):
         entities_payee_id=entities_payee_id,
         imported_date=datetime.now().date(),
         imported_payee=payee_name,
-        memo="%s %s %s" % (emoji, suggested_tags, local_currency),
+        memo=memo,
         source="Imported"
     )
 
@@ -122,20 +117,22 @@ def get_payee_details(payee_name):
     if previous_transaction is not None:
         settings.log.debug('A previous transaction for the payee %s has been found' % payee_name)
         return get_payee_details_for_transaction(previous_transaction)
+    else:
+        settings.log.debug('A previous transaction for the payee %s has not been found' % payee_name)
     return None, None
 
 
-def get_payee_details_for_transaction(transaction):
+def get_payee_details_for_transaction(transaction, payee_name):
     """
     Get the defaults for this payee based on YNAB data
     
     :param transaction: The transaction that we want to get payee details from.
     :return: tuple (payee_id, subcategory_id)
     """
-    return transaction.entities_payee.id, get_subcategory_id_for_transaction(transaction)
+    return transaction.entities_payee.id, get_subcategory_id_for_transaction(transaction, payee_name)
 
 
-def get_subcategory_id_for_transaction(transaction):
+def get_subcategory_id_for_transaction(transaction, payee_name):
     """
     Gets the subcategory ID for a transaction. Filters out transactions that have multiple categories.
     
@@ -147,8 +144,12 @@ def get_subcategory_id_for_transaction(transaction):
     if subcategory is not None:
         if subcategory.name != 'Split (Multiple Categories)...':
             settings.log.debug(
-                'We have identified the following category %s as a good default for this payee' % subcategory.name)
+                'We have identified the "%s" category as a good default for this payee' % subcategory.name)
             return subcategory.id
+        else:
+            settings.log.debug('Split category found, so we will not use that category for %s' % payee_name)
+    else:
+        settings.log.debug('A subcategory was not found for the previous transaction for %s' % payee_name)
 
 
 def get_p2p_transaction_payee_name(data):
