@@ -40,7 +40,7 @@ def create_transaction(data, settings, expected_delta):
     ynab_client.sync()
 
     if data['amount'] == 0:
-        return {'error': 'Monzo transaction amount is 0.'}, 400
+        return {'error': 'Monzo transaction amount is 0.'}, 200
 
     # Does this account exist?
     account = ynab_client.getaccount(settings.ynab_account)
@@ -101,7 +101,7 @@ def create_transaction(data, settings, expected_delta):
     settings.log.debug('Duplicate detection')
     if ynab_client.containsDuplicate(transaction):
         settings.log.debug('skipping due to duplicate transaction')
-        return {'error': 'Tried to add a duplicate transaction.'}, 400
+        return {'error': 'Tried to add a duplicate transaction.'}, 200
     else:
         settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
         ynab_client.client.budget.be_transactions.append(transaction)
