@@ -19,6 +19,9 @@ def route_index():
 
 @app.route('/webhook', methods=['POST'])
 def route_webhook():
+    if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
+        return jsonify({'error': 'Invalid secret'}), 403
+
     ynab_client.init()
     data = json.loads(request.data.decode('utf8'))
     settings.log.debug('webhook type received %s', data['type'])

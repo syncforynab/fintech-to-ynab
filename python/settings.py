@@ -14,6 +14,8 @@ flask_debug = True if log_level == 'debug' else False
 
 port = int(os.environ.get("PORT", 5000))
 
+url_secret = os.environ.get('URL_SECRET')
+
 ynab_account = os.environ.get('YNAB_ACCOUNT')
 ynab_budget = os.environ.get('YNAB_BUDGET')
 ynab_username = os.environ.get('YNAB_USERNAME')
