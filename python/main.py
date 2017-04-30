@@ -12,6 +12,10 @@ from pynYNAB.schema.budget import Transaction
 app = Flask('Monzo to YNAB')
 app.config['DEBUG'] = settings.flask_debug
 
+if settings.sentry_dsn:
+    from raven.contrib.flask import Sentry
+    sentry = Sentry(app)
+
 
 @app.route('/')
 def route_index():
