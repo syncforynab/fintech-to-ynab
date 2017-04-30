@@ -120,7 +120,7 @@ def get_payee_details(payee_name):
     previous_transaction = ynab_client.findPreviousTransaction(payee_name)
     if previous_transaction is not None:
         settings.log.debug('A previous transaction for the payee %s has been found' % payee_name)
-        return get_payee_details_for_transaction(previous_transaction)
+        return get_payee_details_for_transaction(previous_transaction, payee_name)
     else:
         settings.log.debug('A previous transaction for the payee %s has not been found' % payee_name)
     return None, None
@@ -177,4 +177,6 @@ def get_p2p_transaction_payee_name(data):
 
 
 if __name__ == "__main__":
+    ynab_client.init()
+    ynab_client.sync()
     app.run(host='0.0.0.0', port=settings.port)
