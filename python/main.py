@@ -69,8 +69,10 @@ def create_transaction(data, settings, expected_delta):
         memo += ' %s' % data['merchant']['metadata']['suggested_tags']
 
     # Show the local currency in the notes if this is not in the accounts currency
+    flag = None
     if data['local_currency'] != data['currency']:
         memo += ' (%s %s)' % (data['local_currency'], (abs(data['local_amount']) / 100))
+        flag = 'Orange'
 
     # Create the Transaction
     expected_delta += 1
@@ -84,7 +86,8 @@ def create_transaction(data, settings, expected_delta):
         imported_date=datetime.now().date(),
         imported_payee=payee_name,
         memo=memo,
-        source="Imported"
+        source="Imported",
+        flag=flag
     )
 
     if subcategory_id is not None:
