@@ -25,7 +25,7 @@ def route_starling():
     ynab_client.init()
     data = json.loads(request.data.decode('utf8'))
     settings.log.debug('webhook type received %s', data['content']['type'])
-    if data['content']['type'] == 'TRANSACTION_CARD':
+    if data['content']['type'] in ['TRANSACTION_CARD', 'TRANSACTION_FASTER_PAYMENT_IN', 'TRANSACTION_FASTER_PAYMENT_OUT', 'TRANSACTION_DIRECT_DEBIT']:
         body, code = create_transaction_from_starling(data, settings, 0)
         return jsonify(body), code
     else:
@@ -72,7 +72,7 @@ def create_transaction_from_starling(data, settings, expected_delta):
     expected_delta += 1
     settings.log.debug('Creating transaction object')
     transaction = Transaction(
-        check_number=data['content']['transactionUid'],
+        check_number=data['content'].get('transactionUid'),
         entities_account_id=account.id,
         amount=data['content']['amount'],
         date=parse(data['timestamp']),
