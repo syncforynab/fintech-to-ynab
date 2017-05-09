@@ -126,8 +126,7 @@ def create_transaction(data, settings, expected_delta):
     if settings.include_emoji and data['merchant'] and data['merchant'].get('emoji'):
         memo += ' %s' % data['merchant']['emoji']
 
-    if settings.include_tags and data['merchant'] and data['merchant'].get('metadata', {}).get(
-            'suggested_tags'):
+    if settings.include_tags and data['merchant'] and data['merchant'].get('metadata', {}).get('suggested_tags'):
         memo += ' %s' % data['merchant']['metadata']['suggested_tags']
 
     # Show the local currency in the notes if this is not in the accounts currency
@@ -197,10 +196,7 @@ def get_payee_details_for_transaction(transaction, payee_name):
     :param transaction: The transaction that we want to get payee details from.
     :return: tuple (payee_id, subcategory_id)
     """
-    return (
-        transaction.entities_payee.id,
-        get_subcategory_id_for_transaction(transaction, payee_name)
-        )
+    return (transaction.entities_payee.id, get_subcategory_id_for_transaction(transaction, payee_name))
 
 
 def get_subcategory_id_for_transaction(transaction, payee_name):
@@ -215,16 +211,12 @@ def get_subcategory_id_for_transaction(transaction, payee_name):
 
     if subcategory is not None:
         if subcategory.name != 'Split (Multiple Categories)...':
-            settings.log.debug(
-                'We have identified the "%s" category as a good default for this payee',
-                subcategory.name)
+            settings.log.debug('We have identified the "%s" category as a good default for this payee', subcategory.name)
             return subcategory.id
         else:
-            settings.log.debug(
-                'Split category found, so we will not use that category for %s', payee_name)
+            settings.log.debug('Split category found, so we will not use that category for %s', payee_name)
     else:
-        settings.log.debug(
-            'A subcategory was not found for the previous transaction for %s', payee_name)
+        settings.log.debug('A subcategory was not found for the previous transaction for %s', payee_name)
 
 
 def get_p2p_transaction_payee_name(data):
