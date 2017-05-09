@@ -182,7 +182,7 @@ def get_payee_details(payee_name):
     :return: (payee_id, subcategory_id)
     """
     previous_transaction = ynab_client.findPreviousTransaction(payee_name)
-    if previous_transaction is not None:
+    if previous_transaction is not None and previous_transaction.entities_payee is not None:
         settings.log.debug('A previous transaction for the payee %s has been found', payee_name)
         return get_payee_details_for_transaction(previous_transaction, payee_name)
     else:
