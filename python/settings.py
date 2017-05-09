@@ -17,6 +17,8 @@ port = int(os.environ.get("PORT", 5000))
 url_secret = os.environ.get('URL_SECRET')
 
 ynab_account = os.environ.get('YNAB_ACCOUNT')
+starling_ynab_account = os.environ.get('STARLING_NAB_ACCOUNT')
+
 ynab_budget = os.environ.get('YNAB_BUDGET')
 ynab_username = os.environ.get('YNAB_USERNAME')
 ynab_password = os.environ.get('YNAB_PASSWORD')

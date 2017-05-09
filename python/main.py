@@ -17,6 +17,21 @@ def route_index():
     return redirect("https://github.com/scottrobertson/monzo-to-ynab", code=302)
 
 
+@app.route('/starling', methods=['POST'])
+def route_starling():
+    if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
+        return jsonify({'error': 'Invalid secret'}), 403
+
+    ynab_client.init()
+    data = json.loads(request.data.decode('utf8'))
+    settings.log.debug('webhook type received %s', data['content']['type'])
+    if data['content']['type'] == 'TRANSACTION_CARD':
+        body, code = create_transaction_from_starling(data, settings, 0)
+        return jsonify(body), code
+    else:
+        settings.log.warning('Unsupported webhook type: %s', data['content']['type'])
+        return jsonify({'error': 'Unsupported webhook type'}), 400
+
 @app.route('/webhook', methods=['POST'])
 def route_webhook():
     if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
@@ -32,6 +47,53 @@ def route_webhook():
         settings.log.warning('Unsupported webhook type: %s', data['type'])
         return jsonify({'error': 'Unsupported webhook type'}), 400
 
+def create_transaction_from_starling(data, settings, expected_delta):
+    # Sync the account so we get the latest payees
+    ynab_client.sync()
+
+    if data['content']['amount'] == 0:
+        return {'error': 'Transaction amount is 0.'}, 200
+
+    # Does this account exist?
+    account = ynab_client.getaccount(settings.starling_ynab_account)
+    if not account:
+        return {'error': 'Account {} was not found'.format(settings.starling_ynab_account)}, 400
+
+    payee_name = data['content']['counterParty']
+    entities_payee_id, subcategory_id = get_payee_details(payee_name)
+
+    # If we are creating the payee, then we need to increase the delta
+    if not ynab_client.payeeexists(payee_name):
+        settings.log.debug('payee does not exist, will create %s', payee_name)
+        expected_delta += 1
+        entities_payee_id = ynab_client.getpayee(payee_name).id
+
+    # Create the Transaction
+    expected_delta += 1
+    settings.log.debug('Creating transaction object')
+    transaction = Transaction(
+        check_number=data['content']['transactionUid'],
+        entities_account_id=account.id,
+        amount=data['content']['amount'],
+        date=parse(data['timestamp']),
+        entities_payee_id=entities_payee_id,
+        imported_date=datetime.now().date(),
+        imported_payee=payee_name,
+        source="Imported"
+    )
+
+    if subcategory_id is not None:
+        transaction.entities_subcategory_id = subcategory_id
+
+    settings.log.debug('Duplicate detection')
+    if ynab_client.containsDuplicate(transaction):
+        settings.log.debug('skipping due to duplicate transaction')
+        return {'error': 'Tried to add a duplicate transaction.'}, 200
+    else:
+        settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
+        ynab_client.client.budget.be_transactions.append(transaction)
+        ynab_client.client.push(expected_delta)
+        return {'message': 'Transaction created in YNAB successfully.'}, 201
 
 def create_transaction(data, settings, expected_delta):
     # Sync the account so we get the latest payees
