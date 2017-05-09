@@ -16,6 +16,10 @@ app.config['DEBUG'] = settings.flask_debug
 def route_index():
     return redirect("https://github.com/scottrobertson/monzo-to-ynab", code=302)
 
+@app.route('/ping')
+def route_ping():
+    return 'pong';
+
 
 @app.route('/starling', methods=['POST'])
 def route_starling():
