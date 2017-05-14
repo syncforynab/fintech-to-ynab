@@ -36,7 +36,7 @@ def route_starling():
         return jsonify({'error': 'Unsupported webhook type'}), 400
 
 @app.route('/monzo', methods=['POST'])
-def route_webhook():
+def route_monzo():
     if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
         return jsonify({'error': 'Invalid secret'}), 403
 
