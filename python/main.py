@@ -20,7 +20,6 @@ def route_index():
 def route_ping():
     return 'pong';
 
-
 @app.route('/starling', methods=['POST'])
 def route_starling():
     if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
@@ -36,7 +35,7 @@ def route_starling():
         settings.log.warning('Unsupported webhook type: %s', data['content']['type'])
         return jsonify({'error': 'Unsupported webhook type'}), 400
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/monzo', methods=['POST'])
 def route_webhook():
     if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
         return jsonify({'error': 'Invalid secret'}), 403
@@ -123,9 +122,9 @@ def create_transaction_from_monzo(data, settings, expected_delta):
         return {'error': 'Transaction amount is 0.'}, 200
 
     # Does this account exist?
-    account = ynab_client.getaccount(settings.ynab_account)
+    account = ynab_client.getaccount(settings.monzo_ynab_account)
     if not account:
-        return {'error': 'Account {} was not found'.format(settings.ynab_account)}, 400
+        return {'error': 'Account {} was not found'.format(settings.monzo_ynab_account)}, 400
 
     # Work out the Payee Name
     if data.get('merchant'):

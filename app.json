@@ -20,10 +20,13 @@
       "description": "By default we include the hash tags from Monzo in the YNAB description. This skips that.",
       "value": "false"
     },
+    "URL_SECRET": {
+      "description": "URL secret for webhook endpoint"
+    },
     "STARLING_YNAB_ACCOUNT": {
       "description": "Your YNAB account name used by Starling"
     },
-    "YNAB_ACCOUNT": {
+    "MONZO_YNAB_ACCOUNT": {
       "description": "Your YNAB account name used by Monzo"
     },
     "YNAB_BUDGET": {
