@@ -73,9 +73,13 @@ def create_transaction_from_starling(data, settings, expected_delta):
         entities_payee_id = ynab_client.getpayee(payee_name).id
 
     flag = None
+    cleared = None
+    memo = ''
     if data['content']['sourceCurrency'] != 'GBP':
         memo += ' (%s %s)' % (data['content']['sourceCurrency'], abs(data['content']['sourceAmount']))
         flag = 'Orange'
+    else:
+        cleared = 'Cleared'
 
     # Create the Transaction
     expected_delta += 1
@@ -89,17 +93,13 @@ def create_transaction_from_starling(data, settings, expected_delta):
         imported_date=datetime.now().date(),
         imported_payee=payee_name,
         source="Imported",
-        flag=flag
+        flag=flag,
+        cleared=cleared,
+        memo=memo
     )
 
     if subcategory_id is not None:
         transaction.entities_subcategory_id = subcategory_id
-
-    # If this transaction is in our local currency, then just automatically mark it as cleared.
-    # Otherwise, we want to leave it as uncleared as the value may change once it settles
-    if settings.auto_clear and data['content']['sourceCurrency'] == 'GBP':
-        settings.log.debug('Setting transaction as cleared')
-        transaction.cleared = 'Cleared'
 
     settings.log.debug('Duplicate detection')
     if ynab_client.containsDuplicate(transaction):
@@ -147,9 +147,12 @@ def create_transaction_from_monzo(data, settings, expected_delta):
 
     # Show the local currency in the notes if this is not in the accounts currency
     flag = None
+    cleared = None
     if data['local_currency'] != data['currency']:
         memo += ' (%s %s)' % (data['local_currency'], (abs(data['local_amount']) / 100))
         flag = 'Orange'
+    else:
+        cleared = 'Cleared'
 
     # Create the Transaction
     expected_delta += 1
@@ -164,17 +167,12 @@ def create_transaction_from_monzo(data, settings, expected_delta):
         imported_payee=payee_name,
         memo=memo,
         source="Imported",
-        flag=flag
+        flag=flag,
+        cleared=cleared
     )
 
     if subcategory_id is not None:
         transaction.entities_subcategory_id = subcategory_id
-
-    # If this transaction is in our local currency, then just automatically mark it as cleared.
-    # Otherwise, we want to leave it as uncleared as the value may change once it settles
-    if settings.auto_clear and data['local_currency'] == data['currency']:
-        settings.log.debug('Setting transaction as cleared')
-        transaction.cleared = 'Cleared'
 
     settings.log.debug('Duplicate detection')
     if ynab_client.containsDuplicate(transaction):
