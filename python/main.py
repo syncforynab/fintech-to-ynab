@@ -9,12 +9,12 @@ from decimal import Decimal
 
 from pynYNAB.schema.budget import Transaction
 
-app = Flask('Monzo to YNAB')
+app = Flask('Fintech to YNAB')
 app.config['DEBUG'] = settings.flask_debug
 
 @app.route('/')
 def route_index():
-    return redirect("https://github.com/scottrobertson/monzo-to-ynab", code=302)
+    return redirect("https://github.com/scottrobertson/fintech-to-ynab", code=302)
 
 @app.route('/ping')
 def route_ping():
@@ -104,7 +104,7 @@ def create_transaction(data, settings, expected_delta):
     ynab_client.sync()
 
     if data['amount'] == 0:
-        return {'error': 'Monzo transaction amount is 0.'}, 200
+        return {'error': 'Transaction amount is 0.'}, 200
 
     # Does this account exist?
     account = ynab_client.getaccount(settings.ynab_account)
@@ -181,7 +181,7 @@ def get_payee_details(payee_name):
     If a payee with payee_name has been used in the past, we can get their ID and
     pre-populate category.
 
-    :param payee_name: The name of the Payee as coming from Monzo.
+    :param payee_name: The name of the Payee as coming from the bank.
     :return: (payee_id, subcategory_id)
     """
     previous_transaction = ynab_client.findPreviousTransaction(payee_name)

@@ -1,8 +1,8 @@
 {
-  "name": "Monzo to YNAB",
-  "description": "Automatically push Monzo transactions into YNAB",
-  "repository": "https://github.com/scottrobertson/monzo-to-ynab",
-  "keywords": ["monzo", "ynab"],
+  "name": "Fintech to YNAB",
+  "description": "Automatically push Monzo and Starling transactions into YNAB",
+  "repository": "https://github.com/scottrobertson/fintech-to-ynab",
+  "keywords": ["monzo", "ynab", "starling"],
   "env": {
     "LOG_LEVEL": {
       "description": "How much should we log?",
@@ -20,8 +20,11 @@
       "description": "By default we include the hash tags from Monzo in the YNAB description. This skips that.",
       "value": "false"
     },
+    "STARLING_YNAB_ACCOUNT": {
+      "description": "Your YNAB account name used by Starling"
+    },
     "YNAB_ACCOUNT": {
-      "description": "Your YNAB account name"
+      "description": "Your YNAB account name used by Monzo"
     },
     "YNAB_BUDGET": {
       "description": "Your YNAB budget name"

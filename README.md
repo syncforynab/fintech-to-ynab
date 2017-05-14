@@ -1,23 +1,23 @@
-# Monzo to YNAB
+# Fintech to YNAB
 
-[![Docker Build Statu](https://img.shields.io/docker/build/scottrobertson/monzo-to-ynab.svg)](https://hub.docker.com/r/scottrobertson/monzo-to-ynab/)
-[![CircleCI](https://circleci.com/gh/scottrobertson/monzo-to-ynab.svg?style=svg)](https://circleci.com/gh/scottrobertson/monzo-to-ynab)
+[![Docker Build Status](https://img.shields.io/docker/build/scottrobertson/fintech-to-ynab.svg)](https://hub.docker.com/r/scottrobertson/fintech-to-ynab/)
+[![CircleCI](https://circleci.com/gh/scottrobertson/fintech-to-ynab.svg?style=svg)](https://circleci.com/gh/scottrobertson/fintech-to-ynab)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/scottrobertson/monzo-to-ynab)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/scottrobertson/fintech-to-ynab)
 
-Automatically push Monzo transactions into YNAB.
+Automatically push Monzo and Starling transactions into YNAB.
 
 A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for the YNAB library.
 
 ## Features
-  - Push your Monzo transactions into YNAB in realtime
+  - Push your Monzo and Starling transactions into YNAB in realtime
   - Automatically populate the category based on previous transactions
-  - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default (can be disabled)
-  - Automatically mark transactions as cleared (except for those in a foreign currency)
+  - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default (can be disabled, Monzo only)
+  - Automatically mark transactions as cleared (except for those in a foreign currency, Monzo only)
 
 ## Deployment notes
 
-Please see our [Deployment](https://github.com/scottrobertson/monzo-to-ynab/wiki/Deployment) wiki for instructions on how to deploy this app.
+Please see our [Deployment](https://github.com/scottrobertson/fintech-to-ynab/wiki/Deployment) wiki for instructions on how to deploy this app.
 
 ## Environment Variables
 
