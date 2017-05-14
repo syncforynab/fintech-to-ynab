@@ -64,17 +64,21 @@ def create_transaction_from_starling(data, settings, expected_delta):
         return {'error': 'Account {} was not found'.format(settings.starling_ynab_account)}, 400
 
     payee_name = data['content']['counterParty']
-    entities_payee_id, subcategory_id = get_payee_details(payee_name)
+    subcategory_id = None
+    flag = None
+    cleared = None
+    memo = ''
 
     # If we are creating the payee, then we need to increase the delta
-    if not ynab_client.payeeexists(payee_name):
+    if ynab_client.payeeexists(payee_name):
+        settings.log.debug('payee exists, using %s', payee_name)
+        subcategory_id = get_subcategory_from_payee(payee_name)
+        entities_payee_id = ynab_client.getpayee(payee_name).id
+    else:
         settings.log.debug('payee does not exist, will create %s', payee_name)
         expected_delta += 1
         entities_payee_id = ynab_client.getpayee(payee_name).id
 
-    flag = None
-    cleared = None
-    memo = ''
     if data['content']['sourceCurrency'] != 'GBP':
         memo += ' (%s %s)' % (data['content']['sourceCurrency'], abs(data['content']['sourceAmount']))
         flag = 'Orange'
@@ -126,7 +130,8 @@ def create_transaction_from_monzo(data, settings, expected_delta):
     # Work out the Payee Name
     if data.get('merchant'):
         payee_name = data['merchant']['name']
-        entities_payee_id, subcategory_id = get_payee_details(payee_name)
+        subcategory_id = get_subcategory_from_payee(payee_name)
+        entities_payee_id = ynab_client.getpayee(payee_name).id
     else:
         # This is a p2p transaction
         payee_name = get_p2p_transaction_payee_name(data)
@@ -185,7 +190,7 @@ def create_transaction_from_monzo(data, settings, expected_delta):
         return {'message': 'Transaction created in YNAB successfully.'}, 201
 
 
-def get_payee_details(payee_name):
+def get_subcategory_from_payee(payee_name):
     """
     Get payee details for a previous transaction in YNAB.
     If a payee with payee_name has been used in the past, we can get their ID and
@@ -197,21 +202,10 @@ def get_payee_details(payee_name):
     previous_transaction = ynab_client.findPreviousTransaction(payee_name)
     if previous_transaction is not None and previous_transaction.entities_payee is not None:
         settings.log.debug('A previous transaction for the payee %s has been found', payee_name)
-        return get_payee_details_for_transaction(previous_transaction, payee_name)
+        return get_subcategory_id_for_transaction(previous_transaction, payee_name)
     else:
         settings.log.debug('A previous transaction for the payee %s has not been found', payee_name)
-    return None, None
-
-
-def get_payee_details_for_transaction(transaction, payee_name):
-    """
-    Get the defaults for this payee based on YNAB data
-
-    :param transaction: The transaction that we want to get payee details from.
-    :return: tuple (payee_id, subcategory_id)
-    """
-    return (transaction.entities_payee.id, get_subcategory_id_for_transaction(transaction, payee_name))
-
+    return None
 
 def get_subcategory_id_for_transaction(transaction, payee_name):
     """
