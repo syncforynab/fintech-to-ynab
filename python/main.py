@@ -45,7 +45,7 @@ def route_webhook():
     data = json.loads(request.data.decode('utf8'))
     settings.log.debug('webhook type received %s', data['type'])
     if data.get('type') == 'transaction.created':
-        body, code = create_transaction(data['data'], settings, 0)
+        body, code = create_transaction_from_monzo(data['data'], settings, 0)
         return jsonify(body), code
     else:
         settings.log.warning('Unsupported webhook type: %s', data['type'])
@@ -99,7 +99,7 @@ def create_transaction_from_starling(data, settings, expected_delta):
         ynab_client.client.push(expected_delta)
         return {'message': 'Transaction created in YNAB successfully.'}, 201
 
-def create_transaction(data, settings, expected_delta):
+def create_transaction_from_monzo(data, settings, expected_delta):
     # Sync the account so we get the latest payees
     ynab_client.sync()
 
