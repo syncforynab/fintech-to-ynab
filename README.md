@@ -2,6 +2,7 @@
 
 [![Docker](https://img.shields.io/docker/build/scottrobertson/fintech-to-ynab.svg)](https://hub.docker.com/r/scottrobertson/fintech-to-ynab/)
 [![CircleCI](https://img.shields.io/circleci/project/github/scottrobertson/fintech-to-ynab.svg)]()
+
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/scottrobertson/fintech-to-ynab)
 
 Automatically push Monzo and Starling transactions into YNAB.
