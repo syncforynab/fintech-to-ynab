@@ -26,8 +26,7 @@
     },
     "URL_SECRET": {
       "description": "This is a secret used for the webhooks endpoint.",
-      "required": false,
-      "generator": "secret"
+      "required": false
     },
     "SKIP_AUTO_CLEAR": {
       "description": "By default, we mark transactions in your account's currency as cleared, this allows you to skip that (Monzo only)",
