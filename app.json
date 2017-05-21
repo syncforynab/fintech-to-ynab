@@ -4,39 +4,50 @@
   "repository": "https://github.com/scottrobertson/fintech-to-ynab",
   "keywords": ["monzo", "ynab", "starling"],
   "env": {
-    "LOG_LEVEL": {
-      "description": "How much should we log?",
-      "value": "debug"
+    "YNAB_BUDGET": {
+      "description": "Your YNAB budget name",
+      "required": true
+    },
+    "YNAB_USERNAME": {
+      "description": "Your YNAB username (email)",
+      "required": true
+    },
+    "YNAB_PASSWORD": {
+      "description": "Your YNAB password",
+      "required": true
+    },
+    "STARLING_YNAB_ACCOUNT": {
+      "description": "Your YNAB account name used by Starling",
+      "required": false
+    },
+    "MONZO_YNAB_ACCOUNT": {
+      "description": "Your YNAB account name used by Monzo",
+      "required": false
+    },
+    "URL_SECRET": {
+      "description": "This is a secret used for the webhooks endpoint.",
+      "required": false,
+      "generator": "secret"
     },
     "SKIP_AUTO_CLEAR": {
       "description": "By default, we mark transactions in your account's currency as cleared, this allows you to skip that (Monzo only)",
-      "value": "false"
+      "value": "false",
+      "required": false
     },
     "SKIP_EMOJI": {
       "description": "By default, we include the emoji from Monzo in the YNAB description. This skips that. (Monzo only)",
-      "value": "false"
+      "value": "false",
+      "required": false
     },
     "SKIP_TAGS": {
       "description": "By default, we include the hashtags from Monzo in the YNAB description. This skips that. (Monzo only)",
-      "value": "false"
+      "value": "false",
+      "required": false
     },
-    "URL_SECRET": {
-      "description": "This is a secret used for the webhooks endpoint."
-    },
-    "STARLING_YNAB_ACCOUNT": {
-      "description": "Your YNAB account name used by Starling"
-    },
-    "MONZO_YNAB_ACCOUNT": {
-      "description": "Your YNAB account name used by Monzo"
-    },
-    "YNAB_BUDGET": {
-      "description": "Your YNAB budget name"
-    },
-    "YNAB_USERNAME": {
-      "description": "Your YNAB username (email)"
-    },
-    "YNAB_PASSWORD": {
-      "description": "Your YNAB password"
+    "LOG_LEVEL": {
+      "description": "How much should we log?",
+      "value": "debug",
+      "required": false
     }
   }
 }
