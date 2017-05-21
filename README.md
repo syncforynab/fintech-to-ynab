@@ -15,12 +15,8 @@ A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for t
   - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default (can be disabled, Monzo only)
   - Automatically mark transactions as cleared (except for those in a foreign currency, Monzo only)
 
-## Deployment notes
+## Getting Started
 
-Please see our [Deployment](https://github.com/scottrobertson/fintech-to-ynab/wiki/Deployment) wiki for instructions on how to deploy this app.
-
-## Environment Variables
-
-Either set the environment variables from `.env.example` or copy that file to `.env`
+Please see our [Getting Started](https://github.com/scottrobertson/fintech-to-ynab/wiki/Deployment) guide to see how to set Fintech to YNAB up.
 
 **Warning**: Because there is no official API for YNAB, this could break at any point
