@@ -9,19 +9,19 @@
       "value": "debug"
     },
     "SKIP_AUTO_CLEAR": {
-      "description": "By default we mark transactions in your accounts currency as cleared, this allows you to skip that",
+      "description": "By default, we mark transactions in your account's currency as cleared, this allows you to skip that (Monzo only)",
       "value": "false"
     },
     "SKIP_EMOJI": {
-      "description": "By default we include the emoji from Monzo in the YNAB description. This skips that.",
+      "description": "By default, we include the emoji from Monzo in the YNAB description. This skips that. (Monzo only)",
       "value": "false"
     },
     "SKIP_TAGS": {
-      "description": "By default we include the hash tags from Monzo in the YNAB description. This skips that.",
+      "description": "By default, we include the hashtags from Monzo in the YNAB description. This skips that. (Monzo only)",
       "value": "false"
     },
     "URL_SECRET": {
-      "description": "URL secret for webhook endpoint"
+      "description": "This is a secret used for the webhooks endpoint."
     },
     "STARLING_YNAB_ACCOUNT": {
       "description": "Your YNAB account name used by Starling"
