@@ -17,6 +17,6 @@ A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for t
 
 ## Getting Started
 
-Please see our [Getting Started](https://github.com/scottrobertson/fintech-to-ynab/wiki/Deployment) guide to see how to set Fintech to YNAB up.
+Please see our [Getting Started](https://github.com/scottrobertson/fintech-to-ynab/wiki/Getting-Started) guide to see how to set Fintech to YNAB up.
 
 **Warning**: Because there is no official API for YNAB, this could break at any point
