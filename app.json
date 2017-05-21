@@ -17,12 +17,12 @@
       "required": true
     },
     "STARLING_YNAB_ACCOUNT": {
-      "description": "Your YNAB account name used by Starling",
-      "required": false
+      "description": "Your YNAB account name used by Starling (Use 'N/A' when not using Starling)",
+      "required": true
     },
     "MONZO_YNAB_ACCOUNT": {
-      "description": "Your YNAB account name used by Monzo",
-      "required": false
+      "description": "Your YNAB account name used by Monzo (Use 'N/A' when not using Monzo)",
+      "required": true
     },
     "URL_SECRET": {
       "description": "This is a secret used for the webhooks endpoint.",
