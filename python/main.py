@@ -25,6 +25,8 @@ def route_starling():
     if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
         return jsonify({'error': 'Invalid secret'}), 403
 
+    settings.log.debug(request.data)
+
     ynab_client.init()
     data = json.loads(request.data.decode('utf8'))
     settings.log.debug('webhook type received %s', data['content']['type'])
@@ -39,6 +41,8 @@ def route_starling():
 def route_monzo():
     if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
         return jsonify({'error': 'Invalid secret'}), 403
+
+    settings.log.debug(request.data)
 
     ynab_client.init()
     data = json.loads(request.data.decode('utf8'))
