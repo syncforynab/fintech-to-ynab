@@ -72,11 +72,11 @@ def create_transaction_from_starling(data, settings, expected_delta):
     if ynab_client.payeeexists(payee_name):
         settings.log.debug('payee exists, using %s', payee_name)
         subcategory_id = get_subcategory_from_payee(payee_name)
-        entities_payee_id = ynab_client.getpayee(payee_name).id
     else:
         settings.log.debug('payee does not exist, will create %s', payee_name)
         expected_delta += 1
-        entities_payee_id = ynab_client.getpayee(payee_name).id
+
+    entities_payee_id = ynab_client.getpayee(payee_name).id
 
     if data['content']['sourceCurrency'] != 'GBP':
         memo += ' (%s %s)' % (data['content']['sourceCurrency'], abs(data['content']['sourceAmount']))
@@ -130,7 +130,6 @@ def create_transaction_from_monzo(data, settings, expected_delta):
     if data.get('merchant'):
         payee_name = data['merchant']['name']
         subcategory_id = get_subcategory_from_payee(payee_name)
-        entities_payee_id = ynab_client.getpayee(payee_name).id
     else:
         # This is a p2p transaction
         payee_name = get_p2p_transaction_payee_name(data)
@@ -140,7 +139,9 @@ def create_transaction_from_monzo(data, settings, expected_delta):
     if not ynab_client.payeeexists(payee_name):
         settings.log.debug('payee does not exist, will create %s', payee_name)
         expected_delta += 1
-        entities_payee_id = ynab_client.getpayee(payee_name).id
+
+    # Get the payee ID. This will append a new one if needed
+    entities_payee_id = ynab_client.getpayee(payee_name).id
 
     memo = ''
     if settings.include_emoji and data['merchant'] and data['merchant'].get('emoji'):
