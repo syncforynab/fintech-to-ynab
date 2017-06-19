@@ -19,4 +19,4 @@ A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for t
 
 Please see our [Getting Started](https://github.com/scottrobertson/fintech-to-ynab/wiki/Getting-Started) guide to see how to set Fintech to YNAB up.
 
-**Warning**: Because there is no official API for YNAB, this could break at any point
+**Warning**: This app is not officially supported by YNAB in any way. Use of this app could introduce problems into your budget that YNAB, through its official support channels, will not be able to troubleshoot or fix. Please use at your own risk!
