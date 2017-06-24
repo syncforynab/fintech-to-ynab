@@ -1,4 +1,6 @@
 import json
+from functools import wraps
+
 import settings
 import ynab_client
 
@@ -19,6 +21,17 @@ def route_index():
 @app.route('/ping')
 def route_ping():
     return 'pong';
+def secret_required(func):
+    '''
+    :param func: The view function to decorate.
+    :type func: function
+    '''
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
+            return jsonify({'error': 'Invalid secret'}), 403
+        return func(*args, **kwargs)
+    return decorated_view
 
 @app.route('/starling', methods=['POST'])
 def route_starling():
@@ -37,6 +50,7 @@ def route_starling():
         settings.log.warning('Unsupported webhook type: %s', data['content']['type'])
         return jsonify({'error': 'Unsupported webhook type'}), 400
 
+@secret_required
 @app.route('/monzo', methods=['POST'])
 def route_monzo():
     if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
