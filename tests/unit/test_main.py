@@ -1,5 +1,5 @@
 from unittest import TestCase
-from python.main import get_subcategory_id_for_transaction
+from python.funtions import get_subcategory_id_for_transaction, get_p2p_transaction_payee_name
 from python.main import get_p2p_transaction_payee_name
 
 

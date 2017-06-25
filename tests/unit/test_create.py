@@ -4,8 +4,8 @@ from pynYNAB import Client
 from pynYNAB.schema.budget import Payee, Account
 
 import python.ynab_client as ynab_client_module
-from python.main import create_transaction_from_bankin, create_transaction_from_monzo, create_transaction_from_starling, \
-    get_subcategory_from_payee
+from python.main import create_transaction_from_bankin, create_transaction_from_monzo, get_subcategory_from_payee
+from python.funtions import create_transaction_from_starling, create_transaction_from_monzo, get_subcategory_from_payee
 
 mockYnabClient = Mock(ynab_client_module)
 
