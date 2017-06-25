@@ -4,10 +4,11 @@ from decimal import Decimal
 from dateutil.parser import parse
 from pynYNAB.schema.budget import Transaction
 
-from python import ynab_client, settings
+from python import ynab_client as ynab_client_module, settings as settings_module
 
 
-def create_transaction_from_starling(data, settings_arg, expected_delta):
+def create_transaction_from_starling(data, settings=settings_module, ynab_client = ynab_client_module):
+    expected_delta = 0
     data_type = data['content']['type']
     if not data_type in ['TRANSACTION_CARD', 'TRANSACTION_FASTER_PAYMENT_IN', 'TRANSACTION_FASTER_PAYMENT_OUT',
                                 'TRANSACTION_DIRECT_DEBIT']:
@@ -19,7 +20,7 @@ def create_transaction_from_starling(data, settings_arg, expected_delta):
         return {'error': 'Transaction amount is 0.'}, 200
 
     # Does this account exist?
-    account = ynab_client.getaccount(settings_arg.starling_ynab_account)
+    account = ynab_client.getaccount(settings.starling_ynab_account)
     if not account:
         return {'error': 'Account {} was not found'.format(settings.starling_ynab_account)}, 400
 
@@ -32,10 +33,10 @@ def create_transaction_from_starling(data, settings_arg, expected_delta):
 
     # If we are creating the payee, then we need to increase the delta
     if ynab_client.payeeexists(payee_name):
-        settings_arg.log.debug('payee exists, using %s', payee_name)
+        settings.log.debug('payee exists, using %s', payee_name)
         subcategory_id = get_subcategory_from_payee(payee_name)
     else:
-        settings_arg.log.debug('payee does not exist, will create %s', payee_name)
+        settings.log.debug('payee does not exist, will create %s', payee_name)
         expected_delta += 1
 
     entities_payee_id = ynab_client.getpayee(payee_name).id
@@ -48,7 +49,7 @@ def create_transaction_from_starling(data, settings_arg, expected_delta):
 
     # Create the Transaction
     expected_delta += 1
-    settings_arg.log.debug('Creating transaction object')
+    settings.log.debug('Creating transaction object')
     transaction = Transaction(
         check_number=data['content'].get('transactionUid'),
         entities_account_id=account.id,
@@ -66,18 +67,19 @@ def create_transaction_from_starling(data, settings_arg, expected_delta):
     if subcategory_id is not None:
         transaction.entities_subcategory_id = subcategory_id
 
-    settings_arg.log.debug('Duplicate detection')
+    settings.log.debug('Duplicate detection')
     if ynab_client.containsDuplicate(transaction):
-        settings_arg.log.debug('skipping due to duplicate transaction')
+        settings.log.debug('skipping due to duplicate transaction')
         return {'error': 'Tried to add a duplicate transaction.'}, 200
     else:
-        settings_arg.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
+        settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
         ynab_client.client.budget.be_transactions.append(transaction)
         ynab_client.client.push(expected_delta)
         return {'message': 'Transaction created in YNAB successfully.'}, 201
 
 
-def create_transaction_from_monzo(data, settings_arg, expected_delta):
+def create_transaction_from_monzo(data, settings=settings_module, ynab_client = ynab_client_module):
+    expected_delta = 0
     data_type = data.get('type')
     settings.log.debug('webhook type received %s', data_type)
     if data_type != 'transaction.created':
@@ -89,9 +91,9 @@ def create_transaction_from_monzo(data, settings_arg, expected_delta):
         return {'error': 'Transaction amount is 0.'}, 200
 
     # Does this account exist?
-    account = ynab_client.getaccount(settings_arg.monzo_ynab_account)
+    account = ynab_client.getaccount(settings.monzo_ynab_account)
     if not account:
-        return {'error': 'Account {} was not found'.format(settings_arg.monzo_ynab_account)}, 400
+        return {'error': 'Account {} was not found'.format(settings.monzo_ynab_account)}, 400
 
     # Work out the Payee Name
     if data.get('merchant'):
@@ -104,17 +106,17 @@ def create_transaction_from_monzo(data, settings_arg, expected_delta):
 
     # If we are creating the payee, then we need to increase the delta
     if not ynab_client.payeeexists(payee_name):
-        settings_arg.log.debug('payee does not exist, will create %s', payee_name)
+        settings.log.debug('payee does not exist, will create %s', payee_name)
         expected_delta += 1
 
     # Get the payee ID. This will append a new one if needed
     entities_payee_id = ynab_client.getpayee(payee_name).id
 
     memo = ''
-    if settings_arg.include_emoji and data['merchant'] and data['merchant'].get('emoji'):
+    if settings.include_emoji and data['merchant'] and data['merchant'].get('emoji'):
         memo += ' %s' % data['merchant']['emoji']
 
-    if settings_arg.include_tags and data['merchant'] and data['merchant'].get('metadata', {}).get('suggested_tags'):
+    if settings.include_tags and data['merchant'] and data['merchant'].get('metadata', {}).get('suggested_tags'):
         memo += ' %s' % data['merchant']['metadata']['suggested_tags']
 
     # Show the local currency in the notes if this is not in the accounts currency
@@ -128,7 +130,7 @@ def create_transaction_from_monzo(data, settings_arg, expected_delta):
 
     # Create the Transaction
     expected_delta += 1
-    settings_arg.log.debug('Creating transaction object')
+    settings.log.debug('Creating transaction object')
     transaction = Transaction(
         check_number=data['id'],
         entities_account_id=account.id,
@@ -146,18 +148,18 @@ def create_transaction_from_monzo(data, settings_arg, expected_delta):
     if subcategory_id is not None:
         transaction.entities_subcategory_id = subcategory_id
 
-    settings_arg.log.debug('Duplicate detection')
+    settings.log.debug('Duplicate detection')
     if ynab_client.containsDuplicate(transaction):
-        settings_arg.log.debug('skipping due to duplicate transaction')
+        settings.log.debug('skipping due to duplicate transaction')
         return {'error': 'Tried to add a duplicate transaction.'}, 200
     else:
-        settings_arg.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
+        settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
         ynab_client.client.budget.be_transactions.append(transaction)
         ynab_client.client.push(expected_delta)
         return {'message': 'Transaction created in YNAB successfully.'}, 201
 
 
-def get_subcategory_from_payee(payee_name):
+def get_subcategory_from_payee(payee_name, settings = settings_module, ynab_client = ynab_client_module):
     """
     Get payee details for a previous transaction in YNAB.
     If a payee with payee_name has been used in the past, we can get their ID and
@@ -175,7 +177,7 @@ def get_subcategory_from_payee(payee_name):
     return None
 
 
-def get_subcategory_id_for_transaction(transaction, payee_name):
+def get_subcategory_id_for_transaction(transaction, payee_name, settings = settings_module):
     """
     Gets the subcategory ID for a transaction.
     Filters out transactions that have multiple categories.

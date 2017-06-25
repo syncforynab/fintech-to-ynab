@@ -4,8 +4,7 @@ from pynYNAB import Client
 from pynYNAB.schema.budget import Payee, Account
 
 import python.ynab_client as ynab_client_module
-from python.main import create_transaction_from_bankin, create_transaction_from_monzo, get_subcategory_from_payee
-from python.funtions import create_transaction_from_starling, create_transaction_from_monzo, get_subcategory_from_payee
+from python.functions import create_transaction_from_starling, create_transaction_from_monzo, get_subcategory_from_payee
 
 mockYnabClient = Mock(ynab_client_module)
 
@@ -45,7 +44,7 @@ class CreateMonzoTests(unittest.TestCase):
     @patch.object(mockYnabClient, 'getaccount', lambda account_name: Mock(Account))
     @patch.object(mockYnabClient, 'getpayee', lambda payee_name: Mock(Payee))
     @patch.object(mockYnabClient, 'containsDuplicate', lambda transaction: False)
-    @patch('python.main.get_subcategory_from_payee', lambda payee_name: Mock(Payee))
+    @patch('python.functions.get_subcategory_from_payee', lambda payee_name: Mock(Payee))
     def test_typeOK_payeefound(self):
         data = dict(type='transaction.created',
                     id='id',
