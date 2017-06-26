@@ -20,10 +20,10 @@ def route_ping():
     return 'pong'
 
 def secret_required(func):
-    '''
+    """
     :param func: The view function to decorate.
     :type func: function
-    '''
+    """
     @wraps(func)
     def decorated_view(*args, **kwargs):
         if settings.url_secret is not None and settings.url_secret != request.args.get('secret'):
@@ -40,14 +40,12 @@ def common_view(create_transaction_func):
     body, code = create_transaction_func(data, settings, 0)
     return jsonify(body), code
 
-
-@secret_required
 @main_blueprints.route('/starling', methods=['POST'])
+@secret_required
 def route_starling():
     return common_view(create_transaction_from_starling)
 
-
-@secret_required
 @main_blueprints.route('/monzo', methods=['POST'])
+@secret_required
 def route_monzo():
     return common_view(create_transaction_from_monzo)
