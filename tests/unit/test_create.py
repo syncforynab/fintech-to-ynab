@@ -1,4 +1,5 @@
-import unittest
+from unittest import TestCase
+
 from mock import Mock, patch
 from pynYNAB.schema.budget import Payee, Account
 
@@ -10,7 +11,7 @@ mockYnabClient = Mock(ynab_client_module)
 
 create_functions = {'monzo': create_transaction_from_monzo, 'starling': create_transaction_from_starling}
 
-class CreateTests(unittest.TestCase):
+class CreateTests(TestCase):
     def check_notype(self,func_name):
         data = {}
         body, code = create_functions[func_name](data, ynab_client=mockYnabClient)
@@ -18,7 +19,7 @@ class CreateTests(unittest.TestCase):
 
     def test_notype(self):
         for func_name in create_functions:
-            yield self.check_notype,func
+            yield self.check_notype,func_name
 
     def check_wrongtype(self, func_name):
         data = dict(type='Meh')
@@ -38,7 +39,7 @@ class CreateTests(unittest.TestCase):
         for func_name in create_functions:
             yield self.check_nodata,func_name
 
-class CreateMonzoTests(unittest.TestCase):
+class CreateMonzoTests(TestCase):
     def test_typeOK_ynabsynccalled(self):
         data = dict(type='transaction.created')
         try:

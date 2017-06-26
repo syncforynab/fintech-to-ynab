@@ -37,7 +37,7 @@ def common_view(create_transaction_func):
     settings.log.debug(data)
     ynab_client.init()
 
-    body, code = create_transaction_func(data, settings, 0)
+    body, code = create_transaction_func(data, settings)
     return jsonify(body), code
 
 @main_blueprints.route('/starling', methods=['POST'])
