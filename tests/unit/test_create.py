@@ -1,6 +1,5 @@
 import unittest
 from mock import Mock, patch
-from pynYNAB import Client
 from pynYNAB.schema.budget import Payee, Account
 
 import python.ynab_client as ynab_client_module
@@ -9,22 +8,37 @@ from python.functions import create_transaction_from_starling, create_transactio
 mockYnabClient = Mock(ynab_client_module)
 
 
-class CreateMonzoTests(unittest.TestCase):
-    def test_notype(self):
+create_functions = {'monzo': create_transaction_from_monzo, 'starling': create_transaction_from_starling}
+
+class CreateTests(unittest.TestCase):
+    def check_notype(self,func_name):
         data = {}
-        body, code = create_transaction_from_monzo(data,ynab_client=mockYnabClient)
-        self.assertEqual(code,400)
+        body, code = create_functions[func_name](data, ynab_client=mockYnabClient)
+        self.assertEqual(code, 400)
+
+    def test_notype(self):
+        for func_name in create_functions:
+            yield self.check_notype,func
+
+    def check_wrongtype(self, func_name):
+        data = dict(type='Meh')
+        body, code = create_functions[func_name](data, ynab_client=mockYnabClient)
+        self.assertEqual(code, 400)
 
     def test_wrongtype(self):
-        data = dict(type='Meh')
-        body, code = create_transaction_from_monzo(data,ynab_client=mockYnabClient)
-        self.assertEqual(code,400)
+        for func_name in create_functions:
+            yield self.check_wrongtype,func_name
 
-    def test(self):
+    def check_nodata(self, func_name):
         data = {}
-        body, code = create_transaction_from_monzo(data,ynab_client=mockYnabClient)
-        self.assertEqual(code,400)
+        body, code = create_functions[func_name](data, ynab_client=mockYnabClient)
+        self.assertEqual(code, 400)
 
+    def test_nodata(self):
+        for func_name in create_functions:
+            yield self.check_nodata,func_name
+
+class CreateMonzoTests(unittest.TestCase):
     def test_typeOK_ynabsynccalled(self):
         data = dict(type='transaction.created')
         try:

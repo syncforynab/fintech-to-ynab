@@ -11,5 +11,5 @@ class TestRoutes(unittest.TestCase):
         self.app.debug = True
 
     def test_secret(self):
-        response = self.app.post('/bankin')
+        response = self.app.post('/monzo')
         self.assertEqual(response.status_code,403)

@@ -9,10 +9,11 @@ from python import ynab_client as ynab_client_module, settings as settings_modul
 
 def create_transaction_from_starling(data, settings=settings_module, ynab_client = ynab_client_module):
     expected_delta = 0
-    data_type = data['content']['type']
-    if not data_type in ['TRANSACTION_CARD', 'TRANSACTION_FASTER_PAYMENT_IN', 'TRANSACTION_FASTER_PAYMENT_OUT',
+    if not data.get('content') or not data['content'].get('type'):
+        return {'error': 'No webhook content type provided'}, 400
+    if not data.get('content') or not data['content'].get('type') or not data['content']['type'] in ['TRANSACTION_CARD', 'TRANSACTION_FASTER_PAYMENT_IN', 'TRANSACTION_FASTER_PAYMENT_OUT',
                                 'TRANSACTION_DIRECT_DEBIT']:
-        return {'error': 'Unsupported webhook type: %s' % data_type}, 400
+        return {'error': 'Unsupported webhook type: %s' % data.get('content')['type']}, 400
     # Sync the account so we get the latest payees
     ynab_client.sync()
 
