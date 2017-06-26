@@ -165,6 +165,70 @@ def create_transaction_from_monzo(data, settings=settings_module, ynab_client = 
         ynab_client.client.push(expected_delta)
         return {'message': 'Transaction created in YNAB successfully.'}, 201
 
+def create_transaction_from_bankin(data, settings=settings_module, ynab_client = ynab_client_module):
+    expected_delta = 0
+    data_type = data['content']['type']
+    if not data_type == 'transaction.created':
+        return {'error': 'Unsupported webhook type: %s' % data_type}, 400
+    # Sync the account so we get the latest payees
+    ynab_client.sync()
+
+    if data['content']['amount'] == 0:
+        return {'error': 'Transaction amount is 0.'}, 200
+
+    # Does this account exist?
+    account = ynab_client.getaccount(data['account']['name'])
+    if not account:
+        return {'error': 'Account {} was not found'.format(data['account']['name'])}, 400
+
+
+    payee_name = data['content']['description']
+    subcategory_id = None
+    flag = None
+    memo = ''
+
+    # If we are creating the payee, then we need to increase the delta
+    if ynab_client.payeeexists(payee_name):
+        settings.log.debug('payee exists, using %s', payee_name)
+        subcategory_id = get_subcategory_from_payee(payee_name)
+    else:
+        settings.log.debug('payee does not exist, will create %s', payee_name)
+        expected_delta += 1
+
+    entities_payee_id = ynab_client.getpayee(payee_name).id
+
+    cleared = 'Cleared'
+
+    # Create the Transaction
+    expected_delta += 1
+    settings.log.debug('Creating transaction object')
+    transaction = Transaction(
+        check_number=data['content'].get('id'),
+        entities_account_id=account.id,
+        amount=data['content']['amount'],
+        date=parse(data['content'].get('created')),
+        entities_payee_id=entities_payee_id,
+        imported_date=datetime.now().date(),
+        imported_payee=payee_name,
+        source="Imported",
+        flag=flag,
+        cleared=cleared,
+        memo=memo
+    )
+
+    if subcategory_id is not None:
+        transaction.entities_subcategory_id = subcategory_id
+
+    settings.log.debug('Duplicate detection')
+    if ynab_client.containsDuplicate(transaction):
+        settings.log.debug('skipping due to duplicate transaction')
+        return {'error': 'Tried to add a duplicate transaction.'}, 200
+    else:
+        settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
+        ynab_client.client.budget.be_transactions.append(transaction)
+        ynab_client.client.push(expected_delta)
+        return {'message': 'Transaction created in YNAB successfully.'}, 201
+
 
 def get_subcategory_from_payee(payee_name, settings = settings_module, ynab_client = ynab_client_module):
     """
