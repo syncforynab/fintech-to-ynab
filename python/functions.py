@@ -87,6 +87,10 @@ def create_transaction_from_monzo(data, settings=settings_module, ynab_client = 
     settings.log.debug('webhook type received %s', data_type)
     if data_type != 'transaction.created':
         return {'error': 'Unsupported webhook type: %s' % data_type}, 400
+
+    # the actual monzo data is in the data['data]' value
+    data = data['data']
+
     # Sync the account so we get the latest payees
     ynab_client.sync()
 
