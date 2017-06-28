@@ -33,7 +33,10 @@ def secret_required(func):
 
 
 def common_view(create_transaction_func):
-    data = request.get_json()
+    data = request.get_json(force=True)
+    settings.log.debug('received data json %s' % data)
+    settings.log.debug('received post data %s' % request.get_data())
+
     settings.log.debug(data)
     ynab_client.init()
 
