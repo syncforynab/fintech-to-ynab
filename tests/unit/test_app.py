@@ -1,6 +1,8 @@
 import json
 from unittest import TestCase
 from mock import patch
+
+from python import settings
 from python.main import app
 from python.routes import common_view
 
@@ -13,8 +15,9 @@ class TestRoutes(TestCase):
         self.app.debug = True
 
     def test_secret(self):
-        response = self.app.post('/monzo')
-        self.assertEqual(response.status_code,403)
+        if settings.url_secret is not None:
+            response = self.app.post('/monzo')
+            self.assertEqual(response.status_code,403)
 
     def test_common_view_decorator(self):
         d = {'data':'data'}
