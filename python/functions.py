@@ -4,7 +4,7 @@ from decimal import Decimal
 from dateutil.parser import parse
 from pynYNAB.schema.budget import Transaction
 
-from python import ynab_client as ynab_client_module, settings as settings_module
+import ynab_client as ynab_client_module, settings as settings_module
 
 
 def create_transaction_from_starling(data, settings=settings_module, ynab_client = ynab_client_module):
