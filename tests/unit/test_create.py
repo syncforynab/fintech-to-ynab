@@ -50,7 +50,7 @@ class CreateMonzoTests(TestCase):
 
     @patch.object(mockYnabClient, 'getaccount',lambda account_name:None)
     def test_typeOK_noaccount(self):
-        data = dict(type='transaction.created', amount=10)
+        data = dict(type='transaction.created', data=dict(amount=10))
         def _getacount(accountname):
             return None
         body, code = create_transaction_from_monzo(data, ynab_client=mockYnabClient)
@@ -62,9 +62,11 @@ class CreateMonzoTests(TestCase):
     @patch('python.functions.get_subcategory_from_payee', lambda payee_name: Mock(Payee))
     def test_typeOK_payeefound(self):
         data = dict(type='transaction.created',
-                    id='id',
-                    created='2017-05-7',
-                    amount=10, merchant=dict(name='merchant_name'),local_currency='',currency='')
+                    data=dict(
+                        id='id',
+                        created='2017-05-7',
+                        amount=10, merchant=dict(name='merchant_name'),local_currency='',currency=''
+                    ))
         def _getacount(accountname):
             return None
 
@@ -86,6 +88,3 @@ class CreateMonzoTests(TestCase):
         self.assertEqual({}, dic)
         self.assertEqual(len(tup), 1)
         self.assertEqual(1, tup[-1])
-
-
-
