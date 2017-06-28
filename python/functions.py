@@ -8,6 +8,7 @@ import ynab_client as ynab_client_module, settings as settings_module
 
 
 def create_transaction_from_starling(data, settings=settings_module, ynab_client = ynab_client_module):
+    settings.log.debug('received data %s'%data)
     expected_delta = 0
     if not data.get('content') or not data['content'].get('type'):
         return {'error': 'No webhook content type provided'}, 400
@@ -80,6 +81,7 @@ def create_transaction_from_starling(data, settings=settings_module, ynab_client
 
 
 def create_transaction_from_monzo(data, settings=settings_module, ynab_client = ynab_client_module):
+    settings.log.debug('received data %s' % data)
     expected_delta = 0
     data_type = data.get('type')
     settings.log.debug('webhook type received %s', data_type)
