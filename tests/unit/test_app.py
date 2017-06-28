@@ -21,7 +21,7 @@ class TestRoutes(TestCase):
         def create_func(data, settings):
             return d,123
 
-        with app.test_request_context(),\
+        with app.test_request_context(data='{}'),\
              patch('python.ynab_client.init') as ynab_client_patch:
             body,code = common_view(create_func)
             self.assertEqual(code,123)
