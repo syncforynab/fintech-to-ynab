@@ -3,7 +3,7 @@ from flask import Blueprint
 import settings
 import ynab_client
 from functions import create_transaction_from_monzo,create_transaction_from_starling, create_transaction_from_bankin
-#
+
 main_blueprints = Blueprint('main',__name__)
 
 from functools import wraps
