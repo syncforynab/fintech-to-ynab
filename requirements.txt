@@ -45,3 +45,4 @@ tzlocal==1.4
 unicodecsv==0.14.1
 Werkzeug==0.12.1
 xlrd==1.0.0
+mock
