@@ -51,7 +51,7 @@ def route_starling():
 def route_monzo():
     return common_view(create_transaction_from_monzo)
 
-@secret_required
 @main_blueprints.route('/bankin', methods=['POST'])
+@secret_required
 def route_bankin():
     return common_view(create_transaction_from_bankin)
