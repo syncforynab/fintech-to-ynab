@@ -130,7 +130,7 @@ def create_transaction_from_monzo(data, settings=settings_module, ynab_client = 
     flag = None
     cleared = None
     if data['local_currency'] != data['currency']:
-        memo += ' (%s %s)' % (data['local_currency'], (abs(data['local_amount']) / 100))
+        memo += ' (%s %s)' % (data['local_currency'], (abs(Decimal(data['local_amount'])) / 100))
         flag = 'Orange'
     else:
         cleared = 'Cleared'
