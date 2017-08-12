@@ -91,6 +91,9 @@ def create_transaction_from_monzo(data, settings=settings_module, ynab_client = 
     # the actual monzo data is in the data['data]' value
     data = data['data']
 
+    if 'decline_reason' in data:
+        return {'message': 'Ignoring declined transaction ({})'.format(data['decline_reason'])}, 200
+
     # Sync the account so we get the latest payees
     ynab_client.sync()
 
