@@ -5,7 +5,10 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/scottrobertson/fintech-to-ynab)
 
-Automatically push Monzo and Starling transactions into YNAB.
+Automatically push transactions to YNAB from fintech that can push to webhooks.
+  - [Monzo](getmondo.co.uk) hook API in beta https://monzo.com/docs/#webhooks
+  - [Starling](https://www.starlingbank.com) hook waiting to be implemented https://trello.com/c/rviKbwNQ
+  - [Bankinhook](https://github.com/rienafairefr/bankinhook) uses [Bankin/Bridge API](https://bridgeapi.io/)
 
 A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for the YNAB library.
 
