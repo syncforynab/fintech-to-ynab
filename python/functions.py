@@ -60,7 +60,6 @@ def create_transaction_from_starling(data, settings=settings_module, ynab_client
         entities_payee_id=entities_payee_id,
         imported_date=datetime.now().date(),
         imported_payee=payee_name,
-        source="Imported",
         flag=flag,
         cleared=cleared,
         memo=memo
