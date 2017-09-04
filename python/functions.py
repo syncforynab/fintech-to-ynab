@@ -221,6 +221,6 @@ def get_p2p_transaction_payee_name(data):
     elif data.get('metadata', {}).get('is_topup') == 'true':
         payee_name = 'Topup'
     else:
-        payee_name = 'Unknown Payee'
+        payee_name = data.get('description')
 
     return payee_name
