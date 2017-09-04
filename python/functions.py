@@ -150,7 +150,6 @@ def create_transaction_from_monzo(data, settings=settings_module, ynab_client = 
         imported_date=datetime.now().date(),
         imported_payee=payee_name,
         memo=memo,
-        source="Imported",
         flag=flag,
         cleared=cleared
     )
