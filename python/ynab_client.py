@@ -1,20 +1,15 @@
 import settings
 
-from pynYNAB.Client import nYnabClient, nYnabConnection
+from pynYNAB.Client import nYnabClient
 from pynYNAB.schema.budget import Transaction, Payee
 
 from sqlalchemy.sql.expression import exists
 
 client = None
-connection = None
 
 def init():
     global client
-    global connection
-
-    connection = connection or nYnabConnection(settings.ynab_username, settings.ynab_password)
-    client = client or nYnabClient(nynabconnection=connection, budgetname=settings.ynab_budget, logger=settings.log)
-
+    client = nYnabClient(email=settings.ynab_username, password=settings.ynab_password, budgetname=settings.ynab_budget, logger=settings.log)
 
 accounts = {}
 payees = {}
