@@ -25,7 +25,6 @@ MarkupSafe==1.0
 openpyxl==2.4.7
 ordereddict==1.1
 packaging==16.8
-pynab==0.6.8
 -e git://github.com/rienafairefr/pynYNAB.git@24c230bf2f735e260ff4b8f5735e893399d14d1d#egg=pynYNAB
 pyparsing==2.2.0
 python-dateutil==2.6.0
