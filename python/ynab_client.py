@@ -17,13 +17,17 @@ payees = {}
 def sync():
     settings.log.debug('syncing')
     client.sync()
+    cache_accounts()
+    cache_payees()
 
-    settings.log.debug('assigning accounts and payees')
-
+def cache_accounts():
     global accounts
-    global payees
-
+    settings.log.debug('assigning accounts')
     accounts = {x.account_name: x for x in client.budget.be_accounts}
+
+def cache_payees():
+    global payees
+    settings.log.debug('assigning payees')
     payees = {p.name: p for p in client.budget.be_payees}
 
 def getaccount(accountname):

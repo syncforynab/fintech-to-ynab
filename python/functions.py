@@ -166,6 +166,52 @@ def create_transaction_from_monzo(data, settings=settings_module, ynab_client = 
         ynab_client.client.push(expected_delta)
         return {'message': 'Transaction created in YNAB successfully.'}, 201
 
+def create_transaction_from_csv(data, account, settings=settings_module, ynab_client = ynab_client_module):
+    settings.log.debug('received data %s' % data)
+    expected_delta = 0
+
+    if data['amount'] == 0:
+        return {'error': 'Transaction amount is 0.'}
+
+    payee_name = data['description']
+    subcategory_id = get_subcategory_from_payee(payee_name)
+
+    # If we are creating the payee, then we need to increase the delta
+    if not ynab_client.payeeexists(payee_name):
+        settings.log.debug('payee does not exist, will create %s', payee_name)
+        expected_delta += 1
+
+    # Get the payee ID. This will append a new one if needed
+    entities_payee_id = ynab_client.getpayee(payee_name).id
+
+    # If we created a payee, then we need to resync the payees cache
+    if expected_delta == 1:
+        ynab_client.cache_payees()
+
+    # Create the Transaction
+    expected_delta += 1
+    settings.log.debug('Creating transaction object')
+    transaction = Transaction(
+        entities_account_id=account.id,
+        amount=Decimal(data['amount']),
+        date=parse(data['date'], dayfirst=True),
+        entities_payee_id=entities_payee_id,
+        imported_date=datetime.now().date(),
+        imported_payee=payee_name,
+        cleared=True
+    )
+
+    if subcategory_id is not None:
+        transaction.entities_subcategory_id = subcategory_id
+
+    settings.log.debug('Duplicate detection')
+    if ynab_client.containsDuplicate(transaction):
+        settings.log.debug('skipping due to duplicate transaction')
+        return {'error': 'Tried to add a duplicate transaction.'}
+    else:
+        settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
+        ynab_client.client.budget.be_transactions.append(transaction)
+        return expected_delta
 
 def get_subcategory_from_payee(payee_name, settings = settings_module, ynab_client = ynab_client_module):
     """
