@@ -7,6 +7,8 @@ import settings as settings_module
 from functions import create_transaction_from_csv
 from qifparse.parser import QifParser
 
+from pynYNAB.exceptions import WrongPushException
+
 @click.command()
 @click.option('--account', prompt='Your YNAB Account Name')
 @click.option('--path', prompt='The CSV file')
@@ -29,16 +31,19 @@ def import_csv(account, path):
         reader = csv.DictReader(csvfile)
         for row in reader:
             create = create_transaction_from_csv(row, ynab_account)
-
             if isinstance(create, numbers.Number):
-                print 'Adding transaction'
                 expected_delta += create
+                print 'Adding Transaction or Payee'
             else:
                 print create['error']
 
     if expected_delta > 0:
         print 'Pushing to YNAB'
-        ynab_client.client.push(expected_delta)
+        try:
+            ynab_client.client.push(expected_delta)
+        except WrongPushException, ex:
+            print 'Push failed'
+            print ex.msg
 
 if __name__ == '__main__':
     import_csv()

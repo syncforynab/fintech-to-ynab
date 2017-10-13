@@ -73,6 +73,7 @@ def create_transaction_from_starling(data, settings=settings_module, ynab_client
         settings.log.debug('skipping due to duplicate transaction')
         return {'error': 'Tried to add a duplicate transaction.'}, 200
     else:
+        expected_delta += 1
         settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
         ynab_client.client.budget.be_transactions.append(transaction)
         ynab_client.client.push(expected_delta)
@@ -178,6 +179,7 @@ def create_transaction_from_csv(data, account, settings=settings_module, ynab_cl
 
     # If we are creating the payee, then we need to increase the delta
     if not ynab_client.payeeexists(payee_name):
+        print 'does not exist'
         settings.log.debug('payee does not exist, will create %s', payee_name)
         expected_delta += 1
 
@@ -189,7 +191,6 @@ def create_transaction_from_csv(data, account, settings=settings_module, ynab_cl
         ynab_client.cache_payees()
 
     # Create the Transaction
-    expected_delta += 1
     settings.log.debug('Creating transaction object')
     transaction = Transaction(
         entities_account_id=account.id,
@@ -198,7 +199,8 @@ def create_transaction_from_csv(data, account, settings=settings_module, ynab_cl
         entities_payee_id=entities_payee_id,
         imported_date=datetime.now().date(),
         imported_payee=payee_name,
-        cleared=True
+        cleared=True,
+        source='Imported'
     )
 
     if subcategory_id is not None:
@@ -207,8 +209,14 @@ def create_transaction_from_csv(data, account, settings=settings_module, ynab_cl
     settings.log.debug('Duplicate detection')
     if ynab_client.containsDuplicate(transaction):
         settings.log.debug('skipping due to duplicate transaction')
-        return {'error': 'Tried to add a duplicate transaction.'}
+        # We may just be adding a payee
+        if expected_delta == 1:
+            print 'just adding payee'
+            return expected_delta
+        else:
+            return {'error': 'Tried to add a duplicate transaction.'}
     else:
+        expected_delta += 1
         settings.log.debug('appending and pushing transaction to YNAB. Delta: %s', expected_delta)
         ynab_client.client.budget.be_transactions.append(transaction)
         return expected_delta
