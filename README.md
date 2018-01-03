@@ -9,6 +9,8 @@ Automatically push Monzo and Starling transactions into YNAB.
 
 A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for the YNAB library.
 
+> **Note Starling support is pending support for [Personal Access Webhooks](https://trello.com/c/rviKbwNQ/47-personal-access-webhooks-%F0%9F%93%AF).**
+
 ## Features
   - Push your Monzo and Starling transactions into YNAB in realtime
   - Automatically populate the category based on previous transactions
