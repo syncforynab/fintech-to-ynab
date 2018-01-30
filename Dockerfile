@@ -1,22 +1,9 @@
-FROM python:2.7.14-alpine
+FROM ruby:2.4.0
+WORKDIR /app
 
-MAINTAINER Ross Dargan
+ADD Gemfile* /app/
+RUN bundle check || bundle install --jobs=4 --retry=3
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh gcc g++ python python-dev py-pip libxml2-dev libffi-dev libxslt-dev openssl-dev curl
+ADD . /app
 
-COPY requirements.txt /usr/src/requirements.txt
-
-COPY python/. /usr/src/
-
-EXPOSE 5000
-
-WORKDIR /usr/src
-
-RUN pip install -r requirements.txt
-
-ENTRYPOINT ["python"]
-
-CMD ["/usr/src/main.py"]
-
-HEALTHCHECK CMD curl --fail http://localhost:5000/ping || exit 1
+ENTRYPOINT bundle exec puma -C config/puma.rb
