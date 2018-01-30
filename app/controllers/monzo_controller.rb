@@ -8,22 +8,28 @@ class MonzoController < ApplicationController
     payee_name ||= webhook[:data][:counterparty][:name] if webhook[:data][:counterparty].present?
     payee_name ||= 'Topup' if webhook[:data][:metadata][:is_topup]
     payee_name ||= webhook[:data][:description]
+    description = ''
 
-    description = webhook[:data][:description]
-    description << " #{webhook[:merchant][:emoji]}" if webhook[:merchant].try(:[], :emoji)
-    description << " #{webhook[:merchant][:suggested_tags]}" if webhook[:merchant].try(:[], :suggested_tags)
+    foreign_transaction = webhook[:data][:local_currency] != webhook[:data][:currency]
+    if foreign_transaction
+      money = Money.new(webhook[:data][:local_amount].abs, webhook[:data][:local_currency])
+      description.prepend("(#{money.format}) ")
+    end
+
+    description.prepend("#{webhook[:data][:merchant][:emoji]} ") if webhook[:data][:merchant].try(:[], :emoji)
+    description << " #{webhook[:data][:merchant][:suggested_tags]}" if webhook[:data][:merchant].try(:[], :suggested_tags)
 
     ynab_creator = YNABTransactionCreator.new(
       Time.parse(webhook[:data][:created]).to_date,
       webhook[:data][:amount],
       payee_name,
-      description,
-      cleared: webhook[:data][:local_currency] == webhook[:data][:currency]
+      description.strip,
+      cleared: !foreign_transaction
     )
 
     create = ynab_creator.create
     if create.try(:[], :transaction).present?
-      render json: transaction
+      render json: create[:transaction]
     else
       render json: { error: create[:error] }, status: 400
     end
