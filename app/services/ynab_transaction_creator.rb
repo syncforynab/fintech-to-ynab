@@ -13,7 +13,7 @@ class YNABTransactionCreator
     payee_id = lookup_payee_id(@payee_name)
     category_id = lookup_category_id(payee_id)
 
-    return :duplicate if is_duplicate_transaction?(payee_id, category_id)
+    return {error: :duplicate} if is_duplicate_transaction?(payee_id, category_id)
 
     create = @client.create_transaction(
       budget_id: selected_budget_id,
@@ -26,7 +26,7 @@ class YNABTransactionCreator
       memo: @description
     )
 
-    create.try(:[], :transaction).present? ? create : :failed
+    create.try(:[], :transaction).present? ? create : { error: :failed }
   end
 
   private

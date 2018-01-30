@@ -21,6 +21,11 @@ class MonzoController < ApplicationController
       cleared: webhook[:data][:local_currency] == webhook[:data][:currency]
     )
 
-    render json: { saved: ynab_creator.create }
+    create = ynab_creator.create
+    if create.try(:[], :transaction).present?
+      render json: transaction
+    else
+      render json: { error: create[:error] }, status: 400
+    end
   end
 end
