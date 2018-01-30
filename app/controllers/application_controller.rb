@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
   end
 
   def ping
-    { pong: true }
+    render json: { pong: true }
   end
 
   private
