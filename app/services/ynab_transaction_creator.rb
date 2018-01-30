@@ -45,7 +45,7 @@ class YNABTransactionCreator
   end
 
   def lookup_payee_id(payee_name)
-    @client.payees(selected_budget_id).select{|p| p[:name].downcase == payee_name.downcase }.first.try(:[], :id)
+    @client.payees(selected_budget_id).select{|p| p[:name].downcase == payee_name.to_s.downcase }.first.try(:[], :id)
   end
 
   def selected_budget_id
