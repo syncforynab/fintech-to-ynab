@@ -13,7 +13,6 @@ Automatically push Monzo and Starling transactions into YNAB.
   - Automatically populate the category based on previous transactions
   - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default (can be disabled, Monzo only)
   - Automatically mark transactions as cleared (except for those in a foreign currency, Monzo only)
-  - Import CSV directly into YNAB
 
 ## Getting Started
 
