@@ -2,51 +2,5 @@
   "name": "Fintech to YNAB",
   "description": "Automatically push Monzo and Starling transactions into YNAB",
   "repository": "https://github.com/scottrobertson/fintech-to-ynab",
-  "keywords": ["monzo", "ynab", "starling"],
-  "env": {
-    "YNAB_BUDGET": {
-      "description": "Your YNAB budget name",
-      "required": true
-    },
-    "YNAB_USERNAME": {
-      "description": "Your YNAB username (email)",
-      "required": true
-    },
-    "YNAB_PASSWORD": {
-      "description": "Your YNAB password",
-      "required": true
-    },
-    "STARLING_YNAB_ACCOUNT": {
-      "description": "Your YNAB account name used by Starling (Use 'N/A' when not using Starling)",
-      "required": true
-    },
-    "MONZO_YNAB_ACCOUNT": {
-      "description": "Your YNAB account name used by Monzo (Use 'N/A' when not using Monzo)",
-      "required": true
-    },
-    "URL_SECRET": {
-      "description": "This is a secret used for the webhooks endpoint.",
-      "required": false
-    },
-    "SKIP_AUTO_CLEAR": {
-      "description": "By default, we mark transactions in your account's currency as cleared, this allows you to skip that (Monzo only)",
-      "value": "false",
-      "required": false
-    },
-    "SKIP_EMOJI": {
-      "description": "By default, we include the emoji from Monzo in the YNAB description. This skips that. (Monzo only)",
-      "value": "false",
-      "required": false
-    },
-    "SKIP_TAGS": {
-      "description": "By default, we include the hashtags from Monzo in the YNAB description. This skips that. (Monzo only)",
-      "value": "false",
-      "required": false
-    },
-    "LOG_LEVEL": {
-      "description": "How much should we log?",
-      "value": "debug",
-      "required": false
-    }
-  }
+  "keywords": ["monzo", "ynab", "starling"]
 }
