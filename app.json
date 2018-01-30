@@ -2,5 +2,19 @@
   "name": "Fintech to YNAB",
   "description": "Automatically push Monzo and Starling transactions into YNAB",
   "repository": "https://github.com/scottrobertson/fintech-to-ynab",
-  "keywords": ["monzo", "ynab", "starling"]
+  "keywords": ["monzo", "ynab", "starling"],
+  "env": {
+    "YNAB_ACCESS_TOKEN": {
+      "description": "Your YNAB access token",
+      "required": true
+    },
+    "YNAB_BUDGET_ID": {
+      "description": "Optional default budget ID. If not provided, we will use the first budget.",
+      "required": false
+    },
+    "YNAB_ACCOUNT_ID": {
+      "description": "Optional default account ID. If not provided, we will use the first account.",
+      "required": false
+    }
+  }
 }
