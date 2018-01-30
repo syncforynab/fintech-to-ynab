@@ -13,6 +13,6 @@ class ApplicationController < ActionController::API
   private
 
   def verify_token
-    # @todo verify the token if one is set in ENV
+    render json: { error: :unauthorised }, status: 401 if ENV['URL_SECRET'].present? && ENV['URL_SECRET'] != params[:secret]
   end
 end

@@ -9,11 +9,15 @@
       "required": true
     },
     "YNAB_BUDGET_ID": {
-      "description": "Optional default budget ID. If not provided, we will use the first budget.",
+      "description": "Optional: Default budget ID. If not provided, we will use the first budget.",
       "required": false
     },
     "YNAB_ACCOUNT_ID": {
-      "description": "Optional default account ID. If not provided, we will use the first account.",
+      "description": "Optional: Default account ID. If not provided, we will use the first account.",
+      "required": false
+    },
+    "URL_SECRET": {
+      "description": "Optional: This is a secret used for the webhooks endpoint.",
       "required": false
     }
   }
