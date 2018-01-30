@@ -1,9 +1,11 @@
 # Fintech to YNAB
 
+> **This version is deprecated, please use master**
+
 [![Docker](https://img.shields.io/docker/build/scottrobertson/fintech-to-ynab.svg)](https://hub.docker.com/r/scottrobertson/fintech-to-ynab/)
 [![CircleCI](https://img.shields.io/circleci/project/github/scottrobertson/fintech-to-ynab.svg)](https://circleci.com/gh/scottrobertson/fintech-to-ynab)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/scottrobertson/fintech-to-ynab)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/scottrobertson/fintech-to-ynab/tree/v1)
 
 Automatically push Monzo and Starling transactions into YNAB.
 
@@ -20,7 +22,7 @@ A huge thanks to [@rienafairefr](https://github.com/rienafairefr/nYNABapi) for t
 
 ## Getting Started
 
-Please see our [Getting Started](https://github.com/scottrobertson/fintech-to-ynab/wiki/Getting-Started) guide to see how to set Fintech to YNAB up.
+Please see our [Getting Started](https://github.com/scottrobertson/fintech-to-ynab/wiki/Getting-Started-(V1)) guide to see how to set Fintech to YNAB up.
 
 ## CSV Imports
 
