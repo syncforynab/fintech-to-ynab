@@ -2,6 +2,8 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/scottrobertson/fintech-to-ynab)
 
+> **This version requires beta access to the YNAB API, please use the [v1 branch](https://github.com/scottrobertson/fintech-to-ynab/tree/v1) if you do not have access**
+
 Automatically push Monzo and Starling transactions into YNAB.
 
 > **Note Starling support is pending support for [Personal Access Webhooks](https://trello.com/c/rviKbwNQ/47-personal-access-webhooks-%F0%9F%93%AF).**
