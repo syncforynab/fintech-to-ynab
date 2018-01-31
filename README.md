@@ -18,4 +18,8 @@ Automatically push Monzo and Starling transactions into YNAB.
 
 Please see our [Getting Started](https://github.com/scottrobertson/fintech-to-ynab/wiki/Getting-Started) guide to see how to set Fintech to YNAB up.
 
+## Imports
+
+As well as real-time webhooks, we also support bulk imports. You can read about them [here](https://github.com/scottrobertson/fintech-to-ynab/wiki/Import)
+
 **Warning**: This app is not officially supported by YNAB in any way. Use of this app could introduce problems into your budget that YNAB, through its official support channels, will not be able to troubleshoot or fix. Please use at your own risk!
