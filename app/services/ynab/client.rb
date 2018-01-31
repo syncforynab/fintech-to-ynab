@@ -2,8 +2,10 @@ class YNAB::Client
 
   BASE_URL = 'https://api.youneedabudget.com/papi/v1'
 
-  def initialize(access_token)
+  def initialize(access_token, budget_id = nil, account_id = nil)
     @access_token = access_token
+    @budget_id = budget_id || ENV['YNAB_BUDGET_ID']
+    @account_id = account_id || ENV['YNAB_ACCOUNT_ID']
   end
 
   def budgets
@@ -49,6 +51,8 @@ class YNAB::Client
     }, {
       'Authorization' => "Bearer #{@access_token}"
     }))
+  rescue => e
+    raise JSON.parse(e.response.body).to_yaml
   end
 
   def get(url)
@@ -56,11 +60,11 @@ class YNAB::Client
   end
 
   def selected_budget_id
-    @_selected_budget_id ||= ENV['YNAB_BUDGET_ID'] || budgets.first[:id]
+    @_selected_budget_id ||= @budget_id || budgets.first[:id]
   end
 
   def selected_account_id
-    @_selected_account_id ||= ENV['YNAB_ACCOUNT_ID'] || accounts(selected_budget_id).reject{|a| a[:closed]}.select{|a| a[:type] == 'Checking'}.first[:id]
+    @_selected_account_id ||= @account_id || accounts(selected_budget_id).reject{|a| a[:closed]}.select{|a| a[:type] == 'Checking'}.first[:id]
   end
 
   protected
