@@ -16,8 +16,8 @@ class YNABTransactionCreator
     return {error: :duplicate} if is_duplicate_transaction?(payee_id, category_id)
 
     create = @client.create_transaction(
-      budget_id: selected_budget_id,
-      account_id: selected_account_id,
+      budget_id: @client.selected_budget_id,
+      account_id: @client.selected_account_id,
       payee_id: payee_id,
       category_id: category_id,
       amount: @amount,
@@ -45,18 +45,10 @@ class YNABTransactionCreator
   end
 
   def lookup_payee_id(payee_name)
-    @client.payees(selected_budget_id).select{|p| p[:name].downcase == payee_name.to_s.downcase }.first.try(:[], :id)
-  end
-
-  def selected_budget_id
-    @_selected_budget_id ||= ENV['YNAB_BUDGET_ID'] || @client.budgets.first[:id]
-  end
-
-  def selected_account_id
-    @_selected_account_id ||= ENV['YNAB_ACCOUNT_ID'] || @client.accounts(selected_budget_id).reject{|a| a[:closed]}.select{|a| a[:type] == 'Checking'}.first[:id]
+    @client.payees(@client.selected_budget_id).select{|p| p[:name].downcase == payee_name.to_s.downcase }.first.try(:[], :id)
   end
 
   def transactions
-    @_transactions ||= @client.transactions(selected_budget_id)
+    @_transactions ||= @client.transactions(@client.selected_budget_id)
   end
 end

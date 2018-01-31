@@ -46,6 +46,14 @@ class YNABClient
     parse_response(RestClient.get(BASE_URL + url, { 'Authorization' => "Bearer #{@access_token}" }))
   end
 
+  def selected_budget_id
+    @_selected_budget_id ||= ENV['YNAB_BUDGET_ID'] || budgets.first[:id]
+  end
+
+  def selected_account_id
+    @_selected_account_id ||= ENV['YNAB_ACCOUNT_ID'] || accounts(selected_budget_id).reject{|a| a[:closed]}.select{|a| a[:type] == 'Checking'}.first[:id]
+  end
+
   protected
 
   def parse_response(response)
