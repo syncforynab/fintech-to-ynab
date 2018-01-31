@@ -10,7 +10,7 @@ class YNAB::BulkTransactionCreator
 
     @transactions.each do |transaction|
       payee_id = lookup_payee_id(transaction[:payee_name])
-      category_id = lookup_category_id(payee_id)
+      category_id = payee_id.present? ? lookup_category_id(payee_id) : nil
 
       next if is_duplicate_transaction?(payee_id, category_id, transaction[:time], transaction[:amount])
 
