@@ -1,4 +1,4 @@
-class YNABTransactionCreator
+class YNAB::TransactionCreator
   def initialize(time, amount, payee_name, description, cleared: true)
     @time = time
     @amount = amount
@@ -6,7 +6,7 @@ class YNABTransactionCreator
     @description = description
     @cleared = cleared
 
-    @client = YNABClient.new(ENV['YNAB_ACCESS_TOKEN'])
+    @client = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'])
   end
 
   def create

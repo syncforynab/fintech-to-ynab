@@ -1,4 +1,4 @@
-class YNABClient
+class YNAB::Client
 
   BASE_URL = 'https://api.youneedabudget.com/papi/v1'
 
