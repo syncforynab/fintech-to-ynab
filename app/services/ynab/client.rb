@@ -43,6 +43,14 @@ class YNAB::Client
     }))
   end
 
+  def create_transactions(budget_id, transactions)
+    parse_response(RestClient.post(BASE_URL + "/budgets/#{budget_id}/transactions/bulk", {
+      transactions: transactions
+    }, {
+      'Authorization' => "Bearer #{@access_token}"
+    }))
+  end
+
   def get(url)
     parse_response(RestClient.get(BASE_URL + url, { 'Authorization' => "Bearer #{@access_token}" }))
   end
