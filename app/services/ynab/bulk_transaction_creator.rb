@@ -1,8 +1,8 @@
 class YNAB::BulkTransactionCreator
-  def initialize(transactions)
+  def initialize(transactions, budget_id: nil, account_id: nil)
     @transactions = transactions
 
-    @client = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'])
+    @client = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], budget_id, account_id)
   end
 
   def create
