@@ -1,6 +1,6 @@
 class YNAB::TransactionCreator
-  def initialize(time, amount, payee_name, description, cleared: true)
-    @time = time
+  def initialize(date, amount, payee_name, description, cleared: true)
+    @date = date
     @amount = amount
     @payee_name = payee_name
     @description = description
@@ -23,7 +23,7 @@ class YNAB::TransactionCreator
       category_id: category_id,
       amount: @amount,
       cleared: @cleared,
-      date: @time.to_date,
+      date: @date.to_date,
       memo: @description
     )
 
@@ -34,7 +34,7 @@ class YNAB::TransactionCreator
 
   def is_duplicate_transaction?(payee_id, category_id)
     transactions.any? do |transaction|
-      transaction[:date] == @time.to_date.to_s &&
+      transaction[:date] == @date.to_date.to_s &&
         transaction[:amount] == @amount &&
         transaction[:payee_id] == payee_id &&
         transaction[:category_id] == category_id
