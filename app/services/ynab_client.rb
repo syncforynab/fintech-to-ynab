@@ -26,7 +26,7 @@ class YNABClient
     get("/budgets/#{budget_id}/transactions")[:transactions]
   end
 
-  def create_transaction(budget_id: nil, account_id: nil, payee_id: nil, category_id: nil, amount: nil, cleared: nil, date: nil, memo: nil)
+  def create_transaction(budget_id: nil, account_id: nil, payee_id: nil, payee_name: nil, category_id: nil, amount: nil, cleared: nil, date: nil, memo: nil)
     parse_response(RestClient.post(BASE_URL + "/budgets/#{budget_id}/transactions", {
       transaction: {
         account_id: account_id,
@@ -34,6 +34,7 @@ class YNABClient
         amount: amount,
         category_id: category_id,
         payee_id: payee_id,
+        payee_name: payee_name,
         cleared: cleared ? "Cleared" : 'Uncleared',
         memo: memo
       }

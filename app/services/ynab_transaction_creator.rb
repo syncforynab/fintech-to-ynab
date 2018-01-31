@@ -18,6 +18,7 @@ class YNABTransactionCreator
     create = @client.create_transaction(
       budget_id: @client.selected_budget_id,
       account_id: @client.selected_account_id,
+      payee_name: @payee_name,
       payee_id: payee_id,
       category_id: category_id,
       amount: @amount,
