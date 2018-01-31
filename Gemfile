@@ -11,6 +11,11 @@ gem 'rest-client'
 gem 'rails', '~> 5.1.4'
 gem 'puma', '~> 3.7'
 gem 'money'
+
+# Fintech Providers
+gem 'starling-ruby', require: 'starling'
+
+# Utilities
 gem 'awesome_print'
 
 group :development, :test do
