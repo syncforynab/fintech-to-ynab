@@ -67,6 +67,15 @@ class YNAB::Client
     @_selected_account_id ||= @account_id || accounts(selected_budget_id).reject{|a| a[:closed]}.select{|a| a[:type] == 'Checking'}.first[:id]
   end
 
+  def lookup_payee_id(payee_name)
+    @_payee_names ||= payees(selected_budget_id).map {|p| { id: p[:id], name: p[:name] } }
+    @_fuzzy_match ||= FuzzyMatch.new(@_payee_names, read: :name)
+
+    payee_found = @_fuzzy_match.find(payee_name.to_s)
+    payee_found = nil if payee_found.present? && payee_name.pair_distance_similar(payee_found[:name]) < 0.5
+    payee_found.try(:[], :id)
+  end
+
   protected
 
   def parse_response(response)

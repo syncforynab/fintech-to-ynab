@@ -9,7 +9,7 @@ class YNAB::BulkTransactionCreator
     transactions_to_create = []
 
     @transactions.each do |transaction|
-      payee_id = lookup_payee_id(transaction[:payee_name])
+      payee_id = @client.lookup_payee_id(transaction[:payee_name])
       category_id = payee_id.present? ? lookup_category_id(payee_id) : nil
 
       next if is_duplicate_transaction?(payee_id, category_id, transaction[:date], transaction[:amount])
@@ -50,19 +50,6 @@ class YNAB::BulkTransactionCreator
 
   def lookup_category_id(payee_id)
     transactions.select{|a| a[:payee_id] == payee_id }.last.try(:[], :category_id)
-  end
-
-  def lookup_payee_id(payee_name)
-    @_payee_names ||= payees.map {|p| { id: p[:id], name: p[:name] } }
-    @_fuzzy_match ||= FuzzyMatch.new(@_payee_names, read: :name)
-
-    payee_found = @_fuzzy_match.find(payee_name.to_s)
-    payee_found = nil if payee_found.present? && payee_name.pair_distance_similar(payee_found[:name]) < 0.5
-    payee_found.try(:[], :id)
-  end
-
-  def payees
-    @_payees ||= @client.payees(@client.selected_budget_id)
   end
 
   def transactions
