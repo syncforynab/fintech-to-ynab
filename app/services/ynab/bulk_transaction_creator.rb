@@ -10,7 +10,7 @@ class YNAB::BulkTransactionCreator
 
     @transactions.each do |transaction|
       payee_id = @client.lookup_payee_id(transaction[:payee_name])
-      category_id = payee_id.present? ? lookup_category_id(payee_id) : nil
+      category_id = payee_id.present? ? @client.lookup_category_id(payee_id) : nil
 
       next if is_duplicate_transaction?(payee_id, category_id, transaction[:date], transaction[:amount])
 
@@ -48,11 +48,7 @@ class YNAB::BulkTransactionCreator
     end
   end
 
-  def lookup_category_id(payee_id)
-    transactions.select{|a| a[:payee_id] == payee_id }.last.try(:[], :category_id)
-  end
-
   def transactions
-    @_transactions ||= @client.transactions(@client.selected_budget_id)
+    @_transactions ||= @client.transactions
   end
 end

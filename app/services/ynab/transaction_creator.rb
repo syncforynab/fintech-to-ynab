@@ -20,8 +20,6 @@ class YNAB::TransactionCreator
     @description << " (#{@payee_name})" if payee_id.nil?
 
     create = @client.create_transaction(
-      budget_id: @client.selected_budget_id,
-      account_id: @client.selected_account_id,
       payee_name: @payee_name,
       payee_id: payee_id,
       category_id: category_id,
@@ -45,11 +43,7 @@ class YNAB::TransactionCreator
     end
   end
 
-  def lookup_category_id(payee_id)
-    transactions.select{|a| a[:payee_id] == payee_id }.last.try(:[], :category_id)
-  end
-
   def transactions
-    @_transactions ||= @client.transactions(@client.selected_budget_id)
+    @_transactions ||= @client.transactions
   end
 end
