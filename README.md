@@ -4,12 +4,10 @@
 
 > **This version requires beta access to the YNAB API, please use the [v1 branch](https://github.com/scottrobertson/fintech-to-ynab/tree/v1) if you do not have access**
 
-Automatically push Monzo and Starling transactions into YNAB.
-
-> **Note Realtime Starling support is pending support for [Personal Access Webhooks](https://trello.com/c/rviKbwNQ/47-personal-access-webhooks-%F0%9F%93%AF). Historical imports are now available**
+Automatically push Monzo transactions to YNAB in realtime. Also import historical transactions for many more banks.
 
 ## Features
-  - Push your Monzo and Starling transactions into YNAB in realtime
+  - Push your Monzo transactions into YNAB in realtime
   - Automatically populate the category based on previous transactions
   - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default
   - Automatically mark transactions as cleared (except for those in a foreign currency)
@@ -38,3 +36,5 @@ As well as real-time webhooks, we also support bulk imports for the following fi
 - [HSBC UK](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
 
 **Warning**: This app is not officially supported by YNAB in any way. Use of this app could introduce problems into your budget that YNAB, through its official support channels, will not be able to troubleshoot or fix. Please use at your own risk!
+
+> **Note Realtime Starling support is pending support for [Personal Access Webhooks](https://trello.com/c/rviKbwNQ/47-personal-access-webhooks-%F0%9F%93%AF). Historical imports are now available**
