@@ -12,7 +12,7 @@ class YNAB::BulkTransactionCreator
       payee_id = @client.lookup_payee_id(transaction[:payee_name])
       category_id = payee_id.present? ? @client.lookup_category_id(payee_id) : nil
 
-      next if is_duplicate_transaction?(payee_id, category_id, transaction[:date], transaction[:amount])
+      next if @client.is_duplicate_transaction?(payee_id, category_id, transaction[:date], transaction[:amount])
 
       # @note Until YNAB has the ability to create payees, lets pass the payee_name to the description for now.
       transaction[:description] ||= ''
@@ -22,7 +22,6 @@ class YNAB::BulkTransactionCreator
         payee_name: transaction[:payee_name],
         payee_id: payee_id,
         category_id: category_id,
-        account_id: @client.selected_account_id,
         amount: transaction[:amount],
         memo: transaction[:description],
         date: transaction[:date].to_date,
@@ -31,24 +30,9 @@ class YNAB::BulkTransactionCreator
     end
 
     if transactions_to_create.any?
-      @client.create_transactions(@client.selected_budget_id, transactions_to_create)
+      @client.create_transactions(transactions_to_create)
     else
       :no_transactions_to_create
     end
-  end
-
-  private
-
-  def is_duplicate_transaction?(payee_id, category_id, date, amount)
-    transactions.any? do |transaction|
-      transaction[:date] == date.to_date.to_s &&
-        transaction[:amount] == amount &&
-        transaction[:payee_id] == payee_id &&
-        transaction[:category_id] == category_id
-    end
-  end
-
-  def transactions
-    @_transactions ||= @client.transactions
   end
 end

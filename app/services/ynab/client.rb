@@ -43,7 +43,7 @@ class YNAB::Client
 
   def create_transactions(transactions)
     parse_response(RestClient.post(BASE_URL + "/budgets/#{selected_budget_id}/transactions/bulk", {
-      transactions: transactions
+      transactions: transactions.each{|d| d[:account_id] = selected_account_id }
     }, {
       'Authorization' => "Bearer #{@access_token}"
     }))
@@ -72,6 +72,15 @@ class YNAB::Client
 
   def lookup_category_id(payee_id)
     transactions.select{|a| a[:payee_id] == payee_id }.last.try(:[], :category_id)
+  end
+
+  def is_duplicate_transaction?(payee_id, category_id, date, amount)
+    transactions.any? do |transaction|
+      transaction[:date] == date.to_date.to_s &&
+        transaction[:amount] == amount &&
+        transaction[:payee_id] == payee_id &&
+        transaction[:category_id] == category_id
+    end
   end
 
   protected

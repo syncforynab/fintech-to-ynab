@@ -12,8 +12,8 @@ class YNAB::TransactionCreator
   def create
     payee_id = @client.lookup_payee_id(@payee_name)
     category_id = payee_id.present? ? lookup_category_id(payee_id) : nil
-
-    return {error: :duplicate} if is_duplicate_transaction?(payee_id, category_id)
+    
+    return { error: :duplicate } if is_duplicate_transaction?(payee_id, category_id, @date.to_date, @amount)
 
     # @note Until YNAB has the ability to create payees, lets pass the payee_name to the description for now.
     @description ||= ''
@@ -30,20 +30,5 @@ class YNAB::TransactionCreator
     )
 
     create.try(:[], :transaction).present? ? create : { error: :failed }
-  end
-
-  private
-
-  def is_duplicate_transaction?(payee_id, category_id)
-    transactions.any? do |transaction|
-      transaction[:date] == @date.to_date.to_s &&
-        transaction[:amount] == @amount &&
-        transaction[:payee_id] == payee_id &&
-        transaction[:category_id] == category_id
-    end
-  end
-
-  def transactions
-    @_transactions ||= @client.transactions
   end
 end
