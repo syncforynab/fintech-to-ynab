@@ -21,6 +21,19 @@ Please see our [Getting Started](https://github.com/scottrobertson/fintech-to-yn
 
 ## Imports
 
-As well as real-time webhooks, we also support bulk imports. You can read about them [here](https://github.com/scottrobertson/fintech-to-ynab/wiki/Import)
+As well as real-time webhooks, we also support bulk imports for the following financial institutions:
+
+- [Starling](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Starling-Bank)
+- [Barclays](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [Isle of Man Bank](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [Metro Bank](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [Nationwide](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [Natwest](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [Royal Bank of Scotland](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [Santander](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [Tesco](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [TSB](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [Ulster Bank NI](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
+- [HSBC UK](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
 
 **Warning**: This app is not officially supported by YNAB in any way. Use of this app could introduce problems into your budget that YNAB, through its official support channels, will not be able to troubleshoot or fix. Please use at your own risk!
