@@ -6,14 +6,14 @@
 
 Automatically push Monzo and Starling transactions into YNAB.
 
-> **Note Starling support is pending support for [Personal Access Webhooks](https://trello.com/c/rviKbwNQ/47-personal-access-webhooks-%F0%9F%93%AF).**
+> **Note Realtime Starling support is pending support for [Personal Access Webhooks](https://trello.com/c/rviKbwNQ/47-personal-access-webhooks-%F0%9F%93%AF). Historical imports are now available**
 
 ## Features
   - Push your Monzo and Starling transactions into YNAB in realtime
   - Automatically populate the category based on previous transactions
-  - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default (can be disabled, Monzo only)
-  - Automatically mark transactions as cleared (except for those in a foreign currency, Monzo only)
-  - Import your bank history using [Imports](https://github.com/scottrobertson/fintech-to-ynab/wiki/Import)
+  - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default
+  - Automatically mark transactions as cleared (except for those in a foreign currency)
+  - Import your bank history using [Imports](#imports)
 
 ## Getting Started
 
