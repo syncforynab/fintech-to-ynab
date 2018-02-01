@@ -35,6 +35,4 @@ As well as real-time webhooks, we also support bulk imports for the following fi
 - [Ulster Bank NI](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
 - [HSBC UK](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
 
-**Warning**: This app is not officially supported by YNAB in any way. Use of this app could introduce problems into your budget that YNAB, through its official support channels, will not be able to troubleshoot or fix. Please use at your own risk!
-
-> **Note Realtime Starling support is pending support for [Personal Access Webhooks](https://trello.com/c/rviKbwNQ/47-personal-access-webhooks-%F0%9F%93%AF). Historical imports are now available**
+> This app is not officially supported by YNAB in any way. Use of this app could introduce problems into your budget that YNAB, through its official support channels, will not be able to troubleshoot or fix. Please use at your own risk!
