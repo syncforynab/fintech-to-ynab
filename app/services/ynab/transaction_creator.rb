@@ -15,6 +15,10 @@ class YNAB::TransactionCreator
 
     return {error: :duplicate} if is_duplicate_transaction?(payee_id, category_id)
 
+    # @note Until YNAB has the ability to create payees, lets pass the payee_name to the description for now.
+    @description ||= ''
+    @description << " (#{@payee_name})" if payee_id.nil?
+
     create = @client.create_transaction(
       budget_id: @client.selected_budget_id,
       account_id: @client.selected_account_id,

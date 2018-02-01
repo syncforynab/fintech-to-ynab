@@ -14,6 +14,10 @@ class YNAB::BulkTransactionCreator
 
       next if is_duplicate_transaction?(payee_id, category_id, transaction[:date], transaction[:amount])
 
+      # @note Until YNAB has the ability to create payees, lets pass the payee_name to the description for now.
+      transaction[:description] ||= ''
+      transaction[:description] << " (#{transaction[:payee_name]})" if payee_id.nil?
+
       transactions_to_create << {
         payee_name: transaction[:payee_name],
         payee_id: payee_id,
