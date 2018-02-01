@@ -53,7 +53,12 @@ class YNAB::BulkTransactionCreator
   end
 
   def lookup_payee_id(payee_name)
-    payees.select{|p| p[:name].downcase == payee_name.to_s.downcase }.first.try(:[], :id)
+    @_payee_names ||= payees.map {|p| { id: p[:id], name: p[:name] } }
+    @_fuzzy_match ||= FuzzyMatch.new(@_payee_names, read: :name)
+
+    payee_found = @_fuzzy_match.find(payee_name.to_s)
+    payee_found = nil if payee_found.present? && payee_name.pair_distance_similar(payee_found[:name]) < 0.5
+    payee_found.try(:[], :id)
   end
 
   def payees
