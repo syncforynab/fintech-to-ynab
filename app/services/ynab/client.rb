@@ -24,6 +24,10 @@ class YNAB::Client
     @_transactions ||= get("/budgets/#{selected_budget_id}/transactions")[:transactions]
   end
 
+  def category(category_id)
+    get("/budgets/#{selected_budget_id}/categories/#{category_id}")[:category]
+  end
+
   def create_transaction(payee_id: nil, payee_name: nil, amount: nil, cleared: nil, date: nil, memo: nil, flag: nil)
     parse_response(RestClient.post(BASE_URL + "/budgets/#{selected_budget_id}/transactions", {
       transaction: {
