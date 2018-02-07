@@ -18,10 +18,13 @@ class Import::Monzo
       payee_name ||= transaction[:description]
 
       description = ''
+      flag = nil
+
       foreign_transaction = transaction[:local_currency] != transaction[:currency]
       if foreign_transaction
         money = Money.new(transaction[:local_amount].abs, transaction[:local_currency])
         description.prepend("(#{money.format}) ")
+        flag = 'orange'
       end
 
       description.prepend("#{transaction[:merchant][:emoji]}") if transaction[:merchant].try(:[], :emoji).present?
@@ -32,7 +35,8 @@ class Import::Monzo
         payee_name: payee_name,
         date: Time.parse(transaction[:created]).to_date,
         description: description,
-        cleared: transaction[:settled].present? ? 'Cleared' : 'Uncleared'
+        cleared: transaction[:settled].present? ? 'Cleared' : 'Uncleared',
+        flag: flag
       }
     end
 
