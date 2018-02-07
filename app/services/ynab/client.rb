@@ -24,7 +24,7 @@ class YNAB::Client
     @_transactions ||= get("/budgets/#{selected_budget_id}/transactions")[:transactions]
   end
 
-  def create_transaction(payee_id: nil, payee_name: nil, amount: nil, cleared: nil, date: nil, memo: nil)
+  def create_transaction(payee_id: nil, payee_name: nil, amount: nil, cleared: nil, date: nil, memo: nil, flag: nil)
     parse_response(RestClient.post(BASE_URL + "/budgets/#{selected_budget_id}/transactions", {
       transaction: {
         account_id: selected_account_id,
@@ -33,7 +33,8 @@ class YNAB::Client
         payee_id: payee_id,
         payee_name: payee_name,
         cleared: cleared ? "Cleared" : 'Uncleared',
-        memo: memo
+        memo: memo,
+        flag_color: flag
       }
     }, {
       'Authorization' => "Bearer #{@access_token}"

@@ -1,10 +1,11 @@
 class YNAB::TransactionCreator
-  def initialize(date, amount, payee_name, description, cleared: true, budget_id: nil, account_id: nil)
+  def initialize(date: nil, amount: nil, payee_name: nil, description: true, flag: nil, cleared: true, budget_id: nil, account_id: nil)
     @date = date
     @amount = amount
     @payee_name = payee_name
     @description = description
     @cleared = cleared
+    @flag = flag
 
     @client = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], budget_id, account_id)
   end
@@ -20,7 +21,8 @@ class YNAB::TransactionCreator
       amount: @amount,
       cleared: @cleared,
       date: @date.to_date,
-      memo: @description
+      memo: @description,
+      flag: @flag
     )
 
     create.try(:[], :transaction).present? ? create : { error: :failed }
