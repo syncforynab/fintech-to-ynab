@@ -18,7 +18,8 @@ class YNAB::BulkTransactionCreator
         amount: transaction[:amount],
         memo: transaction[:description],
         date: transaction[:date].to_date,
-        cleared: !!transaction[:cleared] ? 'Cleared' : 'Uncleared'
+        cleared: !!transaction[:cleared] ? 'Cleared' : 'Uncleared',
+        flag: transaction[:flag]
       }
     end
 
