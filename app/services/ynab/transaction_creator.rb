@@ -11,14 +11,12 @@ class YNAB::TransactionCreator
 
   def create
     payee_id = @client.lookup_payee_id(@payee_name)
-    category_id = payee_id.present? ? lookup_category_id(payee_id) : nil
 
-    return { error: :duplicate } if is_duplicate_transaction?(payee_id, category_id, @date.to_date, @amount)
+    return { error: :duplicate } if @client.is_duplicate_transaction?(payee_id, @date.to_date, @amount)
 
     create = @client.create_transaction(
       payee_name: @payee_name,
       payee_id: payee_id,
-      category_id: category_id,
       amount: @amount,
       cleared: @cleared,
       date: @date.to_date,

@@ -17,8 +17,6 @@ gem 'starling-ruby', require: 'starling'
 
 # Utilities
 gem 'awesome_print'
-gem 'amatch'
-gem 'fuzzy_match'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

@@ -24,13 +24,12 @@ class YNAB::Client
     @_transactions ||= get("/budgets/#{selected_budget_id}/transactions")[:transactions]
   end
 
-  def create_transaction(payee_id: nil, payee_name: nil, category_id: nil, amount: nil, cleared: nil, date: nil, memo: nil)
+  def create_transaction(payee_id: nil, payee_name: nil, amount: nil, cleared: nil, date: nil, memo: nil)
     parse_response(RestClient.post(BASE_URL + "/budgets/#{selected_budget_id}/transactions", {
       transaction: {
         account_id: selected_account_id,
         date: date.to_s,
         amount: amount,
-        category_id: category_id,
         payee_id: payee_id,
         payee_name: payee_name,
         cleared: cleared ? "Cleared" : 'Uncleared',
@@ -62,24 +61,14 @@ class YNAB::Client
   end
 
   def lookup_payee_id(payee_name)
-    @_payee_names ||= payees.map {|p| { id: p[:id], name: p[:name] } }
-    @_fuzzy_match ||= FuzzyMatch.new(@_payee_names, read: :name)
-
-    payee_found = @_fuzzy_match.find(payee_name.to_s)
-    payee_found = nil if payee_found.present? && payee_name.pair_distance_similar(payee_found[:name]) < 0.5
-    payee_found.try(:[], :id)
+    payees.select{|d| d[:name].downcase == payee_name.downcase  }.first.try(:[], :id)
   end
 
-  def lookup_category_id(payee_id)
-    transactions.select{|a| a[:payee_id] == payee_id }.last.try(:[], :category_id)
-  end
-
-  def is_duplicate_transaction?(payee_id, category_id, date, amount)
+  def is_duplicate_transaction?(payee_id, date, amount)
     transactions.any? do |transaction|
       transaction[:date] == date.to_date.to_s &&
         transaction[:amount] == amount &&
-        transaction[:payee_id] == payee_id &&
-        transaction[:category_id] == category_id
+        transaction[:payee_id] == payee_id
     end
   end
 

@@ -3,7 +3,7 @@ class MonzoController < ApplicationController
     webhook = JSON.parse(request.body.read, symbolize_names: true)
 
     return render json: { error: :unsupported_type } unless webhook[:type] == 'transaction.created'
-    return render json: { error: :zero_value } unless webhook[:data][:amount] == 0
+    return render json: { error: :zero_value } if webhook[:data][:amount] == 0
 
     payee_name = webhook[:data][:merchant].try(:[], :name)
     payee_name ||= webhook[:data][:counterparty][:name] if webhook[:data][:counterparty].present?
