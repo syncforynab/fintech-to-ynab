@@ -24,6 +24,10 @@ class YNAB::Client
     @_transactions ||= get("/budgets/#{selected_budget_id}/transactions")[:transactions]
   end
 
+  def categories
+    @_categories ||= get("/budgets/#{selected_budget_id}/categories")[:category_groups]
+  end
+
   def category(category_id)
     get("/budgets/#{selected_budget_id}/categories/#{category_id}")[:category]
   end
