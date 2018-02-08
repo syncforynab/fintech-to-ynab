@@ -42,14 +42,14 @@ class MonzoController < ApplicationController
         ynab_category = ynab_client.category(create[:transaction][:category_id])
 
         monzo_feed_item = {
-        	account_id: webhook[:data][:account_id],
-        	type: "basic",
-        	url: "https://app.youneedabudget.com/#{ynab_client.selected_budget_id}/accounts/#{ynab_client.selected_account_id}",
-        	params: {
-        		title: "YNAB: #{ynab_category[:name]}",
-        		body: "You have £#{(ynab_category[:balance]/1000.to_f).round(2)} remaining this month.",
-        		image_url: "https://api.youneedabudget.com/favicon.ico"
-        	}
+          account_id: webhook[:data][:account_id],
+          type: "basic",
+          url: "https://app.youneedabudget.com/#{ynab_client.selected_budget_id}/accounts/#{ynab_client.selected_account_id}",
+          params: {
+            title: "YNAB: #{ynab_category[:name]}",
+            body: "You have £#{(ynab_category[:balance]/1000.to_f).round(2)} remaining this month.",
+            image_url: "https://api.youneedabudget.com/favicon.ico"
+          }
         }
 
         begin
