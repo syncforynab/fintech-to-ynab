@@ -47,7 +47,7 @@ class MonzoController < ApplicationController
         	url: "https://app.youneedabudget.com/#{ynab_client.selected_budget_id}/accounts/#{ynab_client.selected_account_id}",
         	params: {
         		title: "YNAB: #{ynab_category[:name]}",
-        		body: "You have £#{(ynab_category[:balance]/1000).to_f.round(2)} remaining this month.",
+        		body: "You have £#{(ynab_category[:balance]/1000.to_f).round(2)} remaining this month.",
         		image_url: "https://api.youneedabudget.com/favicon.ico"
         	}
         }
@@ -55,7 +55,6 @@ class MonzoController < ApplicationController
         begin
           monzo = RestClient.post('https://api.monzo.com/feed', monzo_feed_item, { 'Authorization' => "Bearer #{ENV['MONZO_ACCESS_TOKEN']}" })
         rescue => e
-          raise e.response.body.to_yaml
         end
       end
 
