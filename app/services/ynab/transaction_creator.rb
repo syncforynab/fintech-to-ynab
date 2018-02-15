@@ -1,5 +1,6 @@
 class YNAB::TransactionCreator
-  def initialize(date: nil, amount: nil, payee_name: nil, description: true, flag: nil, cleared: true, budget_id: nil, account_id: nil)
+  def initialize(id: nil, date: nil, amount: nil, payee_name: nil, description: true, flag: nil, cleared: true, budget_id: nil, account_id: nil)
+    @id = id
     @date = date
     @amount = amount
     @payee_name = payee_name
@@ -11,20 +12,20 @@ class YNAB::TransactionCreator
   end
 
   def create
-    payee_id = @client.lookup_payee_id(@payee_name)
+    begin
+      create = @client.create_transaction(
+        id: @id,
+        payee_name: @payee_name,
+        amount: @amount,
+        cleared: @cleared,
+        date: @date.to_date,
+        memo: @description,
+        flag: @flag
+      )
+    rescue => e
+      return JSON.parse(e.response.body, symbolize_names: true)
+    end
 
-    return { error: :duplicate } if @client.is_duplicate_transaction?(payee_id, @date.to_date, @amount)
-
-    create = @client.create_transaction(
-      payee_name: @payee_name,
-      payee_id: payee_id,
-      amount: @amount,
-      cleared: @cleared,
-      date: @date.to_date,
-      memo: @description,
-      flag: @flag
-    )
-
-    create.try(:[], :transaction).present? ? create : { error: :failed }
+    create.try(:[], :transaction).present? ? create : { error: :failed, data: create }
   end
 end

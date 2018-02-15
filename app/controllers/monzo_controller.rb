@@ -24,6 +24,7 @@ class MonzoController < ApplicationController
     description << " #{webhook[:data][:merchant][:metadata][:suggested_tags]}" if webhook[:data][:merchant].try(:[], :metadata).try(:[], :suggested_tags)
 
     ynab_creator = YNAB::TransactionCreator.new(
+      id: webhook[:data][:id],
       date: Time.parse(webhook[:data][:created]).to_date,
       amount: webhook[:data][:amount] * 10,
       payee_name: payee_name,

@@ -12,6 +12,7 @@ class Import::Teller
     transactions_to_create = []
     transactions.each do |transaction|
       transactions_to_create << {
+        id: transaction[:id],
         amount: (transaction[:amount].to_f * 1000).to_i,
         payee_name: transaction[:counterparty],
         date: Date.parse(transaction[:date]),

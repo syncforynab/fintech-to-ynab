@@ -8,13 +8,9 @@ class YNAB::BulkTransactionCreator
     transactions_to_create = []
 
     @transactions.each do |transaction|
-      payee_id = @client.lookup_payee_id(transaction[:payee_name])
-
-      next if @client.is_duplicate_transaction?(payee_id, transaction[:date], transaction[:amount])
-
       transactions_to_create << {
+        import_id: transaction[:id],
         payee_name: transaction[:payee_name],
-        payee_id: payee_id,
         amount: transaction[:amount],
         memo: transaction[:description],
         date: transaction[:date].to_date,

@@ -31,6 +31,7 @@ class Import::Monzo
       description << " #{transaction[:merchant][:metadata][:suggested_tags]}" if transaction[:merchant].try(:[], :metadata).try(:[], :suggested_tags).present?
 
       transactions_to_create << {
+        id: transaction[:id],
         amount: transaction[:amount] * 10,
         payee_name: payee_name,
         date: Time.parse(transaction[:created]).to_date,
