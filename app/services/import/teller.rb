@@ -10,7 +10,7 @@ class Import::Teller
 
   def import
     transactions_to_create = []
-    transactions.each do |transaction|
+    transactions.select{|t| Date.parse(t[:date]) <= Date.today }.each do |transaction|
       transactions_to_create << {
         id: transaction[:id],
         amount: (transaction[:amount].to_f * 1000).to_i,
