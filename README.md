@@ -21,6 +21,7 @@ Please see our [Getting Started](https://github.com/scottrobertson/fintech-to-yn
 
 As well as real-time webhooks, we also support bulk imports for the following financial institutions:
 
+- [CSV](https://github.com/scottrobertson/fintech-to-ynab/wiki/Import:-CSV)
 - [Monzo](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Monzo)
 - [Starling](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Starling-Bank)
 - [Barclays](https://github.com/scottrobertson/fintech-to-ynab/wiki/import:-Teller)
