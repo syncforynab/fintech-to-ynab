@@ -35,31 +35,6 @@ class MonzoController < ApplicationController
 
     create = ynab_creator.create
     if create.try(:[], :transaction).present?
-
-      # Quick and dirty YNAB -> Monzo Feed Item integration.
-      # @todo clean this up
-      if create[:transaction][:category_id].present? && ENV['MONZO_ACCESS_TOKEN'].present?
-        ynab_client = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'])
-        ynab_category = ynab_client.category(create[:transaction][:category_id])
-
-        monzo_feed_item = {
-          account_id: webhook[:data][:account_id],
-          type: "basic",
-          url: "https://app.youneedabudget.com/#{ynab_client.selected_budget_id}/accounts/#{ynab_client.selected_account_id}",
-          params: {
-            title: "YNAB: #{ynab_category[:name]}",
-            body: "You have £#{(ynab_category[:balance]/1000.to_f).round(2)} remaining this month.",
-            image_url: "https://api.youneedabudget.com/favicon.ico"
-          }
-        }
-
-        begin
-          monzo = RestClient.post('https://api.monzo.com/feed', monzo_feed_item, { 'Authorization' => "Bearer #{ENV['MONZO_ACCESS_TOKEN']}" })
-        rescue => e
-        end
-      end
-
-
       render json: create[:transaction]
     else
       render json: { error: create[:error] }, status: 400
