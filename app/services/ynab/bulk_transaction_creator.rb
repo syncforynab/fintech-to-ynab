@@ -8,13 +8,18 @@ class YNAB::BulkTransactionCreator
   end
 
   def create
+    if @transactions.size == 0
+      Rails.logger.info(:no_transactions_to_create)
+      return false
+    end
+
     batches = (@transactions.size.to_f / BATCH_SIZE).ceil
     per_batch = @transactions.size / batches
 
     Rails.logger.info("Splitting #{@transactions.size} transactions into #{batches} batches")
 
     @transactions.each_slice(BATCH_SIZE).with_index do |transactions, index|
-      
+
       Rails.logger.info("Processing batch #{index + 1} of #{batches}")
 
       transactions_to_create = []
