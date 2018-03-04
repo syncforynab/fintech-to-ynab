@@ -7,7 +7,6 @@ class Import::Csv
   def initialize(path, ynab_account_id)
     @path = path
     @ynab_account_id = ynab_account_id
-    @import_id_creator = YNAB::ImportIdCreator.new
   end
 
   def import
@@ -16,7 +15,6 @@ class Import::Csv
     ::CSV.foreach(@path, headers: true) do |transaction|
       transaction = transaction.to_h.symbolize_keys
       transactions_to_create << {
-        id: @import_id_creator.import_id(transaction[:amount], Date.parse(transaction[:date])),
         amount: (transaction[:amount].to_f * 1000).to_i,
         payee_name: transaction[:description],
         date: Date.parse(transaction[:date])

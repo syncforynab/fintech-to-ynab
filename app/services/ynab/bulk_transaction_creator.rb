@@ -5,6 +5,7 @@ class YNAB::BulkTransactionCreator
   def initialize(transactions, budget_id: nil, account_id: nil)
     @transactions = transactions
     @client = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], budget_id, account_id)
+    @import_id_creator = YNAB::ImportIdCreator.new
   end
 
   def create
@@ -17,7 +18,7 @@ class YNAB::BulkTransactionCreator
     per_batch = @transactions.size / batches
 
     Rails.logger.info("Splitting #{@transactions.size} transactions into #{batches} batches")
-
+    
     @transactions.each_slice(BATCH_SIZE).with_index do |transactions, index|
 
       Rails.logger.info("Processing batch #{index + 1} of #{batches}")
@@ -26,7 +27,8 @@ class YNAB::BulkTransactionCreator
       transactions.each do |transaction|
 
         transactions_to_create << {
-          import_id: transaction[:id],
+          import_id: @import_id_creator.import_id(transaction[:amount], transaction[:date]),
+          account_id: @client.selected_account_id,
           payee_name: transaction[:payee_name],
           amount: transaction[:amount],
           memo: transaction[:description],
