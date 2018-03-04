@@ -14,8 +14,8 @@ class YNAB::Client
     @_accounts ||= client.accounts.get_accounts(selected_budget_id).data.accounts
   end
 
-  def transactions
-    @transactions ||= client.transactions.get_transactions(selected_budget_id).data.transactions
+  def transactions(since_date: nil)
+    @transactions ||= client.transactions.get_transactions(selected_budget_id, since_date: since_date).data.transactions
   end
 
   def create_transaction(id: nil, payee_id: nil, payee_name: nil, amount: nil, cleared: nil, date: nil, memo: nil, flag: nil)
