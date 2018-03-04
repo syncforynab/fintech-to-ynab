@@ -12,19 +12,15 @@ class YNAB::TransactionCreator
   end
 
   def create
-    begin
-      create = @client.create_transaction(
-        id: @id,
-        payee_name: @payee_name,
-        amount: @amount,
-        cleared: @cleared,
-        date: @date.to_date,
-        memo: @description,
-        flag: @flag
-      )
-    rescue => e
-      return JSON.parse(e.response.body, symbolize_names: true)
-    end
+    create = @client.create_transaction(
+      id: @id,
+      payee_name: @payee_name,
+      amount: @amount,
+      cleared: @cleared,
+      date: @date.to_date,
+      memo: @description,
+      flag: @flag
+    )
 
     create.try(:[], :transaction).present? ? create : { error: :failed, data: create }
   end
