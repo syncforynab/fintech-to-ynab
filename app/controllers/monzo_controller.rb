@@ -22,7 +22,7 @@ class MonzoController < ApplicationController
     end
 
     description.prepend("#{webhook[:data][:merchant][:emoji]} ") if webhook[:data][:merchant].try(:[], :emoji)
-    description << " #{webhook[:data][:merchant][:metadata][:suggested_tags]}" if webhook[:data][:merchant].try(:[], :metadata).try(:[], :suggested_tags)
+    description << webhook[:data][:merchant][:metadata][:suggested_tags] if webhook[:data][:merchant].try(:[], :metadata).try(:[], :suggested_tags)
 
     ynab_creator = YNAB::TransactionCreator.new(
       date: Time.parse(webhook[:data][:created]).to_date,
