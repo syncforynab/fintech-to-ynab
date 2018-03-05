@@ -27,8 +27,8 @@ class Import::Monzo
         flag = 'orange'
       end
 
-      description.prepend("#{transaction[:merchant][:emoji]}") if transaction[:merchant].try(:[], :emoji).present?
-      description << " #{transaction[:merchant][:metadata][:suggested_tags]}" if transaction[:merchant].try(:[], :metadata).try(:[], :suggested_tags).present?
+      description.prepend("#{transaction[:merchant][:emoji]} ") if transaction[:merchant].try(:[], :emoji).present?
+      description << transaction[:merchant][:metadata][:suggested_tags] if transaction[:merchant].try(:[], :metadata).try(:[], :suggested_tags).present?
 
       transactions_to_create << {
         amount: transaction[:amount] * 10,
