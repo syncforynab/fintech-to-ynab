@@ -10,7 +10,7 @@ class YNAB::ImportIdCreator
   end
 
   def import_id(amount, date)
-    key = ['Fintech-To-YNAB', amount, date].join(':')
+    key = ['YNAB', amount, date].join(':')
     @occurence[key] ||= 0
     @occurence[key] += 1
     key + ":#{@occurence[key]}"
