@@ -13,7 +13,7 @@ gem 'puma', '~> 3.7'
 gem 'money'
 
 # Fintech Providers
-gem 'ynab', github: 'scottrobertson/ynab-sdk-ruby'
+gem 'ynab', github: 'ynab/ynab-sdk-ruby'
 gem 'starling-ruby', require: 'starling'
 
 # Utilities
