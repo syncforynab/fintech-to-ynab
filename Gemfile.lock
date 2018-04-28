@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/scottrobertson/ynab-sdk-ruby.git
-  revision: 4b942b5b95a099f0c979f8ad3da09e78c025a4fe
-  specs:
-    ynab (0.2.0)
-      json (~> 2.1, >= 2.1.0)
-      typhoeus (~> 1.0, >= 1.0.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -191,6 +183,9 @@ GEM
     websocket-driver (0.6.5-java)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
+    ynab (0.7.0)
+      json (~> 2.1, >= 2.1.0)
+      typhoeus (~> 1.0, >= 1.0.1)
 
 PLATFORMS
   java
@@ -212,7 +207,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   starling-ruby
   tzinfo-data
-  ynab!
+  ynab
 
 RUBY VERSION
    ruby 2.4.0p0
