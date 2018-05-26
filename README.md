@@ -7,12 +7,12 @@
 
 > **This version requires beta access to the [YNAB API](https://api.youneedabudget.com/), please use the [v1 branch](https://github.com/scottrobertson/fintech-to-ynab/tree/v1) if you do not have access**
 
-Automatically push Monzo transactions to YNAB in realtime. Also import historical transactions for many more banks.
+Automatically push Monzo and Starling transactions to YNAB in realtime. Also import historical transactions for many more banks.
 
 ## Features
-  - Push your Monzo transactions into YNAB in realtime
+  - Push your Monzo and Starling transactions into YNAB in realtime
   - Automatically populate the category based on previous transactions
-  - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default
+  - Add 😃 🍏 emoji ✈️ 🇨🇦 and #hashtags to your YNAB transactions by default (for Monzo)
   - Automatically mark transactions as cleared (except for those in a foreign currency)
   - Import your bank history using [Imports](#imports)
 
@@ -22,7 +22,7 @@ Please see our [Getting Started](https://github.com/fintech-to-ynab/fintech-to-y
 
 ## Imports
 
-As well as real-time webhooks, we also support bulk imports for the following financial institutions:
+As well as real-time webhooks, we also support bulk/historical imports for the following financial institutions:
 
 - [CSV](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/Import:-CSV)
 - [Monzo](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Monzo)
