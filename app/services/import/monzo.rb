@@ -24,11 +24,16 @@ class Import::Monzo
       if foreign_transaction
         money = Money.new(transaction[:local_amount].abs, transaction[:local_currency])
         description.prepend("(#{money.format}) ")
-        flag = 'orange'
+        flag = 'orange' unless ENV['SKIP_FOREIGN_CURRENCY_FLAG'].present?
       end
 
-      description.prepend("#{transaction[:merchant][:emoji]} ") if transaction[:merchant].try(:[], :emoji).present?
-      description << transaction[:merchant][:metadata][:suggested_tags] if transaction[:merchant].try(:[], :metadata).try(:[], :suggested_tags).present?
+      unless ENV['SKIP_EMOJI'].present?
+        description.prepend("#{transaction[:merchant][:emoji]} ") if transaction[:merchant].try(:[], :emoji)
+      end
+
+      unless ENV['SKIP_TAGS'].present?
+        description << transaction[:merchant][:metadata][:suggested_tags] if transaction[:merchant].try(:[], :metadata).try(:[], :suggested_tags)
+      end
 
       transactions_to_create << {
         amount: transaction[:amount] * 10,

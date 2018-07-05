@@ -18,11 +18,16 @@ class MonzoController < ApplicationController
     if foreign_transaction
       money = Money.new(webhook[:data][:local_amount].abs, webhook[:data][:local_currency])
       description.prepend("(#{money.format}) ")
-      flag = 'orange'
+      flag = 'orange' unless ENV['SKIP_FOREIGN_CURRENCY_FLAG'].present?
     end
 
-    description.prepend("#{webhook[:data][:merchant][:emoji]} ") if webhook[:data][:merchant].try(:[], :emoji)
-    description << webhook[:data][:merchant][:metadata][:suggested_tags] if webhook[:data][:merchant].try(:[], :metadata).try(:[], :suggested_tags)
+    unless ENV['SKIP_EMOJI'].present?
+      description.prepend("#{webhook[:data][:merchant][:emoji]} ") if webhook[:data][:merchant].try(:[], :emoji)
+    end
+
+    unless ENV['SKIP_TAGS'].present?
+      description << webhook[:data][:merchant][:metadata][:suggested_tags] if webhook[:data][:merchant].try(:[], :metadata).try(:[], :suggested_tags)
+    end
 
     ynab_creator = YNAB::TransactionCreator.new(
       date: Time.parse(webhook[:data][:created]).to_date,

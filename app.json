@@ -20,6 +20,18 @@
       "description": "Optional: Starling account id. If not provided, we will use the first YNAB account.",
       "required": false
     },
+    "SKIP_EMOJI": {
+      "description": "Optional: This will tell Fintech to YNAB not to add the emoji to the descriptions. (Monzo Only)",
+      "required": false
+    },
+    "SKIP_FOREIGN_CURRENCY_FLAG": {
+      "description": "Optional: This will tell Fintech to YNAB not to add flags to foreign currency transactions.",
+      "required": false
+    },
+    "SKIP_TAGS": {
+      "description": "Optional: This will tell Fintech to YNAB not to add hashtags to the transaction description. (Monzo Only)",
+      "required": false
+    },
     "URL_SECRET": {
       "description": "Optional: This is a secret used for the webhooks endpoint.",
       "required": false

@@ -37,7 +37,7 @@ class StarlingController < ApplicationController
       flag = nil
 
       foreign_transaction = webhook[:content][:sourceCurrency] != 'GBP'
-      flag = 'orange' if foreign_transaction
+      flag = 'orange' if foreign_transaction && !ENV['SKIP_FOREIGN_CURRENCY_FLAG']
     else
       return render json: { error: :unsupported_type }
     end
