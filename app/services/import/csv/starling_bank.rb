@@ -13,6 +13,10 @@ class Import::Csv::StarlingBank
     transactions_to_create = []
 
     ::CSV.foreach(@path, headers: true) do |transaction|
+
+      # First row can be blank
+      next unless transaction['Date'].present?
+
       transactions_to_create << {
         amount: (transaction['Amount (GBP)'].to_f * 1000).to_i,
         payee_name: transaction['Counter Party'],
