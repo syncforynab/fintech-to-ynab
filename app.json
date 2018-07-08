@@ -12,12 +12,12 @@
       "description": "Optional: Default budget ID. If not provided, we will use the first budget.",
       "required": false
     },
-    "YNAB_ACCOUNT_ID": {
-      "description": "Optional: Default account ID. If not provided, we will use the first YNAB account.",
+    "YNAB_MONZO_ACCOUNT_ID": {
+      "description": "Optional: Monzo account ID. If not provided, we will use the first YNAB account.",
       "required": false
     },
     "YNAB_STARLING_ACCOUNT_ID": {
-      "description": "Optional: Starling account id. If not provided, we will use the first YNAB account.",
+      "description": "Optional: Starling account ID. If not provided, we will use the first YNAB account.",
       "required": false
     },
     "SKIP_EMOJI": {

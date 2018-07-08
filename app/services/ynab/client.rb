@@ -3,7 +3,7 @@ class YNAB::Client
   def initialize(access_token, budget_id = nil, account_id = nil)
     @access_token = access_token
     @budget_id = budget_id || ENV['YNAB_BUDGET_ID']
-    @account_id = account_id || ENV['YNAB_ACCOUNT_ID']
+    @account_id = account_id
   end
 
   def budgets

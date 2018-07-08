@@ -35,7 +35,8 @@ class MonzoController < ApplicationController
       payee_name: payee_name,
       description: description.strip,
       cleared: !foreign_transaction,
-      flag: flag
+      flag: flag,
+      account_id: ENV['YNAB_MONZO_ACCOUNT_ID'] || ENV['YNAB_ACCOUNT_ID']
     )
 
     create = ynab_creator.create
