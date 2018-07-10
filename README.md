@@ -18,7 +18,7 @@ Automatically push Monzo and Starling transactions to YNAB in realtime. Also imp
 
 Please see our [Getting Started](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/Getting-Started) guide to see how to set Fintech to YNAB up.
 
-## Imports
+## Banks/Financial Institutions
 
 As well as real-time webhooks, we also support bulk/historical imports for the following financial institutions:
 
@@ -36,5 +36,7 @@ As well as real-time webhooks, we also support bulk/historical imports for the f
 - [TSB](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Teller)
 - [Ulster Bank NI](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Teller)
 - [HSBC UK](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Teller)
+
+To request a new Bank/Financial Institution, please comment [](https://github.com/fintech-to-ynab/fintech-to-ynab/issues/73)
 
 > This app is not officially supported by YNAB in any way. Use of this app could introduce problems into your budget that YNAB, through its official support channels, will not be able to troubleshoot or fix. Please use at your own risk!
