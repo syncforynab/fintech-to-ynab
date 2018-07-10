@@ -26,7 +26,7 @@ class YNAB::BulkTransactionCreator
       transactions.each do |transaction|
 
         transactions_to_create << {
-          import_id: @import_id_creator.import_id(transaction[:amount], transaction[:date].to_date),
+          import_id: transaction[:id] || @import_id_creator.import_id(transaction[:amount], transaction[:date].to_date),
           account_id: @client.selected_account_id,
           payee_name: transaction[:payee_name],
           amount: transaction[:amount],
