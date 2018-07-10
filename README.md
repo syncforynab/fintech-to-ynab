@@ -37,6 +37,6 @@ As well as real-time webhooks, we also support bulk/historical imports for the f
 - [Ulster Bank NI](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Teller)
 - [HSBC UK](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Teller)
 
-To request a new Bank/Financial Institution, please comment [](https://github.com/fintech-to-ynab/fintech-to-ynab/issues/73)
+*To request a new Bank/Financial Institution, please comment [here](https://github.com/fintech-to-ynab/fintech-to-ynab/issues/73).*
 
 > This app is not officially supported by YNAB in any way. Use of this app could introduce problems into your budget that YNAB, through its official support channels, will not be able to troubleshoot or fix. Please use at your own risk!
