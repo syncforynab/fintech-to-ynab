@@ -14,6 +14,10 @@ class YNAB::Client
     @_accounts ||= client.accounts.get_accounts(selected_budget_id).data.accounts
   end
 
+  def category(category_id)
+    client.categories.get_category_by_id(selected_budget_id, category_id).data.category
+  end
+
   def transactions(since_date: nil)
     @transactions ||= client.transactions.get_transactions(selected_budget_id, since_date: since_date).data.transactions
   end
