@@ -7,11 +7,16 @@ class CategoryBalanceNotifier
 
   def notify(category_name, category_balance)
     @services.each do |service|
-      service.notify(category_name, category_balance)
+      service.notify(category_name, formatted_balance(category_balance))
     end
   end
 
   private
+
+  # @todo 
+  def formatted_balance(category_balance)
+    "£#{(category_balance/1000.to_f).round(2)}"
+  end
 
   def add_service(service_class, config = {})
     @services << service_class.new(config)
