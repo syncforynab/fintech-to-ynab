@@ -29,7 +29,7 @@ class YNAB::TransactionCreator
     # If the transaction has a category, then lets notify
     if create.category_id.present?
       ynab_category = @client.category(create.category_id)
-      CategoryBalanceNotifier.new.notify(ynab_category.name, ynab_category.balance)
+      CategoryBalanceNotifier.new.notify(ynab_category)
     end
 
     create.try(:id).present? ? create : { error: :failed, data: create }

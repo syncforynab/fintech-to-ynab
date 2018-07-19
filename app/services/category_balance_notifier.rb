@@ -5,9 +5,9 @@ class CategoryBalanceNotifier
     discover_services
   end
 
-  def notify(category_name, category_balance)
+  def notify(ynab_category)
     @services.each do |service|
-      service.notify(category_name, formatted_balance(category_balance))
+      service.notify(ynab_category.name, formatted_balance(ynab_category.balance))
     end
   end
 
