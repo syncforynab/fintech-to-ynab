@@ -16,6 +16,9 @@ gem 'money'
 gem 'ynab'
 gem 'starling-ruby', require: 'starling'
 
+# Notifiers
+gem 'washbullet'
+
 # Utilities
 gem 'awesome_print'
 

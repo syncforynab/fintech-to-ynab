@@ -183,6 +183,9 @@ GEM
     unf_ext (0.0.7.5)
     unf_ext (0.0.7.5-x64-mingw32)
     unf_ext (0.0.7.5-x86-mingw32)
+    washbullet (0.4.0)
+      faraday (~> 0.9.0)
+      mime-types
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-driver (0.6.5-java)
@@ -213,6 +216,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   starling-ruby
   tzinfo-data
+  washbullet
   ynab
 
 RUBY VERSION
