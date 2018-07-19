@@ -19,6 +19,10 @@ gem 'starling-ruby', require: 'starling'
 # Utilities
 gem 'awesome_print'
 
+group :production do
+  gem 'rails_12factor'
+end
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'dotenv-rails'
