@@ -13,7 +13,7 @@ class CategoryBalanceNotifier
 
   private
 
-  # @todo 
+  # @todo How do we support currencys? May need to call YNAB api and get settings if possible
   def formatted_balance(category_balance)
     "£#{(category_balance/1000.to_f).round(2)}"
   end
