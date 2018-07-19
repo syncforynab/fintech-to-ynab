@@ -28,8 +28,7 @@ class YNAB::TransactionCreator
 
     # If the transaction has a category, then lets notify
     if create[:transaction][:category_id].present?
-      ynab_client = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'])
-      ynab_category = ynab_client.category(create[:transaction][:category_id])
+      ynab_category = @client.category(create[:transaction][:category_id])
       CategoryBalanceNotifier.new.notify(ynab_category[:name], ynab_category[:balance])
     end
 
