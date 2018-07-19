@@ -41,7 +41,7 @@ GEM
     arel (8.0.0)
     awesome_print (1.8.0)
     builder (3.2.3)
-    byebug (10.0.1)
+    byebug (10.0.2)
     concurrent-ruby (1.0.5)
     concurrent-ruby (1.0.5-java)
     crass (1.0.3)
