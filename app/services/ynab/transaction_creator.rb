@@ -17,7 +17,7 @@ class YNAB::TransactionCreator
     @import_id_creator.prefill!(@client, @date.to_date)
 
     create = @client.create_transaction(
-      id: @import_id_creator.import_id(@amount, @date.to_date),
+      id: @id || @import_id_creator.import_id(@amount, @date.to_date),
       payee_name: @payee_name,
       amount: @amount,
       cleared: @cleared,
