@@ -10,6 +10,7 @@ class Import::Starling
     transactions_to_create = []
     @starling.transactions.list(params: { from: from, to: Date.today }).each do |transaction|
       transactions_to_create << {
+        id: "S:#{transaction.id}",
         amount: (transaction.amount * 1000).to_i,
         payee_name: transaction.narrative.strip,
         date: transaction.created,

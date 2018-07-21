@@ -36,14 +36,10 @@ class YNAB::Client
         import_id: id
       }
     }).data.transaction
-  rescue YnabApi::ApiError => e
-    JSON.parse(e.response_body)
   end
 
   def create_transactions(transactions)
     client.transactions.bulk_create_transactions(selected_budget_id, { transactions: transactions }).data.bulk
-  rescue YnabApi::ApiError => e
-    JSON.parse(e.response_body)
   end
 
   def selected_budget_id
