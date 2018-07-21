@@ -26,7 +26,7 @@ class YNAB::BulkTransactionCreator
         transactions_to_create << {
           import_id: transaction[:id].to_s.truncate(36),
           account_id: @client.selected_account_id,
-          payee_name: transaction[:payee_name],
+          payee_name: transaction[:payee_name].to_s.truncate(50),
           amount: transaction[:amount],
           memo: transaction[:description],
           date: transaction[:date].to_date,
