@@ -12,7 +12,7 @@ class YNAB::TransactionCreator
 
   def create
     create = @client.create_transaction(
-      id: @id,
+      id: @id.to_s.truncate(36),
       payee_name: @payee_name.to_s.truncate(50),
       amount: @amount,
       cleared: @cleared,
