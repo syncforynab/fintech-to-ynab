@@ -5,7 +5,6 @@ class YNAB::BulkTransactionCreator
   def initialize(transactions, budget_id: nil, account_id: nil)
     @transactions = transactions
     @client = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], budget_id, account_id)
-    @import_id_creator = YNAB::ImportIdCreator.new
   end
 
   def create
@@ -24,9 +23,8 @@ class YNAB::BulkTransactionCreator
 
       transactions_to_create = []
       transactions.each do |transaction|
-
         transactions_to_create << {
-          import_id: @import_id_creator.import_id(transaction[:amount], transaction[:date].to_date),
+          import_id: transaction[:id].to_s.truncate(36),
           account_id: @client.selected_account_id,
           payee_name: transaction[:payee_name],
           amount: transaction[:amount],
@@ -38,11 +36,7 @@ class YNAB::BulkTransactionCreator
       end
 
       if transactions_to_create.any?
-        begin
-          Rails.logger.info(@client.create_transactions(transactions_to_create))
-        rescue => e
-          Rails.logger.error(e.response.body)
-        end
+        Rails.logger.info(@client.create_transactions(transactions_to_create))
       else
         Rails.logger.info(:no_transactions_to_create)
       end

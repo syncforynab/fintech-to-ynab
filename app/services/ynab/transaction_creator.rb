@@ -7,17 +7,12 @@ class YNAB::TransactionCreator
     @description = description
     @cleared = cleared
     @flag = flag
-
     @client = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], budget_id, account_id)
-    @import_id_creator = YNAB::ImportIdCreator.new
   end
 
   def create
-    Rails.logger.info("Prefilling import ids")
-    @import_id_creator.prefill!(@client, @date.to_date)
-
     create = @client.create_transaction(
-      id: @import_id_creator.import_id(@amount, @date.to_date),
+      id: @id,
       payee_name: @payee_name,
       amount: @amount,
       cleared: @cleared,
