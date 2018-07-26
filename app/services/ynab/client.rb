@@ -36,10 +36,18 @@ class YNAB::Client
         import_id: id
       }
     }).data.transaction
+  rescue => e
+    Rails.logger.error('YNAB::Client.create_transaction failure')
+    Rails.logger.error(e)
+    false
   end
 
   def create_transactions(transactions)
     client.transactions.bulk_create_transactions(selected_budget_id, { transactions: transactions }).data.bulk
+  rescue => e
+    Rails.logger.error('YNAB::Client.create_transactions failure')
+    Rails.logger.error(e)
+    false
   end
 
   def selected_budget_id
