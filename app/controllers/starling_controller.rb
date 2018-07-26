@@ -43,6 +43,7 @@ class StarlingController < ApplicationController
     end
 
     ynab_creator = YNAB::TransactionCreator.new(
+      id: webhook[:content][:transactionUid],
       date: Time.parse(webhook[:timestamp]).to_date,
       amount: amount,
       payee_name: payee_name,
