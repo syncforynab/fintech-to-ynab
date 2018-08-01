@@ -30,7 +30,7 @@ class MonzoController < ApplicationController
     end
 
     ynab_creator = YNAB::TransactionCreator.new(
-      id: webhook[:data][:id],
+      id: "M#{webhook[:data][:id]}",
       date: Time.parse(webhook[:data][:created]).to_date,
       amount: webhook[:data][:amount] * 10,
       payee_name: payee_name,
