@@ -1,6 +1,6 @@
 namespace :import do
   desc 'Imports transactions from your Monzo account'
-  task :monzo do
+  task :monzo => :environment do
     # Configure these environment variables on your Heroku instance
     monzo_access_token = ENV.fetch('MONZO_ACCESS_TOKEN')
     monzo_account_id = ENV.fetch('MONZO_ACCOUNT_ID')
