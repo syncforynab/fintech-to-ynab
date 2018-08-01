@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require_relative '../../config/boot'
+
+# Configure these environment variables on your Heroku instance
+monzo_access_token = ENV.fetch('MONZO_ACCESS_TOKEN')
+monzo_account_id = ENV.fetch('MONZO_ACCOUNT_ID')
+ynab_account_id = ENV.fetch('YNAB_MONZO_ACCOUNT_ID')
+
+Import::Monzo.new(monzo_access_token, monzo_account_id, ynab_account_id).import
