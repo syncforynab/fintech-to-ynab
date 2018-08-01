@@ -2,11 +2,14 @@ class Import::Monzo
 
   BASE_URL = 'https://api.monzo.com'
 
+  attr_accessor :import_id_creator
+
   def initialize(access_token, monzo_account_id, ynab_account_id, from: 1.year.ago)
     @access_token = access_token
     @monzo_account_id = monzo_account_id
     @ynab_account_id = ynab_account_id
     @from = from
+    @import_id_creator = YNAB::ImportIdCreator.new
   end
 
   def import
@@ -35,11 +38,13 @@ class Import::Monzo
         description << transaction[:merchant][:metadata][:suggested_tags] if transaction[:merchant].try(:[], :metadata).try(:[], :suggested_tags)
       end
 
+      date = Time.parse(transaction[:created]).to_date
+
       transactions_to_create << {
-        id: "M#{transaction[:id]}",
+        id: import_id_creator.import_id((transaction[:amount].to_f * 1000).to_i, date),
         amount: transaction[:amount] * 10,
         payee_name: payee_name,
-        date: Time.parse(transaction[:created]).to_date,
+        date: date,
         description: description,
         cleared: transaction[:settled].present? ? 'Cleared' : 'Uncleared',
         flag: flag
