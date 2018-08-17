@@ -27,3 +27,21 @@ command :monzo do |c|
     ::Import::Monzo.new(options.token, options.monzo_account_id, options.ynab_account_id, from: options.from).import
   end
 end
+
+command :starling do |c|
+  c.syntax = 'Fintech To YNAB starling [options]'
+  c.summary = ''
+  c.description = ''
+  c.option '--token STRING', String, 'Starling API token'
+  c.option '--ynab_account_id STRING', String, 'Your YNAB account ID for this Starling account'
+  c.option '--from INTEGER', Integer, 'From when? (Unix Timestamp)'
+  c.action do |args, options|
+    options.default from: 1.week.ago.to_i
+    options.from = Time.at(options.from) if options.from.present?
+
+    raise ArgumentError.new("token is required!") unless options.token
+    raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
+
+    Import::Starling.new(options.token, options.ynab_account_id, from: options.from).import
+  end
+end
