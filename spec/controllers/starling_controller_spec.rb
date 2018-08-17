@@ -6,13 +6,13 @@ RSpec.describe StarlingController, type: :controller do
     let(:body) { {} }
 
     context 'when a URL_SECRET is set, but none is passed' do
-      before { allow(ENV).to receive(:[]).with("URL_SECRET").and_return("SECRET") }
+      before { allow(ENV).to receive(:[]).with('URL_SECRET').and_return('SECRET') }
       it { is_expected.to have_http_status(401) }
       it { is_expected.to have_json('error' => 'unauthorised') }
     end
 
     context 'when a URL_SECRET is set, but and is passed' do
-      before { allow(ENV).to receive(:[]).with("URL_SECRET").and_return("SECRET") }
+      before { allow(ENV).to receive(:[]).with('URL_SECRET').and_return('SECRET') }
       subject { post :receive, body: body.to_json, format: :json, params: { secret: 'SECRET' } }
       it { is_expected.to have_http_status(200) }
       it { is_expected.to have_json('error' => 'unsupported_type') }
