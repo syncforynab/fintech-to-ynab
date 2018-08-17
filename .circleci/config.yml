@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: ruby:2.5.1
-        environment: 
+        environment:
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
           BUNDLE_PATH: vendor/bundle
