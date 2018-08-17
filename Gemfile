@@ -28,6 +28,7 @@ end
 
 group :development, :test do
   gem 'dotenv-rails'
+  gem 'rubocop-rails_config'
 end
 
 group :test do

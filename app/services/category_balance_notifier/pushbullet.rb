@@ -1,5 +1,4 @@
 class CategoryBalanceNotifier::Pushbullet
-
   def initialize(config)
     @client = Washbullet::Client.new(config[:api_key])
   end

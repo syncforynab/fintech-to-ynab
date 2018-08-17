@@ -1,5 +1,4 @@
 class YNAB::BulkTransactionCreator
-
   BATCH_SIZE = 20.freeze
 
   def initialize(transactions, budget_id: nil, account_id: nil)
