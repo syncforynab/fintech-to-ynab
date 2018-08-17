@@ -54,7 +54,7 @@ class YNAB::Client
   end
 
   def selected_account_id
-    @account_id || accounts.reject { |a| a.closed }.select { |a| a.type == 'checking' }.first.id
+    @account_id || accounts.reject(&:closed).select { |a| a.type == 'checking' }.first.id
   end
 
   protected
