@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::API
-
   before_action :verify_token, except: [:home, :ping]
 
   def home

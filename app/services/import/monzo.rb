@@ -1,5 +1,4 @@
 class Import::Monzo
-
   BASE_URL = 'https://api.monzo.com'
 
   def initialize(access_token, monzo_account_id, ynab_account_id, from: 1.year.ago)
@@ -11,7 +10,7 @@ class Import::Monzo
 
   def import
     transactions_to_create = []
-    transactions.reject{|t| t[:decline_reason].present? || t[:amount] == 0 }.each do |transaction|
+    transactions.reject { |t| t[:decline_reason].present? || t[:amount] == 0 }.each do |transaction|
       payee_name = transaction[:merchant].try(:[], :name)
       payee_name ||= transaction[:counterparty][:name] if transaction[:counterparty].present?
       payee_name ||= 'Topup' if transaction[:is_load]

@@ -1,5 +1,4 @@
 class StarlingController < ApplicationController
-
   WEBHOOKS_TYPES = [
     'TRANSACTION_AUTH_DECLINED',
     'TRANSACTION_AUTH_PARTIAL_REVERSAL',
@@ -59,6 +58,5 @@ class StarlingController < ApplicationController
     else
       render json: create, status: 400
     end
-
   end
 end
