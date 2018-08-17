@@ -1,0 +1,81 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'commander/import'
+
+require File.expand_path('../../config/environment', __FILE__)
+
+program :name, 'Fintech To YNAB'
+program :version, '0.0.1'
+program :description, 'Import fintech data into YNAB'
+
+command :monzo do |c|
+  c.syntax = 'Fintech To YNAB monzo [options]'
+  c.summary = ''
+  c.description = ''
+  c.option '--token STRING', String, 'Monzo API token'
+  c.option '--monzo_account_id STRING', String, 'Your Monzo account ID'
+  c.option '--ynab_account_id STRING', String, 'Your YNAB account ID for this Monzo account'
+  c.option '--from INTEGER', Integer, 'From when? (Unix Timestamp)'
+  c.action do |args, options|
+    options.default from: 1.week.ago.to_i
+    options.from = Time.at(options.from) if options.from.present?
+
+    raise ArgumentError.new("token is required!") unless options.token
+    raise ArgumentError.new("monzo_account_id is required!") unless options.monzo_account_id
+    raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
+
+    ::Import::Monzo.new(options.token, options.monzo_account_id, options.ynab_account_id, from: options.from).import
+  end
+end
+
+command :starling do |c|
+  c.syntax = 'Fintech To YNAB starling [options]'
+  c.summary = ''
+  c.description = ''
+  c.option '--token STRING', String, 'Starling API token'
+  c.option '--ynab_account_id STRING', String, 'Your YNAB account ID for this Starling account'
+  c.option '--from INTEGER', Integer, 'From when? (Unix Timestamp)'
+  c.action do |args, options|
+    options.default from: 1.week.ago.to_i
+    options.from = Time.at(options.from) if options.from.present?
+
+    raise ArgumentError.new("token is required!") unless options.token
+    raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
+
+    Import::Starling.new(options.token, options.ynab_account_id, from: options.from).import
+  end
+end
+
+command :teller do |c|
+  c.syntax = 'Fintech To YNAB teller [options]'
+  c.summary = ''
+  c.description = ''
+  c.option '--token STRING', String, 'Teller API token'
+  c.option '--teller_account_id STRING', String, 'Your Teller account id'
+  c.option '--ynab_account_id STRING', String, 'Your YNAB account ID for this Starling account'
+  c.action do |args, options|
+    raise ArgumentError.new("token is required!") unless options.token
+    raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
+    raise ArgumentError.new("teller_account_id is required!") unless options.teller_account_id
+    Import::Teller.new(options.token, options.teller_account_id, options.ynab_account_id).import
+  end
+end
+
+command :csv do |c|
+  c.syntax = 'Fintech To YNAB csv [options]'
+  c.summary = ''
+  c.description = ''
+  c.option '--ynab_account_id STRING', String, 'Your YNAB account ID for this Starling account'
+  c.option '--path STRING', String, 'Path to CSV file'
+  c.option '--format STRING', String, 'The format of the CSV. Check docs for formats'
+  c.action do |args, options|
+    raise ArgumentError.new("format is required!") unless options.format
+    raise ArgumentError.new("path is required!") unless options.path
+    raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
+
+    csv_class = ::Import::Csv::FORMATS[options.format].try(:constantize)
+    fail 'Format not found' unless csv_class
+
+    csv_class.new(options.path, options.ynab_account_id).import
+  end
+end

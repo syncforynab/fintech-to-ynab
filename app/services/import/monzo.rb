@@ -51,7 +51,8 @@ class Import::Monzo
   private
 
   def transactions
-    get("/transactions?account_id=#{@monzo_account_id}&since=#{@from.strftime('%FT%TZ')}&expand[]=merchant")[:transactions]
+    since = @from.present? ? "&since=#{@from.strftime('%FT%TZ')}" : nil
+    get("/transactions?account_id=#{@monzo_account_id}#{since}&expand[]=merchant")[:transactions]
   end
 
   def get(url)

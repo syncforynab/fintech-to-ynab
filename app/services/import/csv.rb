@@ -4,6 +4,12 @@ require 'csv'
 # @note the amount must be the full value (so $100 would be 100)
 
 class Import::Csv
+
+  FORMATS = {
+    'default' => 'Import::Csv',
+    'starling' => 'Import::Csv::StarlingBank',
+  }
+
   def initialize(path, ynab_account_id)
     @path = path
     @ynab_account_id = ynab_account_id
