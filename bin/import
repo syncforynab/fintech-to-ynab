@@ -45,3 +45,22 @@ command :starling do |c|
     Import::Starling.new(options.token, options.ynab_account_id, from: options.from).import
   end
 end
+
+command :csv do |c|
+  c.syntax = 'Fintech To YNAB csv [options]'
+  c.summary = ''
+  c.description = ''
+  c.option '--ynab_account_id STRING', String, 'Your YNAB account ID for this Starling account'
+  c.option '--path STRING', String, 'Path to CSV file'
+  c.option '--format STRING', String, 'The format of the CSV. Check docs for formats'
+  c.action do |args, options|
+    raise ArgumentError.new("format is required!") unless options.format
+    raise ArgumentError.new("path is required!") unless options.path
+    raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
+
+    csv_class = ::Import::Csv::FORMATS[options.format].try(:constantize)
+    fail 'Format not found' unless csv_class
+
+    csv_class.new(options.path, options.ynab_account_id).import
+  end
+end
