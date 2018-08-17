@@ -17,5 +17,16 @@ RSpec.describe StarlingController, type: :controller do
       it { is_expected.to have_http_status(200) }
       it { is_expected.to have_json({'error' => 'unsupported_type'}) }
     end
+
+    context 'when sending no body' do
+      it { is_expected.to have_http_status(200) }
+      it { is_expected.to have_json({'error' => 'unsupported_type'}) }
+    end
+
+    context 'when sending an unsupported webhook type' do
+      let(:body) { { type: :not_supported } }
+      it { is_expected.to have_http_status(200) }
+      it { is_expected.to have_json({'error' => 'unsupported_type'}) }
+    end
   end
 end
