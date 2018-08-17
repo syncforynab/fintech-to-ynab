@@ -21,12 +21,14 @@ gem 'washbullet'
 
 # Utilities
 gem 'awesome_print'
+gem 'commander'
 
 group :production do
   gem 'rails_12factor'
 end
 
 group :development, :test do
+  gem 'listen'
   gem 'dotenv-rails'
   gem 'rubocop-rails_config'
 end
