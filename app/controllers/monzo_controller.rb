@@ -29,6 +29,11 @@ class MonzoController < ApplicationController
       description << webhook[:data][:merchant][:metadata][:suggested_tags] if webhook[:data][:merchant].try(:[], :metadata).try(:[], :suggested_tags)
     end
 
+    # If this is a split repayment, then add that to the description
+    if webhook[:data][:metadata].try(:[], :p2p_initiator) == 'payment-request' && webhook[:data][:merchant].present? && webhook[:data][:counterparty].present?
+      description << " (Repayment to #{webhook[:data][:counterparty][:name]})"
+    end
+
     ynab_creator = YNAB::TransactionCreator.new(
       id: "M#{webhook[:data][:id]}",
       date: Time.parse(webhook[:data][:created]).to_date,
