@@ -46,6 +46,7 @@ class YNAB::Client
     client.transactions.bulk_create_transactions(selected_budget_id, { transactions: transactions }).data.bulk
   rescue => e
     Rails.logger.error('YNAB::Client.create_transactions failure')
+    Rails.logger.error("YNAB::Client.create_transactions Request Body: #{transactions}")
     Rails.logger.error("YNAB::Client.create_transactions Response: #{e.response_body}")
     Rails.logger.error(e)
     false
