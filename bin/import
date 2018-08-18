@@ -8,6 +8,18 @@ program :name, 'Fintech To YNAB'
 program :version, '0.0.1'
 program :description, 'Import fintech data into YNAB'
 
+command :accounts do |c|
+  c.syntax = 'Fintech To YNAB accounts [options]'
+  c.summary = ''
+  c.description = ''
+  c.action do |args, options|
+    ynab = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'])
+    ynab.accounts.reject(&:deleted).each do |account|
+      puts "[#{account.id}] #{account.name}"
+    end
+  end
+end
+
 command :monzo do |c|
   c.syntax = 'Fintech To YNAB monzo [options]'
   c.summary = ''
