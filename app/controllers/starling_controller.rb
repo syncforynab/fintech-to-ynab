@@ -28,17 +28,16 @@ class StarlingController < ApplicationController
   def receive
     webhook = JSON.parse(request.body.read, symbolize_names: true)
 
-    case webhook[:webhookType]
-    when *WEBHOOKS_TYPES
-      payee_name = webhook[:content][:counterParty]
-      amount = (webhook[:content][:amount].to_f * 1000).to_i
-      description = webhook[:content][:forCustomer].to_s
-      flag = nil
+    return render json: { error: :unsupported_type } unless webhook[:webhookType].in?(WEBHOOKS_TYPES)
 
-      foreign_transaction = webhook[:content][:sourceCurrency] != 'GBP'
-      flag = 'orange' if foreign_transaction && !ENV['SKIP_FOREIGN_CURRENCY_FLAG']
-    else
-      return render json: { error: :unsupported_type }
+    payee_name = webhook[:content][:counterParty]
+    amount = (webhook[:content][:amount].to_f * 1000).to_i
+    description = webhook[:content][:forCustomer].to_s
+    flag = nil
+
+    foreign_transaction = webhook[:content][:sourceCurrency] != 'GBP'
+    if foreign_transaction && !ENV['SKIP_FOREIGN_CURRENCY_FLAG']
+      flag = 'orange'
     end
 
     ynab_creator = YNAB::TransactionCreator.new(
