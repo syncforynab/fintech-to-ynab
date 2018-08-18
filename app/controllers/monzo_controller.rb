@@ -42,7 +42,7 @@ class MonzoController < ApplicationController
       description: description.strip,
       cleared: !foreign_transaction,
       flag: flag,
-      account_id: ENV['YNAB_MONZO_ACCOUNT_ID'] || ENV['YNAB_ACCOUNT_ID']
+      account_id: ENV['YNAB_MONZO_ACCOUNT_ID'] || ENV['YNAB_ACCOUNT_ID'] # @todo remove the fall back at some point. It will be a breaking change
     )
 
     create = ynab_creator.create
