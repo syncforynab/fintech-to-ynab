@@ -24,9 +24,7 @@ class CategoryBalanceNotifier
   def discover_services
     # Pushbullet
     if ENV['PUSHBULLET_API_KEY'].present?
-      add_service(CategoryBalanceNotifier::Pushbullet, {
-                    api_key: ENV['PUSHBULLET_API_KEY']
-                  })
+      add_service(CategoryBalanceNotifier::Pushbullet, { api_key: ENV['PUSHBULLET_API_KEY'] })
     end
 
     # @todo email
