@@ -25,7 +25,9 @@ class YNAB::TransactionCreator
     if create.try(:category_id).present?
       begin
         ynab_category = @client.category(create.category_id)
-        CategoryBalanceNotifier.new.notify(ynab_category)
+        notifier = CategoryBalanceNotifier.new
+        notifier.discover_services
+        notifier.notify(ynab_category)
       rescue => e
         Rails.logger.error('Category Balance Notifier Failed')
         Rails.logger.error(e)

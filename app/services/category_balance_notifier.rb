@@ -1,13 +1,22 @@
 class CategoryBalanceNotifier
   def initialize
     @services ||= []
-    discover_services
   end
 
   def notify(ynab_category)
     @services.each do |service|
       service.notify(ynab_category.name, formatted_balance(ynab_category.balance))
     end
+  end
+
+  def discover_services
+    # Pushbullet
+    if ENV['PUSHBULLET_API_KEY'].present?
+      add_service(CategoryBalanceNotifier::Pushbullet, { api_key: ENV['PUSHBULLET_API_KEY'] })
+    end
+
+    # @todo email
+    # @todo sms
   end
 
   private
@@ -19,15 +28,5 @@ class CategoryBalanceNotifier
 
   def add_service(service_class, config = {})
     @services << service_class.new(config)
-  end
-
-  def discover_services
-    # Pushbullet
-    if ENV['PUSHBULLET_API_KEY'].present?
-      add_service(CategoryBalanceNotifier::Pushbullet, { api_key: ENV['PUSHBULLET_API_KEY'] })
-    end
-
-    # @todo email
-    # @todo sms
   end
 end
