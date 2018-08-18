@@ -32,6 +32,10 @@
       "description": "Optional: This will tell Fintech to YNAB not to add hashtags to the transaction description. (Monzo Only)",
       "required": false
     },
+    "PUSHBULLET_API_KEY": {
+      "description": "Optional: Push category balance notifications to Pushbullet",
+      "required": false
+    },
     "URL_SECRET": {
       "description": "Optional: This is a secret used for the webhooks endpoint.",
       "required": false
