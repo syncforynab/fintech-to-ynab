@@ -34,6 +34,9 @@ class MonzoController < ApplicationController
       description << " (Repayment to #{webhook[:data][:counterparty][:name]})"
     end
 
+    # @todo remove the final fall back at some point. It will be a breaking change.
+    ynab_account_id = params[:ynab_account_id] || ENV['YNAB_MONZO_ACCOUNT_ID'] || ENV['YNAB_ACCOUNT_ID']
+
     ynab_creator = YNAB::TransactionCreator.new(
       id: "M#{webhook[:data][:id]}",
       date: Time.parse(webhook[:data][:created]).to_date,
@@ -42,7 +45,7 @@ class MonzoController < ApplicationController
       description: description.strip,
       cleared: !foreign_transaction,
       flag: flag,
-      account_id: ENV['YNAB_MONZO_ACCOUNT_ID'] || ENV['YNAB_ACCOUNT_ID'] # @todo remove the fall back at some point. It will be a breaking change
+      account_id: ynab_account_id
     )
 
     create = ynab_creator.create

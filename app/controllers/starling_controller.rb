@@ -48,7 +48,7 @@ class StarlingController < ApplicationController
       description: description.strip,
       cleared: !foreign_transaction,
       flag: flag,
-      account_id: ENV['YNAB_STARLING_ACCOUNT_ID']
+      account_id: params[:ynab_account_id] || ENV['YNAB_STARLING_ACCOUNT_ID']
     )
 
     create = ynab_creator.create
