@@ -202,7 +202,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
-    rubocop-rails_config (0.2.2)
+    rubocop-rails_config (0.2.3)
       railties (>= 3.0)
       rubocop (~> 0.56)
     ruby-progressbar (1.10.0)
