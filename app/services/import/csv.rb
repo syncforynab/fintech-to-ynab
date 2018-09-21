@@ -8,6 +8,7 @@ class Import::Csv
   FORMATS = {
     'default' => 'Import::Csv',
     'starling' => 'Import::Csv::StarlingBank',
+    'mbna' => 'Import::Csv::MBNA',
   }
 
   def initialize(path, ynab_account_id)
