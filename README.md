@@ -36,6 +36,8 @@ As well as real-time webhooks, we also support bulk/historical imports for the f
 - [TSB](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Teller)
 - [Ulster Bank NI](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Teller)
 - [HSBC UK](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Teller)
+- [MBNA](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/Import:-CSV)
+- [Amex](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/Import:-CSV)
 
 *To request a new Bank/Financial Institution, please comment [here](https://github.com/fintech-to-ynab/fintech-to-ynab/issues/73).*
 
