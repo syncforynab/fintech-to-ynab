@@ -5,7 +5,7 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/fintech-to-ynab/fintech-to-ynab)
 
-Automatically push Monzo and Starling transactions to YNAB in realtime. Also import historical transactions for many more banks.
+Automatically push Monzo and Starling transactions to YNAB in realtime. Also import historical transactions from Barclays, Revolut Business, Nationwide, Natwest and many more banks.
 
 ## Features
   - Push your Monzo and Starling transactions into YNAB in realtime
@@ -38,6 +38,7 @@ As well as real-time webhooks, we also support bulk/historical imports for the f
 - [HSBC UK](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Teller)
 - [MBNA](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/Import:-CSV)
 - [Amex](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/Import:-CSV)
+- [Revolut Business](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/Import:-Revolut-Business)
 
 *To request a new Bank/Financial Institution, please comment [here](https://github.com/fintech-to-ynab/fintech-to-ynab/issues/73).*
 
