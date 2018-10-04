@@ -13,7 +13,7 @@ command :accounts do |c|
   c.summary = ''
   c.description = ''
   c.action do |args, options|
-    ynab = YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'])
+    ynab = ::F2ynab::YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'])
     ynab.accounts.reject(&:deleted).each do |account|
       puts "[#{account.id}] #{account.name}"
     end
