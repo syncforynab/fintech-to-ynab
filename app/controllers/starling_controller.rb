@@ -40,7 +40,7 @@ class StarlingController < ApplicationController
       flag = 'orange'
     end
 
-    ynab_creator = YNAB::TransactionCreator.new(
+    ynab_creator = ::F2ynab::YNAB::TransactionCreator.new(
       id: "S:#{webhook[:content][:transactionUid]}",
       date: Time.parse(webhook[:timestamp]).to_date,
       amount: amount,

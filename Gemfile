@@ -7,17 +7,11 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rest-client'
 gem 'rails', '~> 5.2.0'
 gem 'puma', '~> 3.7'
-gem 'money'
 
-# Fintech Providers
-gem 'ynab'
-gem 'starling-ruby', require: 'starling'
-
-# Notifiers
-gem 'washbullet'
+gem 'f2ynab', github: 'fintech-to-ynab/f2ynab'
+# gem 'f2ynab', path: '../f2ynab'
 
 # Utilities
 gem 'awesome_print'
