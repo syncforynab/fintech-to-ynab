@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/fintech-to-ynab/f2ynab.git
-  revision: 011bfba7df1611393c2d964d08a221f47e53c1a4
+  revision: 58a05f74fdab3e57ff432202af8696ff294749d5
   specs:
     f2ynab (0.1.0)
       money
@@ -87,7 +87,7 @@ GEM
     highline (1.7.10)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (1.0.1)
+    i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.1)
     jaro_winkler (1.5.1-java)
