@@ -115,7 +115,7 @@ command :csv do |c|
     raise ArgumentError.new("path is required!") unless options.path
     raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
 
-    csv_class = ::F2ynab::Import::Csv::FORMATS[options.format].try(:constantize)
+    csv_class = ::F2ynab::Import::Csv::Default::FORMATS[options.format].try(:constantize)
     fail 'Format not found' unless csv_class
 
     csv_class.new(options.path, options.ynab_account_id).import
