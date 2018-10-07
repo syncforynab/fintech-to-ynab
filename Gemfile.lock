@@ -56,7 +56,7 @@ GEM
     ast (2.4.0)
     awesome_print (1.8.0)
     builder (3.2.3)
-    codecov (0.1.10)
+    codecov (0.1.11)
       json
       simplecov
       url
