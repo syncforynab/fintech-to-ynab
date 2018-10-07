@@ -1,7 +1,15 @@
 class MonzoController < ApplicationController
   def receive
     webhook = JSON.parse(request.body.read, symbolize_names: true)
-    import = ::F2ynab::Webhooks::Monzo.new(webhook, ynab_account_id: params[:ynab_account_id]).import
+
+    ynab_account_id = params[:ynab_account_id] || ENV['YNAB_MONZO_ACCOUNT_ID'] || ENV['YNAB_ACCOUNT_ID']
+
+    import = ::F2ynab::Webhooks::Monzo.new(webhook, ynab_account_id,
+      skip_emoji: ENV['SKIP_EMOJI'].present?,
+      skip_tags: ENV['SKIP_TAGS'].present?,
+      skip_foreign_currency_flag: ENV['SKIP_FOREIGN_CURRENCY_FLAG'].present?,
+    ).import
+
     if import.try(:id) || import.try(:[], :warning)
       render json: import
     else

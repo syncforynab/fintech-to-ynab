@@ -36,7 +36,12 @@ command :monzo do |c|
     raise ArgumentError.new("monzo_account_id is required!") unless options.monzo_account_id
     raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
 
-    ::F2ynab::Import::Monzo.new(options.token, options.monzo_account_id, options.ynab_account_id, from: options.from).import
+    ::F2ynab::Import::Monzo.new(options.token, options.monzo_account_id, options.ynab_account_id,
+      skip_emoji: ENV['SKIP_EMOJI'].present?,
+      skip_tags: ENV['SKIP_TAGS'].present?,
+      skip_foreign_currency_flag: ENV['SKIP_FOREIGN_CURRENCY_FLAG'].present?,
+      from: options.from
+    ).import
   end
 end
 
