@@ -122,7 +122,6 @@ command :csv do |c|
 
     csv_class = ::F2ynab::Import::Csv::Default::FORMATS[options.format].try(:constantize)
     fail 'Format not found' unless csv_class
-
     csv_class.new(options.path, options.ynab_account_id).import
   end
 end

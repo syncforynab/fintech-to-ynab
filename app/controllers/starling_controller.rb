@@ -1,7 +1,13 @@
 class StarlingController < ApplicationController
   def receive
     webhook = JSON.parse(request.body.read, symbolize_names: true)
-    import = ::F2ynab::Webhooks::Starling.new(webhook, ynab_account_id: params[:ynab_account_id]).import
+
+    ynab_account_id = params[:ynab_account_id] || ENV['YNAB_STARLING_ACCOUNT_ID']
+
+    import = ::F2ynab::Webhooks::Starling.new(webhook, ynab_account_id,
+      skip_foreign_currency_flag: ENV['SKIP_FOREIGN_CURRENCY_FLAG'].present?,
+    ).import
+
     if import.try(:id) || import.try(:[], :warning)
       render json: import
     else
