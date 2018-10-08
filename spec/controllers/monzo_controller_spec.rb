@@ -14,6 +14,14 @@ RSpec.describe MonzoController, type: :controller do
     context 'when a URL_SECRET is set, but and is passed' do
       before { allow(ENV).to receive(:[]).with('URL_SECRET').and_return('SECRET') }
       subject { post :receive, body: body.to_json, format: :json, params: { secret: 'SECRET' } }
+
+      before { allow(ENV).to receive(:[]).with('YNAB_MONZO_ACCOUNT_ID').and_return('response') }
+      before { allow(ENV).to receive(:[]).with('YNAB_ACCESS_TOKEN').and_return('response') }
+      before { allow(ENV).to receive(:[]).with('YNAB_BUDGET_ID').and_return('response') }
+      before { allow(ENV).to receive(:[]).with('SKIP_EMOJI').and_return('response') }
+      before { allow(ENV).to receive(:[]).with('SKIP_TAGS').and_return('response') }
+      before { allow(ENV).to receive(:[]).with('SKIP_FOREIGN_CURRENCY_FLAG').and_return('response') }
+
       it { is_expected.to have_http_status(200) }
       it { is_expected.to have_json('warning' => 'unsupported_type') }
     end
