@@ -36,7 +36,8 @@ command :monzo do |c|
     raise ArgumentError.new("monzo_account_id is required!") unless options.monzo_account_id
     raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
 
-    ::F2ynab::Import::Monzo.new(options.token, options.monzo_account_id, options.ynab_account_id,
+    client = ::F2ynab::YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], ENV['YNAB_BUDGET_ID'], options.ynab_account_id)
+    ::F2ynab::Import::Monzo.new(client, options.token, options.monzo_account_id,
       skip_emoji: ENV['SKIP_EMOJI'].present?,
       skip_tags: ENV['SKIP_TAGS'].present?,
       skip_foreign_currency_flag: ENV['SKIP_FOREIGN_CURRENCY_FLAG'].present?,
@@ -59,7 +60,8 @@ command :starling do |c|
     raise ArgumentError.new("token is required!") unless options.token
     raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
 
-    ::F2ynab::Import::Starling.new(options.token, options.ynab_account_id, from: options.from).import
+    client = ::F2ynab::YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], ENV['YNAB_BUDGET_ID'], options.ynab_account_id)
+    ::F2ynab::Import::Starling.new(client, options.token, from: options.from).import
   end
 end
 
@@ -77,7 +79,8 @@ command :revolut_business do |c|
     raise ArgumentError.new("token is required!") unless options.token
     raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
 
-    ::F2ynab::Import::RevolutBusiness.new(options.token, options.ynab_account_id, from: options.from).import
+    client = ::F2ynab::YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], ENV['YNAB_BUDGET_ID'], options.ynab_account_id)
+    ::F2ynab::Import::RevolutBusiness.new(client, options.token, from: options.from).import
   end
 end
 
@@ -104,7 +107,8 @@ command :teller do |c|
       raise ArgumentError.new("Teller account not found") unless options.teller_account_id
     end
 
-    ::F2ynab::Import::Teller.new(options.token, options.teller_account_id, options.ynab_account_id).import
+    client = ::F2ynab::YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], ENV['YNAB_BUDGET_ID'], options.ynab_account_id)
+    ::F2ynab::Import::Teller.new(client, options.token, options.teller_account_id).import
   end
 end
 
@@ -122,6 +126,8 @@ command :csv do |c|
 
     csv_class = ::F2ynab::Import::Csv::Default::FORMATS[options.format].try(:constantize)
     fail 'Format not found' unless csv_class
-    csv_class.new(options.path, options.ynab_account_id).import
+
+    client = ::F2ynab::YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], ENV['YNAB_BUDGET_ID'], options.ynab_account_id)
+    csv_class.new(client, options.path).import
   end
 end
