@@ -60,8 +60,8 @@ GEM
       json
       simplecov
       url
-    commander (4.4.6)
-      highline (~> 1.7.2)
+    commander (4.4.7)
+      highline (~> 2.0.0)
     concurrent-ruby (1.0.5)
     concurrent-ruby (1.0.5-java)
     crass (1.0.4)
@@ -84,7 +84,7 @@ GEM
     ffi (1.9.25-x86-mingw32)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    highline (1.7.10)
+    highline (2.0.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (1.1.1)
