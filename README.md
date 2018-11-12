@@ -7,6 +7,10 @@
 
 Automatically push Monzo and Starling transactions to YNAB in realtime. Also import historical transactions from Barclays, Revolut Business, Nationwide, Natwest and many more banks.
 
+## syncforynab.com
+
+We have launched syncforynab.com, a fully hosted version of Fintech to YNAB with support for all of the banks here, and more. It also supports generic CSV uploads from any bank.
+
 ## Features
   - Push your Monzo and Starling transactions into YNAB in realtime
   - Automatically populate the category based on previous transactions
