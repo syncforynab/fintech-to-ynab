@@ -9,7 +9,7 @@ Automatically push Monzo and Starling transactions to YNAB in realtime. Also imp
 
 ## syncforynab.com
 
-We have launched syncforynab.com, a fully hosted version of Fintech to YNAB with support for all of the banks here, and more. It also supports generic CSV uploads from any bank.
+We have launched [syncforynab.com](https://syncforynab.com), a fully hosted version of Fintech to YNAB with support for all of the banks here, and more. It also supports generic CSV uploads from any bank.
 
 ## Features
   - Push your Monzo and Starling transactions into YNAB in realtime
