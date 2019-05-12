@@ -44,7 +44,7 @@ RSpec.describe MonzoController, type: :controller do
     end
 
     context 'when sending a declined transaction' do
-      let(:body) { { type: 'transaction.created', data: { decline_reason: 'any reason' } } }
+      let(:body) { { type: 'transaction.created', data: { decline_reason: 'any reason', amount: 1 } } }
       it { is_expected.to have_http_status(200) }
       it { is_expected.to have_json('warning' => 'declined') }
     end
