@@ -15,3 +15,5 @@
 /coverage
 .byebug_history
 .env
+/vendor/bundle
+.ruby-version
