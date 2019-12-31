@@ -1,7 +1,7 @@
-FROM ruby:2.5.1
+FROM ruby:2.6.5
 WORKDIR /app
 
-RUN gem install bundler -v 1.16.1
+RUN gem install bundler -v 1.17.1
 ADD Gemfile* /app/
 RUN bundle check || bundle install --jobs=4 --retry=3
 
