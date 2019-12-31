@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ruby:2.5.1
+      - image: ruby:2.6.5
         environment:
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -27,5 +27,4 @@ jobs:
 
       - run:
           name: Run rspec
-          command: |
-            bundle exec rspec
+          command: bundle exec rspec
