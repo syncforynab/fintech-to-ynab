@@ -5,7 +5,7 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/fintech-to-ynab/fintech-to-ynab)
 
-Automatically push Monzo and Starling transactions to YNAB in realtime. Also import historical transactions from Monzo & Starling.
+Automatically push Monzo and Starling transactions to YNAB in realtime, plus import historical transactions.
 
 ## syncforynab.com
 
