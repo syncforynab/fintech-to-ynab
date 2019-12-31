@@ -65,53 +65,6 @@ command :starling do |c|
   end
 end
 
-command :revolut_business do |c|
-  c.syntax = 'Fintech To YNAB revolut_business [options]'
-  c.summary = ''
-  c.description = ''
-  c.option '--token STRING', String, 'Revolut Business API token'
-  c.option '--ynab_account_id STRING', String, 'Your YNAB account ID for this Starling account'
-  c.option '--from INTEGER', Integer, 'From when? (Unix Timestamp)'
-  c.action do |args, options|
-    options.default from: 1.week.ago.to_i
-    options.from = Time.at(options.from) if options.from.present?
-
-    raise ArgumentError.new("token is required!") unless options.token
-    raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
-
-    client = ::F2ynab::YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], ENV['YNAB_BUDGET_ID'], options.ynab_account_id)
-    ::F2ynab::Import::RevolutBusiness.new(client, options.token, from: options.from).import
-  end
-end
-
-command :teller do |c|
-  c.syntax = 'Fintech To YNAB teller [options]'
-  c.summary = ''
-  c.description = ''
-  c.option '--token STRING', String, 'Teller API token'
-  c.option '--teller_account_id STRING', String, 'Your Teller account id'
-  c.option '--ynab_account_id STRING', String, 'Your YNAB account ID for this Starling account'
-  c.action do |args, options|
-    raise ArgumentError.new("token is required!") unless options.token
-    raise ArgumentError.new("ynab_account_id is required!") unless options.ynab_account_id
-
-    unless options.teller_account_id
-      accounts = Import::Teller.new(options.token, nil, nil).accounts
-      accounts.each.with_index do |account, index|
-        puts "[#{index}] #{account[:institution]} (#{account[:name]})"
-      end
-      puts ''
-
-      selected_account = ask("Account ID: ", Integer)
-      options.teller_account_id = accounts[selected_account][:id]
-      raise ArgumentError.new("Teller account not found") unless options.teller_account_id
-    end
-
-    client = ::F2ynab::YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], ENV['YNAB_BUDGET_ID'], options.ynab_account_id)
-    ::F2ynab::Import::Teller.new(client, options.token, options.teller_account_id).import
-  end
-end
-
 command :csv do |c|
   c.syntax = 'Fintech To YNAB csv [options]'
   c.summary = ''
