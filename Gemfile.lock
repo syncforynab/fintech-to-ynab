@@ -73,7 +73,7 @@ GEM
       json
       simplecov
       url
-    commander (4.4.7)
+    commander (4.5.2)
       highline (~> 2.0.0)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
