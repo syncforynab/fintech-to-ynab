@@ -17,10 +17,6 @@ gem 'f2ynab', github: 'fintech-to-ynab/f2ynab'
 gem 'awesome_print'
 gem 'commander'
 
-group :production do
-  gem 'rails_12factor'
-end
-
 group :development, :test do
   gem 'listen'
   gem 'dotenv-rails'
