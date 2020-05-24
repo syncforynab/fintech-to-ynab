@@ -2,7 +2,7 @@ class ApplicationController < ActionController::API
   before_action :verify_token, except: [:home, :ping]
 
   def home
-    redirect_to 'https://github.com/fintech-to-ynab/fintech-to-ynab'
+    redirect_to 'https://github.com/syncforynab/fintech-to-ynab'
   end
 
   def ping

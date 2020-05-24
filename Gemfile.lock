@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/fintech-to-ynab/f2ynab.git
+  remote: https://github.com/syncforynab/f2ynab.git
   revision: ece0fc53365ee44d15e98e21e7ac69793c56851e
   specs:
     f2ynab (0.1.0)

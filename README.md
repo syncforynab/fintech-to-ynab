@@ -1,9 +1,9 @@
 # Fintech to YNAB
 
 [![Docker](https://img.shields.io/docker/build/fintechtoynab/fintech-to-ynab.svg)](https://hub.docker.com/r/fintechtoynab/fintech-to-ynab)
-[![CircleCI](https://circleci.com/gh/fintech-to-ynab/fintech-to-ynab.svg?style=svg)](https://circleci.com/gh/fintech-to-ynab/fintech-to-ynab)
+[![CircleCI](https://circleci.com/gh/syncforynab/syncforynab.svg?style=svg)](https://circleci.com/gh/fintech-to-ynab/fintech-to-ynab)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/fintech-to-ynab/fintech-to-ynab)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/syncforynab/fintech-to-ynab)
 
 Automatically push Monzo and Starling transactions to YNAB in realtime, plus import historical transactions.
 
@@ -20,15 +20,15 @@ I have launched [syncforynab.com](https://syncforynab.com), a fully hosted versi
 
 ## Getting Started
 
-Please see our [Getting Started](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/Getting-Started) guide to see how to set Fintech to YNAB up.
+Please see our [Getting Started](https://github.com/syncforynab/fintech-to-ynab/wiki/Getting-Started) guide to see how to set Fintech to YNAB up.
 
 ## Banks/Financial Institutions
 
 As well as real-time webhooks, we also support bulk/historical imports for the following financial institutions:
 
-- [CSV](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/Import:-CSV)
-- [Monzo](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Monzo)
-- [Starling](https://github.com/fintech-to-ynab/fintech-to-ynab/wiki/import:-Starling-Bank)
+- [CSV](https://github.com/syncforynab/fintech-to-ynab/wiki/Import:-CSV)
+- [Monzo](https://github.com/syncforynab/fintech-to-ynab/wiki/import:-Monzo)
+- [Starling](https://github.com/syncforynab/fintech-to-ynab/wiki/import:-Starling-Bank)
 
 *To request a new Bank/Financial Institution, please comment [here](https://github.com/fintech-to-ynab/fintech-to-ynab/issues/73).*
 

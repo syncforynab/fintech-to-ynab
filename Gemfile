@@ -10,7 +10,7 @@ end
 gem 'rails', '~> 6'
 gem 'puma'
 
-gem 'f2ynab', github: 'fintech-to-ynab/f2ynab'
+gem 'f2ynab', github: 'syncforynab/f2ynab'
 # gem 'f2ynab', path: '../f2ynab'
 
 # Utilities
