@@ -1,7 +1,7 @@
 {
   "name": "Fintech to YNAB",
   "description": "Automatically push Monzo and Starling transactions into YNAB",
-  "repository": "https://github.com/fintech-to-ynab/fintech-to-ynab",
+  "repository": "https://github.com/syncforynab/fintech-to-ynab",
   "keywords": ["monzo", "ynab", "starling"],
   "env": {
     "YNAB_ACCESS_TOKEN": {

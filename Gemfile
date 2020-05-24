@@ -1,4 +1,4 @@
-ruby '2.6.5'
+ruby '2.7.1'
 
 source 'https://rubygems.org'
 
@@ -10,16 +10,12 @@ end
 gem 'rails', '~> 6'
 gem 'puma'
 
-gem 'f2ynab', github: 'fintech-to-ynab/f2ynab'
+gem 'f2ynab', github: 'syncforynab/f2ynab'
 # gem 'f2ynab', path: '../f2ynab'
 
 # Utilities
 gem 'awesome_print'
 gem 'commander'
-
-group :production do
-  gem 'rails_12factor'
-end
 
 group :development, :test do
   gem 'listen'
