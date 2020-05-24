@@ -1,7 +1,7 @@
 # Fintech to YNAB
 
 [![Docker](https://img.shields.io/docker/build/fintechtoynab/fintech-to-ynab.svg)](https://hub.docker.com/r/fintechtoynab/fintech-to-ynab)
-[![CircleCI](https://circleci.com/gh/syncforynab/syncforynab.svg?style=svg)](https://circleci.com/gh/fintech-to-ynab/fintech-to-ynab)
+[![CircleCI](https://circleci.com/gh/syncforynab/syncforynab.svg?style=svg)](https://circleci.com/gh/syncforynab/fintech-to-ynab)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/syncforynab/fintech-to-ynab)
 
