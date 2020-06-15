@@ -142,7 +142,7 @@ GEM
       nio4r (~> 2.0)
     puma (4.3.5-java)
       nio4r (~> 2.0)
-    rack (2.2.2)
+    rack (2.2.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.3.1)
@@ -265,6 +265,8 @@ GEM
       unf_ext
     unf (0.1.4-java)
     unf_ext (0.0.7.7)
+    unf_ext (0.0.7.7-x64-mingw32)
+    unf_ext (0.0.7.7-x86-mingw32)
     unicode-display_width (1.7.0)
     url (0.3.2)
     websocket-driver (0.7.2)
