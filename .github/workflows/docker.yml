@@ -30,7 +30,7 @@ jobs:
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Build
