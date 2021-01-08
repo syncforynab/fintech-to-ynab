@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 6'
+gem 'rails', '~> 6.1'
 gem 'puma'
 
 gem 'f2ynab'
@@ -20,7 +20,9 @@ gem 'commander'
 group :development, :test do
   gem 'listen'
   gem 'dotenv-rails'
-  gem 'rubocop-rails_config'
+  gem 'rubocop-rails'
+  gem 'rubocop-performance'
+  gem 'rubocop-rspec'
 end
 
 group :test do
