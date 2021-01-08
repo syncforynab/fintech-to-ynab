@@ -1,6 +1,6 @@
 # Fintech to YNAB
 
-[![Docker](https://img.shields.io/docker/build/fintechtoynab/fintech-to-ynab.svg)](https://hub.docker.com/r/fintechtoynab/fintech-to-ynab)
+![Docker](https://github.com/syncforynab/fintech-to-ynab/workflows/Docker/badge.svg)
 ![Tests](https://github.com/syncforynab/fintech-to-ynab/workflows/Tests/badge.svg)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/syncforynab/fintech-to-ynab)
