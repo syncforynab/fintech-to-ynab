@@ -1,0 +1,44 @@
+name: Docker
+
+on: push
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.docker-buildx-cache
+          key: ${{ runner.os }}-docker-buildx-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-docker-buildx-
+
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        if: ${{ env.GHCR_TOKEN != '' }}
+        env:
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build
+        id: docker_build
+        uses: docker/build-push-action@v2
+        env:
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        with:
+          push: ${{ env.GHCR_TOKEN != '' }}
+          tags: ghcr.io/${{ github.repository }}/application:sha_${{ github.sha }}
+          cache-from: type=local,src=/tmp/.docker-buildx-cache
+          cache-to: type=local,dest=/tmp/.docker-buildx-cache
