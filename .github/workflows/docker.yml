@@ -40,8 +40,8 @@ jobs:
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
         with:
           push: true
-          tags:
-            - ghcr.io/syncforynab/fintech-to-ynab:sha_${{ github.sha }}
-            - latest
+          tags: |
+            ghcr.io/syncforynab/fintech-to-ynab:sha_${{ github.sha }}
+            latest
           cache-from: type=local,src=/tmp/.docker-buildx-cache
           cache-to: type=local,dest=/tmp/.docker-buildx-cache
