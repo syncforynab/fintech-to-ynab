@@ -63,7 +63,7 @@ GEM
     ast (2.4.1)
     awesome_print (1.8.0)
     builder (3.2.4)
-    codecov (0.3.0)
+    codecov (0.4.2)
       simplecov (>= 0.15, < 0.22)
     commander (4.5.2)
       highline (~> 2.0.0)
