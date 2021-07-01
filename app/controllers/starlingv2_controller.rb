@@ -55,41 +55,4 @@ class Starlingv2Controller < ApplicationController
       render json: import, status: 400
     end
   end
-
-  def sopayment
-    webhook = JSON.parse(request.body.read, symbolize_names: true)
-
-    ynab_budget_id = params[:ynab_budget_id] || ENV['YNAB_BUDGET_ID']
-    ynab_account_id = params[:ynab_account_id] || ENV['YNAB_STARLING_ACCOUNT_ID']
-    ynab_client = ::F2ynab::YNAB::Client.new(ENV['YNAB_ACCESS_TOKEN'], ynab_budget_id, ynab_account_id)
-    skip_foreign_currency_flag = ENV['SKIP_FOREIGN_CURRENCY_FLAG'].present?
-
-    payee_name = nil
-    amount = (webhook[:content][:paymentOrder][:amount][:minorUnits].to_f * 10).to_i
-    amount *= -1
-    description = webhook[:content][:paymentOrder][:reference]
-    
-    flag = nil
-    foreign_transaction = webhook[:content][:paymentOrder][:amount][:currency] != 'GBP'
-    if foreign_transaction && !skip_foreign_currency_flag
-      flag = 'orange'
-    end
-
-    import = ::F2ynab::YNAB::TransactionCreator.new(
-      ynab_client,
-      id: "S:#{webhook[:content][:paymentOrder][:paymentOrderUid]}",
-      date: Time.parse(webhook[:eventTimestamp]).to_date,
-      amount: amount,
-      payee_name: payee_name,
-      description: description.strip,
-      cleared: !foreign_transaction,
-      flag: flag
-    ).create
-
-    if import.try(:id) || import.try(:[], :warning)
-      render json: import
-    else
-      render json: import, status: 400
-    end
-  end
 end
