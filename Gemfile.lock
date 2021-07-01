@@ -65,7 +65,7 @@ GEM
     builder (3.2.4)
     codecov (0.5.1)
       simplecov (>= 0.15, < 0.22)
-    commander (4.5.2)
+    commander (4.6.0)
       highline (~> 2.0.0)
     concurrent-ruby (1.1.8)
     crass (1.0.6)
