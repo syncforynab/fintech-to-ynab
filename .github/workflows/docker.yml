@@ -31,19 +31,22 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: lowercase repo name for tag
-        uses: ASzc/change-string-case-action@v1
-        id: reponame
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
         with:
-          string: ghcr.io/${{ github.repository }}
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            sha_${{ github.sha }}
+            latest
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: |
-            ${{ steps.reponame.outputs.lowercase }}:sha_${{ github.sha }}
-            ${{ steps.reponame.outputs.lowercase }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.docker-buildx-cache
           cache-to: type=local,dest=/tmp/.docker-buildx-cache
