@@ -40,7 +40,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Prevent "Blocked host: hostname"
-  if !ENV["APP_HOSTNAME"].nil?
+  if ENV["APP_HOSTNAME"].present?
     config.hosts << ENV["APP_HOSTNAME"]
   end
 
